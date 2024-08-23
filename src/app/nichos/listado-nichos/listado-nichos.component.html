@@ -1,0 +1,59 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card text-right">
+            <button pButton pRipple type="button" icon="pi pi-plus-circle" 
+                    class="p-button-rounded p-button-secondary"></button>
+        </div>
+    </div>
+    <div class="col-12">
+        <h5>Listado de Nichos registrados</h5>
+		<div class="card">
+            <p-table [value]="listadoNichos" [loading]="loading" [rows]="10" [rowHover]="true" [paginator]="true">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="min-width: 12rem">
+							<div class="flex justify-content-between align-items-center">
+								Nicho
+							</div>
+						</th>
+                        <th style="min-width: 12rem">
+							<div class="flex justify-content-between align-items-center">
+								Descripción
+							</div>
+						</th>
+                        <th style="min-width: 12rem">
+							<div class="flex justify-content-between align-items-center">
+								Acciones
+							</div>
+						</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-nicho>
+                    <tr>
+                        <td>
+							{{nicho.nombre}}
+						</td>
+                        <td>
+							{{nicho.descripcion}}
+						</td>
+                        <td>
+							<button pButton pRipple type="button" label="Configurar" class="p-button-warning"></button>
+                            <button pButton pRipple type="button" label="Editar" class="p-button-primary mx-4"></button>
+                            <button pButton pRipple type="button" label="Eliminar" class="p-button-danger"></button>
+						</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+					<tr>
+						<td colspan="3">No hay nichos dados de alta</td>
+					</tr>
+				</ng-template>
+				<ng-template pTemplate="loadingbody">
+					<tr>
+						<td colspan="3">Cargando información, espera un momento</td>
+					</tr>
+				</ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>

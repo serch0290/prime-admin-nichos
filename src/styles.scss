@@ -12,3 +12,136 @@ $gutter: 1rem; //for primeflex grid system
 @import "assets/demo/styles/flags/flags.css";
 @import "assets/demo/styles/badges.scss";
 @import "assets/demo/styles/code.scss";
+
+/* You can add global styles to this file, and also import other style files */
+
+
+
+@for $size from 1 through 200 {
+    .font-size-#{$size * 2} {
+        font-size: #{$size * 2}px;
+    }
+}
+
+@for $size from 1 through 400 {
+    .p-#{$size * 2} {
+        padding: #{$size * 2}px;
+    }
+}
+
+@for $size from 1 through 400 {
+    .m-#{$size * 2} {
+        margin: #{$size * 2}px;
+    }
+}
+
+@for $size from 1 through 200 {
+    .pt-#{$size * 2} {
+        padding-top: #{$size * 2}px;
+    }
+}
+
+@for $size from 1 through 200 {
+    .pb-#{$size * 2} {
+        padding-bottom: #{$size * 2}px;
+    }
+}
+
+@for $size from 1 through 200 {
+    .pl-#{$size * 2} {
+        padding-left: #{$size * 2}px;
+    }
+}
+
+@for $size from 1 through 200 {
+    .pr-#{$size * 2} {
+        padding-right: #{$size * 2}px;
+    }
+}
+
+@for $size from 1 through 200 {
+    .px-#{$size * 2} {
+        padding-right: #{$size * 2}px;
+        padding-left: #{$size * 2}px;
+    }
+}
+
+@for $size from 1 through 200 {
+    .py-#{$size * 2} {
+        padding-top: #{$size * 2}px;
+        padding-bottom: #{$size * 2}px;
+    }
+}
+
+@for $size from 1 through 400 {
+
+    .h-#{$size * 2} {
+        height: #{$size * 2}px;
+    }
+}
+
+
+@for $size from 1 through 400 {
+
+    .w-#{$size * 2} {
+        width: #{$size * 2}px;
+    }
+}
+
+@for $size from 1 through 200 {
+    .mt-#{$size * 2} {
+        margin-top: #{$size * 2}px;
+    }
+}
+
+@for $size from 1 through 200 {
+    .mb-#{$size * 2} {
+        margin-bottom: #{$size * 2}px;
+    }
+}
+
+@for $size from 1 through 200 {
+    .ml-#{$size * 2} {
+        margin-left: #{$size * 2}px;
+    }
+}
+
+@for $size from 1 through 200 {
+    .mr-#{$size * 2} {
+        margin-right: #{$size * 2}px;
+    }
+}
+
+@for $size from 1 through 200 {
+    .mx-#{$size * 2} {
+        margin-right: #{$size * 2}px;
+        margin-left: #{$size * 2}px;
+    }
+}
+
+@for $size from 1 through 200 {
+    .my-#{$size * 2} {
+        margin-top: #{$size * 2}px;
+        margin-bottom: #{$size * 2}px;
+    }
+}
+
+@for $size from 1 through 20 {
+    .w-#{$size * 5}-p {
+        width: #{($size * 5) + '%'};
+    }
+}
+
+@for $size from 1 through 20 {
+    .h-#{$size * 5}-p {
+        height: #{($size * 5) + '%'};
+    }
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+.underline{
+    text-decoration: underline;
+}
