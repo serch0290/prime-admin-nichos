@@ -24,6 +24,8 @@ import { NgxColorsModule } from 'ngx-colors';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { FileUploadModule } from 'primeng/fileupload';
 import { InputTextModule } from 'primeng/inputtext';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 let routes = [
     {
@@ -63,6 +65,8 @@ let routes = [
         InputSwitchModule,
         FileUploadModule,
         InputTextModule,
+        ConfirmPopupModule,
+        ConfirmDialogModule,
         RouterModule.forChild(routes)
     ],
     declarations: [ListadoNichosComponent, PanoramaGeneralComponent, ConfiguracionGeneralComponent],

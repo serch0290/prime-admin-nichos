@@ -8,6 +8,15 @@
             <div class="card">
                 <h1>Configuración general</h1>
                 <h5>Nicho: {{nicho.nombre}}</h5>
+                <div class="col-12">
+                    <button pButton pRipple type="button" icon="pi pi-times-circle" 
+                            class="p-button-outlined p-button-danger" label="Eliminar Configuracion"
+                            (click)="confirmarEliminacion($event)"></button>
+                    <p-confirmPopup key="confirm-delete"></p-confirmPopup>
+                    <p-messages [value]="msgs" key="message-delete"></p-messages>
+                </div>
+                
+
                 <div class="col-12 text-right">
                     <button pButton pRipple type="button" icon="pi pi-arrow-left" 
                         class="p-button-outlined p-button-success" label="Regresar"
@@ -62,10 +71,10 @@
 
                         <p-button label="Prod" [loading]="loadings.carpetas.prod" 
                                   [severity]="general.carpetas.prod ? 'success' : 'danger'"
-                                  [disabled]="!general.carpetas.dev"
+                                  [disabled]="true"
                                   pTooltip="Generar carpetas en producción" ></p-button>
                                   
-                        <p-messages [value]="msgs"></p-messages>
+                        <p-messages [value]="msgsCarpeta" key="message-carpetas"></p-messages>
                     </div>
                 </p-fieldset>
             </div>
@@ -131,22 +140,54 @@
                     </div>
                     <div class="col-12 text-right">
                         <p-button label="Local" [loading]="loadings.background.local" 
+                                  [disabled]="!general.carpetas.local"
                                   [severity]="general.background.local ? 'success' : 'danger'"
                                   pTooltip="Subir fuente y colores en ambiente local"
                                   (onClick)="guardarColorFuenteLocal()"></p-button>
 
 
                         <p-button label="Dev" class="mx-12" [loading]="loadings.background.dev" 
-                                  [disabled]="!general.background.local"
+                                  [disabled]="!general.background.local || !general.carpetas.dev"
                                   (click)="subirColorFuenteDev()"
                                   [severity]="general.background.dev ? 'success' : 'danger'"
                                   pTooltip="Subir fuente y colores en ambiente de dev" ></p-button>
 
                         <p-button label="Prod" [loading]="loadings.background.prod" 
                                   [severity]="general.background.prod ? 'success' : 'danger'"
-                                  [disabled]="!general.background.dev"
+                                  [disabled]="true"
                                   pTooltip="Subir fuente y colores en ambiente de prod" ></p-button>
-                        <p-messages [value]="msgs"></p-messages>
+                        <p-messages [value]="msgsFuente" key="message-fuentes"></p-messages>
+                    </div>
+                </p-fieldset>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <h5>Se suben todos los archivos del proyecto que sean estaticos, es decir que su programacion no cambie con algun atributo de la pagina de forma dinamica</h5>
+                <p-fieldset legend="Archivos Proyecto">
+                    <button pButton pRipple type="button" (click)="subirArchivos()"
+                            class="p-button-outlined p-button-help" label="Subir archivos proyecto"
+                            [disabled]="!general.carpetas.local"
+                            pTooltip="Subir archivos del proyecto a local"></button>
+
+                    <div class="col-12 text-right">
+                        <p-button label="Local" [loading]="loadings.filesProyecto.local" 
+                                  [severity]="general.filesProyecto.local ? 'success' : 'danger'"
+                                  pTooltip="Subir archivos del proyecto a local"></p-button>
+        
+        
+                        <p-button label="Dev" class="mx-12" [loading]="loadings.filesProyecto.dev" 
+                                  [disabled]="!general.filesProyecto.local || !general.carpetas.dev"
+                                  (click)="subirArchivosProyectoDev()"
+                                  [severity]="general.filesProyecto.dev ? 'success' : 'danger'"
+                                  pTooltip="Subir archivos del proyecto al ambiente de dev" ></p-button>
+        
+                        <p-button label="Prod" [loading]="loadings.filesProyecto.prod" 
+                                  [severity]="general.filesProyecto.prod ? 'success' : 'danger'"
+                                  [disabled]="true"
+                                  pTooltip="Subir archivos del proyecto al ambiente de prod" ></p-button>
+
+                        <p-messages [value]="msgsFileProyect" key="message-files-proyecto"></p-messages>
                     </div>
                 </p-fieldset>
             </div>

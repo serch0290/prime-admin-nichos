@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NichosService } from '../services/nichos.service';
-import { Message, MessageService } from 'primeng/api';
+import { ConfirmationService, Message, MessageService } from 'primeng/api';
 import { ConfiguracionService } from '../services/configuracion.service'
 import { cleanText } from 'src/app/lib/helpers';
+import { FilesService } from '../services/files.service';
 
 @Component({
   selector: 'app-configuracion-general',
   templateUrl: './configuracion-general.component.html',
   styleUrl: './configuracion-general.component.scss',
-  providers: [MessageService]
+  providers: [MessageService, ConfirmationService, ConfiguracionService, FilesService]
 })
 export class ConfiguracionGeneralComponent implements OnInit{
    
@@ -20,15 +21,22 @@ export class ConfiguracionGeneralComponent implements OnInit{
   public loadings = {
     carpetas: {local: false, dev: false, prod: false},
     background: {local: false, dev: false, prod: false},
+    filesProyecto: {local: false, dev: false, prod: false}
   };
   msgs: Message[] = [];
+  msgsCarpeta: Message[] = [];
+  msgsFuente: Message[] = [];
+  msgsFileProyect: Message[] = [];
+
   public headerFuentes : any;
 
    constructor(private activatedRoute: ActivatedRoute,
                private nichosService: NichosService,
                private router: Router,
                private service: MessageService,
+               private confirmationService: ConfirmationService,
                private configuracionService: ConfiguracionService,
+               private filesService: FilesService
    ){
    }
 
@@ -126,12 +134,12 @@ export class ConfiguracionGeneralComponent implements OnInit{
            this.loadings.carpetas.local = false;
            this.general._id = response._id;
            this.general = { ...this.general };
-           this.msgs = [];
-          this.msgs.push({ severity: 'success', summary: 'Correcto', detail: 'Se generaron las carpetas en el ambiente local' });
+           this.msgsCarpeta = [];
+          this.msgsCarpeta.push({ severity: 'success', summary: 'Correcto', detail: 'Se generaron las carpetas en el ambiente local', key: 'message-carpetas' });
         }, error=>{
           this.loadings.carpetas.local = false;
-          this.msgs = [];
-          this.msgs.push({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error al general las carpetas' });
+          this.msgsCarpeta = [];
+          this.msgsCarpeta.push({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error al general las carpetas', key: 'message-carpetas' });
         });
   }
 
@@ -144,8 +152,8 @@ export class ConfiguracionGeneralComponent implements OnInit{
         .subscribe(response=>{
           this.general.carpetas.dev = true;
           this.general = { ...this.general };
-          this.msgs = [];
-          this.msgs.push({ severity: 'success', summary: 'Correcto', detail: 'Se generaron las carpetas en el ambiente de ' + ambiente });
+          this.msgsCarpeta = [];
+          this.msgsCarpeta.push({ severity: 'success', summary: 'Correcto', detail: 'Se generaron las carpetas en el ambiente de ' + ambiente, key: 'message-carpetas' });
           this.loadings.carpetas.dev = false;
         }); 
   }
@@ -155,8 +163,8 @@ export class ConfiguracionGeneralComponent implements OnInit{
    * Response del uploader
    */
   onUpload(response: any){
-    let data = JSON.parse(response.originalEvent.body);
-       switch(data.tipo){
+    let data = response.originalEvent.body;
+    switch(data.tipo){
          case '1':
           this.guardarFuente(data);
           break;
@@ -166,7 +174,7 @@ export class ConfiguracionGeneralComponent implements OnInit{
          case '3':
            //this.guardarIcon(data.url, data.cms);
           break;
-       }
+    }
   }
 
   /**
@@ -208,9 +216,12 @@ export class ConfiguracionGeneralComponent implements OnInit{
         .subscribe(response=>{
            this.general = response.general;
            this.general = { ...this.general };
-           this.msgs = [];
-           this.msgs.push({ severity: 'success', summary: 'Correcto', detail: 'Se subio fuente y color del sitio web' });
+           this.msgsFuente = [];
+           this.msgsFuente.push({ severity: 'success', summary: 'Correcto', detail: 'Se subio fuente y color del sitio web', key: 'message-fuentes' });
            this.loadings.background.local = false;
+        }, error=>{
+          this.msgsFuente = [];
+          this.msgsFuente.push({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error al subir fuente y color', key: 'message-fuentes' });
         });
   }
 
@@ -218,10 +229,7 @@ export class ConfiguracionGeneralComponent implements OnInit{
    * Se sube archivo color y fuentes al ambiente de pruebas
    */
   subirColorFuenteDev(){
-    if(!this.general.background.local){
-       alert('No ha generado el archivo en local, no lo puedes enviar a pruebas');
-       return;
-    }
+    this.loadings.background.dev = true;
 
     let comandos = [];
     comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/css/dynamic.css /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/css`);
@@ -236,13 +244,14 @@ export class ConfiguracionGeneralComponent implements OnInit{
       }
     }
 
-    this.subirModificacionesDEV(comandos, campo);
+    let mensaje: Message = { severity: 'success', summary: 'Correcto', detail: 'Se subio fuente y color del sitio web al ambiente de dev', key: 'message-fuentes' };
+    this.subirModificacionesDEV(comandos, campo, 1, mensaje);
   }
 
   /**
    * Se suben modificaciones a DEV
    */
-  subirModificacionesDEV(commands: Array<any>, campo: any){
+  subirModificacionesDEV(commands: Array<any>, campo: any, tipo: number, mensaje: Message){
       let data = {
         commands: commands,
         campo: campo
@@ -250,9 +259,103 @@ export class ConfiguracionGeneralComponent implements OnInit{
       this.configuracionService.subirModificacionesDEV(this.general._id, data)
           .subscribe(response=>{
             this.general = response.general;
+            this.mostrarMensajeNotificacion(tipo, mensaje);
             this.general = { ...this.general };
           });
   }
+
+  /**
+   * Se muestra el mensaje de notificación
+   */
+  mostrarMensajeNotificacion(tipo: number, mensaje: Message){
+    switch(tipo){
+      case 1:
+        this.msgsFuente = [];
+        this.msgsFuente.push(mensaje);
+        this.loadings.background.dev = false;
+        break;
+      case 2:
+        this.msgsFileProyect = [];
+        this.msgsFileProyect.push(mensaje);
+        this.loadings.filesProyecto.dev = false;
+        break;
+    }
+  }
+
+  /**
+   * 
+   * @param event primero enviamos un mensaje para confirmar la eliminación y no borrar por error
+   */
+  confirmarEliminacion(event: Event){
+    this.confirmationService.confirm({
+      key: 'confirm-delete',
+      target: event.target || new EventTarget,
+      message: 'Estas seguro que deseas continuar con esta acción?',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+           this.eliminarConfiguracion();
+      },
+      reject: () => {
+          
+      }
+  });
+  }
+
+  /**
+   * Se elimina la configuracion general
+   */
+  eliminarConfiguracion(){
+    let data = {
+      id: this.general._id,
+      nombre: cleanText(this.nicho.nombre),
+      command: `rm -rf /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}`
+    }
+    this.configuracionService.eliminarConfiguracionGeneral(data)
+        .subscribe(response=>{
+          this.setGeneralDefault();
+          this.general = { ...this.general };
+          this.service.add({ severity: 'success', summary: 'Correcto', detail: 'Se elimino la información correctamente', key: 'message-delete' });
+        });
+  }
+
+  /**
+  * Función para subir los archivos principales del proyecto
+  */
+  subirArchivos(){
+    this.loadings.filesProyecto.local = true;
+    this.configuracionService.subirArchivos(this.general._id, cleanText(this.nicho.nombre))
+          .subscribe(response=>{
+            if(response.status){
+               this.general = response.general;
+               this.general = { ...this.general };
+               this.loadings.filesProyecto.local = false;
+            }   
+          });
+  }
+
+    /**
+   * Se suben los archivos del proyecto a dev
+   */
+ async subirArchivosProyectoDev(){
+  this.loadings.filesProyecto.dev = true;
+
+  let files = await this.filesService.getListadoFiles().toPromise();
+
+  let comandos = [];
+  for(let file of files){
+      comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}${file.path}${file.file} /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}${file.path}${file.file}`);
+  }
+
+  let campo = {
+    $set: {
+      'filesProyecto.dev': true
+    }
+  }
+
+  let mensaje: Message = { severity: 'success', summary: 'Correcto', detail: 'Se subieron los archivos necesarios al ambiente de pruebas', key: 'message-files-proyecto' };
+  this.subirModificacionesDEV(comandos, campo, 2, mensaje);
+}
+
 
 
 

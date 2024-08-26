@@ -114,4 +114,12 @@ export class ConfiguracionService
         return this._http.post(`${this.url}configuracion/generar/json/logo/icon/${id}`, data); 
      }
 
+     /**
+      * 
+      * Se elimina la configuración general
+      */
+     eliminarConfiguracionGeneral(data: any): Observable<any>{
+        return this._http.post(`${this.url}configuracion/eliminar/configuracion/genera`, data);
+     }
+
 }
