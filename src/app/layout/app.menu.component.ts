@@ -1,6 +1,8 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
+import { ActivatedRoute } from '@angular/router';
+import { EventServiceNichos } from '../nichos/services/event.nicho.service';
 
 @Component({
     selector: 'app-menu',
@@ -9,18 +11,18 @@ import { LayoutService } from './service/app.layout.service';
 export class AppMenuComponent implements OnInit {
 
     model: any[] = [];
+    public idNicho: string;
 
-    constructor(public layoutService: LayoutService) { }
+    constructor(public layoutService: LayoutService,
+                private activatedRoute: ActivatedRoute,
+                private eventServiceNichos: EventServiceNichos
+    ) { 
+        this.eventServiceNichos.event.subscribe(response=>{
+            this.setMenu(response);
+        });
+    }
 
     ngOnInit() {
-        this.model = [
-            {
-                label: 'Configuración Nichos',
-                items: [
-                    { label: 'Dashboard', icon: 'pi pi-fw pi-cog', routerLink: ['/dashboard-nichos'] }
-                ] 
-            }
-        ];
         /*this.model = [
             {
                 label: 'Home',
@@ -169,5 +171,25 @@ export class AppMenuComponent implements OnInit {
                 ]
             }
         ];*/
+    }
+
+    /**
+     * Llenamos el menu
+     */
+    setMenu(idNicho: string){
+        this.model = [
+            {
+                label: 'Configuración Nichos',
+                items: [
+                    { label: 'Configuración general', icon: 'pi pi-fw pi-cog', routerLink: [`/nicho/${idNicho}/general`] },
+                    { label: 'Base de Datos', icon: 'pi pi-fw pi-database', routerLink: [`/nicho/${idNicho}/BD`] },
+                    { label: 'Configuración blog', icon: 'pi pi-fw pi-file-edit', routerLink: [`/nicho/${idNicho}/blog`] },
+                    { label: 'Configuración menú', icon: 'pi pi-fw pi-list', routerLink: [`/nicho/${idNicho}/menu`] },
+                    { label: 'Configuración footer', icon: 'pi pi-fw pi-align-right', routerLink: [`/nicho/${idNicho}/footer`] },
+                    { label: 'Configuración FTP', icon: 'pi pi-fw pi-folder-open', routerLink: [`/nicho/${idNicho}/FTP`] },
+                    { label: 'Repositorio', icon: 'pi pi-fw pi-server', routerLink: [`/nicho/${idNicho}/repo`] }
+                ] 
+            }
+        ];
     }
 }

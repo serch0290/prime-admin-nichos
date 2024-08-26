@@ -1,0 +1,156 @@
+<div class="grid">
+    <div class="flex flex-column align-items-center justify-content-center"
+         *ngIf="loading">
+        <p-progressSpinner ariaLabel="loading" />
+    </div>
+    <ng-container *ngIf="!loading">
+        <div class="col-12">
+            <div class="card">
+                <h1>Configuración general</h1>
+                <h5>Nicho: {{nicho.nombre}}</h5>
+                <div class="col-12 text-right">
+                    <button pButton pRipple type="button" icon="pi pi-arrow-left" 
+                        class="p-button-outlined p-button-success" label="Regresar"
+                        (click)="regresar()"></button>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card" style="overflow: hidden;">
+                <p-fieldset legend="Data" [toggleable]="true" class="line-height-3 m-0" >
+                    <ngx-json-viewer [json]="general" [expanded]="false"></ngx-json-viewer>
+                </p-fieldset>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <div class="field col-12">
+                    <span class="p-float-label">
+                        <input
+                            type="text"
+                            id="inputtext"
+                            pInputText
+                            class="w-100-p"
+                            [(ngModel)]="general.dominio"
+                        />
+                        <label for="inputtext">Dominio</label>
+                    </span>
+                </div>
+
+            </div>
+        </div>
+        <!--Card para generar carpeta contenedoras-->
+        <div class="col-12">
+            <div class="card">
+                <h5>Se generan todas las carpeta del proyecto, es lo unico que crea desde la api no mas</h5>
+                <p-fieldset legend="Generar carpeta contenedoras">
+                    <button pButton pRipple type="button"
+                        class="p-button-outlined p-button-warning" label="Generar"
+                        [disabled]="general.carpetas.local"
+                        (click)="generarCarpetasNicho()"></button>
+
+                    <div class="col-12 text-right">
+                        <p-button label="Local" [loading]="loadings.carpetas.local" 
+                                  [severity]="general.carpetas.local ? 'success' : 'danger'"
+                                  pTooltip="Generar carpetas en local api"></p-button>
+
+                        <p-button label="Dev" class="mx-12" [loading]="loadings.carpetas.dev" 
+                                  (onClick)="enviarCarpetasDestino('dev')" 
+                                  [disabled]="!general.carpetas.local"
+                                  [severity]="general.carpetas.dev ? 'success' : 'danger'"
+                                  pTooltip="Generar carpetas en dev" ></p-button>
+
+                        <p-button label="Prod" [loading]="loadings.carpetas.prod" 
+                                  [severity]="general.carpetas.prod ? 'success' : 'danger'"
+                                  [disabled]="!general.carpetas.dev"
+                                  pTooltip="Generar carpetas en producción" ></p-button>
+                                  
+                        <p-messages [value]="msgs"></p-messages>
+                    </div>
+                </p-fieldset>
+            </div>
+        </div>
+        <!--Card para seleccionar el color y las fuentes del sitio web-->
+        <div class="col-12">
+            <div class="card">
+                <h5>Seleccionar el color y la fuente que tendra el sitio web, sube la fuente a assets/fuentes y genera el archivo dinamyc.css en el css</h5>
+                <p-fieldset legend="Color y Fuente">
+                    <div ngx-colors-trigger
+                         style="width: 50px;height: 50px;margin:10px"
+                         [style.background]="general.background.value"
+                         [(ngModel)]="general.background.value"
+                         [formats]="['hex','rgba']"></div>
+                    <div class="col-12">
+                        <p-fileUpload name="fuentes[]"
+                                       chooseLabel="Adjuntar fuente" 
+                                       url="http://localhost:5007/nchs/upload/file" 
+                                       [headers]="headerFuentes"
+                                       (onUpload)="onUpload($event)">
+                        </p-fileUpload>
+                    </div>
+                    <div class="col-12">
+                        <p-table [value]="general.fuentes" [rows]="10" [rowHover]="true">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="min-width: 12rem">
+                                        <div class="flex justify-content-between align-items-center">
+                                            Fuente
+                                        </div>
+                                    </th>
+                                    <th style="min-width: 12rem">
+                                        <div class="flex justify-content-between align-items-center">
+                                            Nombre
+                                        </div>
+                                    </th>
+                                    <th style="min-width: 12rem">
+                                        <div class="flex justify-content-between align-items-center">
+                                            Acciones
+                                        </div>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-fuente>
+                                <tr>
+                                    <td>
+                                        {{fuente.file}}
+                                    </td>
+                                    <td>
+                                        {{fuente.name}}
+                                    </td>
+                                    <td>
+                                        <p-inputSwitch [(ngModel)]="fuente.negrita"
+                                        pTooltip="Negritas"
+                                        ></p-inputSwitch>
+                                        <button pButton pRipple type="button" icon="pi pi-times-circle" 
+                                                class="p-button-rounded p-button-danger p-button-outlined ml-4"></button>
+                                    </td>
+                                </tr>
+
+                            </ng-template>
+                        </p-table>
+                    </div>
+                    <div class="col-12 text-right">
+                        <p-button label="Local" [loading]="loadings.background.local" 
+                                  [severity]="general.background.local ? 'success' : 'danger'"
+                                  pTooltip="Subir fuente y colores en ambiente local"
+                                  (onClick)="guardarColorFuenteLocal()"></p-button>
+
+
+                        <p-button label="Dev" class="mx-12" [loading]="loadings.background.dev" 
+                                  [disabled]="!general.background.local"
+                                  (click)="subirColorFuenteDev()"
+                                  [severity]="general.background.dev ? 'success' : 'danger'"
+                                  pTooltip="Subir fuente y colores en ambiente de dev" ></p-button>
+
+                        <p-button label="Prod" [loading]="loadings.background.prod" 
+                                  [severity]="general.background.prod ? 'success' : 'danger'"
+                                  [disabled]="!general.background.dev"
+                                  pTooltip="Subir fuente y colores en ambiente de prod" ></p-button>
+                        <p-messages [value]="msgs"></p-messages>
+                    </div>
+                </p-fieldset>
+            </div>
+        </div>
+    </ng-container>
+
+</div>

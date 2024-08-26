@@ -16,7 +16,9 @@ export class AppComponent implements OnInit {
         this.layoutService.config.update((config) => ({
             ...config,
             theme: 'arya-green',
-            colorScheme: 'dark'
+            colorScheme: 'dark',
+            menuMode: 'overlay'
         }));
+        //Y el otro es estatic: static
     }
 }

@@ -2,7 +2,7 @@
     <div class="col-12">
         <div class="card text-right">
             <button pButton pRipple type="button" icon="pi pi-plus-circle" 
-                    class="p-button-rounded p-button-secondary"></button>
+                    class="p-button-outlined p-button-success" label="Agregar"></button>
         </div>
     </div>
     <div class="col-12">
@@ -37,7 +37,7 @@
 							{{nicho.descripcion}}
 						</td>
                         <td>
-							<button pButton pRipple type="button" label="Configurar" class="p-button-warning"></button>
+							<button pButton pRipple type="button" label="Configurar" class="p-button-warning" (click)="irConfiguracionNicho(nicho)"></button>
                             <button pButton pRipple type="button" label="Editar" class="p-button-primary mx-4"></button>
                             <button pButton pRipple type="button" label="Eliminar" class="p-button-danger"></button>
 						</td>
