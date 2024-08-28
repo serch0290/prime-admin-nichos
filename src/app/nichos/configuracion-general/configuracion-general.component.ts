@@ -24,6 +24,8 @@ export class ConfiguracionGeneralComponent implements OnInit{
     filesProyecto: {local: false, dev: false, prod: false},
     logo: {local: false, dev: false, prod: false},
     icon: {local: false, dev: false, prod: false},
+    jsonLogoIco: {local: false, dev: false, prod: false},
+    routing: { local: false, dev: false, prod: false }
   };
   msgs: Message[] = [];
   msgsCarpeta: Message[] = [];
@@ -31,6 +33,8 @@ export class ConfiguracionGeneralComponent implements OnInit{
   msgsFileProyect: Message[] = [];
   msgsLogo: Message[] = [];
   msgsIcon: Message[] = [];
+  msgsJsonIconLogo: Message[] = [];
+  msgsRouting: Message[] = [];
 
   public headerFuentes: any;
   public headerLogo: any;
@@ -317,6 +321,16 @@ export class ConfiguracionGeneralComponent implements OnInit{
         this.msgsIcon.push(mensaje);
         this.loadings.icon.dev = false;
         break;
+      case 5:
+        this.msgsJsonIconLogo = [];
+        this.msgsJsonIconLogo.push(mensaje);
+        this.loadings.jsonLogoIco.dev = false;
+        break;
+      case 6:
+        this.msgsRouting = [];
+        this.msgsRouting.push(mensaje);
+        this.loadings.routing.dev = false;
+        break;
     }
   }
 
@@ -409,6 +423,9 @@ guardarLogo(urlFile: string, urlCMS: string){
   this.configuracionService.guardarLogo(this.general._id, logo)
       .subscribe(response=>{
          this.general.logo = response.logo;
+         this.general = { ...this.general };
+         this.msgsLogo = [];
+         this.msgsLogo.push({ severity: 'success', summary: 'Correcto', detail: 'Se subio el logo al ambiente local', key: 'message-logo' });
          this.loadings.logo.local = false;
       })
 }
@@ -443,6 +460,9 @@ subirLogoDev(){
      this.configuracionService.guardarIcon(this.general._id, icon)
         .subscribe(response=>{
            this.general.icon = response.icon;
+           this.general = { ...this.general };
+           this.msgsIcon = [];
+           this.msgsIcon.push({ severity: 'success', summary: 'Correcto', detail: 'Se subio el icon del sitio correctamente al ambiente local', key: 'message-icon' });
            this.loadings.icon.local = false;
         })
   }
@@ -452,7 +472,7 @@ subirLogoDev(){
    */
   subirIconDev(){
     let comandos = [];
-    comandos.push(`cp server/nichos/${this.nicho.general.icon.file} /Applications/XAMPP/htdocs/${this.nicho.general.icon.file}`);
+    comandos.push(`cp server/nichos/${this.general.icon.file} /Applications/XAMPP/htdocs/${this.general.icon.file}`);
     let campo = {
       $set: {
         'icon.dev': true
@@ -463,8 +483,81 @@ subirLogoDev(){
     this.subirModificacionesDEV(comandos, campo, 4, mensaje);
   }
 
+  /**
+   * Se genera json de json e icon local
+   */
+  generarJsonIconLogoLocal(){
+      this.loadings.jsonLogoIco.local = true;
+      let data = {
+         logo: this.general.logo.file,
+         icon: this.general.icon.file,
+         nombre: cleanText(this.nicho.nombre)
+      }
+      this.configuracionService.subirJsonImagenIcon(this.general._id, data)
+          .subscribe(response=>{
+             this.general = response.general;
+             this.general = { ...this.general };
+             this.msgsJsonIconLogo = [];
+             this.msgsJsonIconLogo.push({ severity: 'success', summary: 'Correcto', detail: 'Se genero el json en local', key: 'message-json-logo' });
+             this.loadings.jsonLogoIco.local = false;
+          });
+  }
 
+    /**
+   * Se genera json local en dev
+   */
+    generarJsonIconLogoDev(){
+      let comandos = [];
+      comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/configuracionGeneral.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
+  
+      let campo = {
+        $set: {
+          'jsonLogoIco.dev': true
+        }
+      }
+      this.loadings.jsonLogoIco.dev = true;
+      let mensaje: Message = { severity: 'success', summary: 'Correcto', detail: 'Se genero json para logo y icon.', key: 'message-json-logo' };
+      this.subirModificacionesDEV(comandos, campo, 5, mensaje);
+    }
 
+    /**
+   * Se genera el routing de la pagina de acuerdo a las rutas que haya dispinibles
+   */
+    generarRouting(){
+      let data = {
+        dominio: this.general.dominio,
+        proyecto: cleanText(this.nicho.nombre),
+        id: this.general._id
+      }
+      this.loadings.routing.local = true;
+      this.configuracionService.generarRutas(this.nicho._id, data)
+          .subscribe(response=>{
+            this.general = response.general;
+            this.general = { ...this.general };
+            this.msgsJsonIconLogo = [];
+             this.msgsJsonIconLogo.push({ severity: 'success', summary: 'Correcto', detail: 'Se genero archivo routing.php en local.', key: 'message-routing' });
 
+            this.loadings.routing.local = false;
+          });
+    }
+
+  /**
+   * Se sube archivo routing a DEV
+   */
+   subirRoutingDev(){
+     let comandos = [];
+     comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/routing.php /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}`);
+     let campo = {
+       $set: {
+         'routing.dev': true
+       }
+     }
+
+     this.loadings.routing.dev = true;
+     let mensaje: Message = { severity: 'success', summary: 'Correcto', detail: 'Se genero archivo routing.php en dev.', key: 'message-routing' };
+     this.subirModificacionesDEV(comandos, campo, 6, mensaje);
+   }
+
+  
 
 }

@@ -14,6 +14,7 @@ export class PanoramaGeneralComponent implements OnInit{
 
    public idNicho: string;
    public nicho: any;
+   public general: any;
    public loading: boolean;
 
    constructor(public layoutService: LayoutService,
@@ -42,6 +43,7 @@ export class PanoramaGeneralComponent implements OnInit{
       this.nichosService.consultaNichoById(this.idNicho)
           .subscribe(response=>{
             this.nicho = response.nicho;
+            this.general = response.general;
             this.loading = false;
           })
    }

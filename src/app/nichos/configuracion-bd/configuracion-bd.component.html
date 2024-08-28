@@ -1,0 +1,42 @@
+<div class="grid">
+    <div class="flex flex-column align-items-center justify-content-center"
+         *ngIf="loading">
+        <p-progressSpinner ariaLabel="loading" />
+    </div>
+    <div class="col-12" *ngIf="!loading">
+        <div class="card">
+            <h1>Configuración para la conexión en BD</h1>
+            <h5>Nicho: {{nicho.nombre}}</h5>
+            <div class="col-12 text-right">
+                <button pButton pRipple type="button" icon="pi pi-arrow-left" 
+                    class="p-button-outlined p-button-success" label="Regresar"
+                    (click)="regresar()"></button>
+            </div>
+        </div>
+    </div>
+    <div class="col-12" *ngIf="!loading">
+        <div class="card p-fluid">
+            <div class="field">
+				<label htmlFor="host">Host</label>
+				<input pInputText id="host" name="host" type="text" [(ngModel)]="database.server"/>
+			</div>
+            <div class="field">
+				<label htmlFor="usuario">Usuario</label>
+				<input pInputText id="usuario" name="usuario" type="text" [(ngModel)]="database.username"/>
+			</div>
+            <div class="field">
+				<label htmlFor="password">Password</label>
+				<input pInputText id="password" name="password" type="text" [(ngModel)]="database.password"/>
+			</div>
+            <div class="field">
+				<label htmlFor="database">Database</label>
+				<input pInputText id="database" name="database" type="text" [(ngModel)]="database.database"/>
+			</div>
+            <div class="col-12 text-right">
+                <button pButton pRipple type="button" class="p-button-help p-button-outlined">Guardar</button>
+                <button pButton pRipple type="button" class="p-button-info p-button-outlined">Validar Conexión</button>
+                <button pButton pRipple type="button" class="p-button-warning p-button-outlined">Crear Estructura</button>
+            </div>
+        </div>
+    </div>
+</div>

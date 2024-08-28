@@ -1,13 +1,22 @@
 <div class="grid">
     <div class="col-12">
         <div class="card" *ngIf="!loading">
-            <h5>Nicho: {{nicho.nombre}}</h5>
-            <h4>Descripcion: {{nicho.descripcion}}</h4>
+            <h4>Nicho: {{nicho.nombre}}</h4>
+            <h5>Descripcion: {{nicho.descripcion}}</h5>
             <div class="col-12 text-right">
                 <button pButton pRipple type="button" icon="pi pi-arrow-left" 
                        class="p-button-outlined p-button-success" label="Regresar"
                        (click)="regresar()"></button>
             </div>
         </div>
+    </div>
+    <div class="col-6">
+        <div class="card">
+            <h4>Configuracion general</h4>
+            <h5>Generación de carpetas: </h5>
+        </div>
+    </div>
+    <div class="col-6">
+
     </div>
 </div>

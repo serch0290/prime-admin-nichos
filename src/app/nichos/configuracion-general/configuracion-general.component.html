@@ -208,12 +208,12 @@
                         </p-fileUpload>
                     </div>
                     <div class="col-12 text-right">
-                        <p-button label="Local" [loading]="loadings.logo.local" 
-                                [severity]="general.logo.local ? 'success' : 'danger'"
+                        <p-button label="Local" [loading]="loadings?.logo?.local" 
+                                [severity]="general?.logo?.local ? 'success' : 'danger'"
                                 pTooltip="Subir logotipo al ambiente local"></p-button>
                         
-                        <p-button label="Dev" class="mx-12" [loading]="loadings.logo.dev" 
-                                [disabled]="!general.logo.local || !general.carpetas.dev"
+                        <p-button label="Dev" class="mx-12" [loading]="loadings?.logo?.dev" 
+                                [disabled]="!general?.logo?.local || !general.carpetas.dev"
                                 (click)="subirLogoDev()"
                                 [severity]="general?.logo?.dev ? 'success' : 'danger'"
                                 pTooltip="Subir el logotipo al ambiente dev" ></p-button>
@@ -242,24 +242,86 @@
                         </p-fileUpload>
                     </div>
                     <div class="col-12 text-right">
-                        <p-button label="Local" [loading]="loadings.icon.local" 
-                                [severity]="general.icon.local ? 'success' : 'danger'"
+                        <p-button label="Local" [loading]="loadings?.icon?.local" 
+                                [severity]="general?.icon?.local ? 'success' : 'danger'"
                                 pTooltip="Subir icon al ambiente local"></p-button>
                         
-                        <p-button label="Dev" class="mx-12" [loading]="loadings.icon.dev" 
-                                [disabled]="!general.icon.local || !general.carpetas.dev"
+                        <p-button label="Dev" class="mx-12" [loading]="loadings?.icon?.dev" 
+                                [disabled]="!general?.icon?.local || !general.carpetas.dev"
                                 (click)="subirIconDev()"
-                                [severity]="general.icon.dev ? 'success' : 'danger'"
+                                [severity]="general?.icon?.dev ? 'success' : 'danger'"
                                 pTooltip="Subir el icon al ambiente dev" ></p-button>
 
-                        <p-button label="Prod" [loading]="loadings.icon.prod" 
-                                    [severity]="general.icon.prod ? 'success' : 'danger'"
+                        <p-button label="Prod" [loading]="loadings?.icon?.prod" 
+                                    [severity]="general?.icon?.prod ? 'success' : 'danger'"
                                     [disabled]="true"
                                     pTooltip="Subir el icon al ambiente de prod" ></p-button>
 
-                        <p-messages [value]="msgsLogo" key="message-icon"></p-messages>
+                        <p-messages [value]="msgsIcon" key="message-icon"></p-messages>
                     </div>
 
+                </p-fieldset>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <h5>Se genera el json que lee la pagina para mostrar el logo y el icon de la pagina</h5>
+                <p-fieldset legend="JSON para Logo y Icon">
+                    <button pButton pRipple type="button"
+                            class="p-button-outlined p-button-warning" label="Generar json logo y icon"
+                            [disabled]="!general.carpetas.local"
+                            (click)="generarJsonIconLogoLocal()"
+                            pTooltip="Genera el json para el logo y icon"></button>
+
+                    <div class="col-12 text-right">
+                        <p-button label="Local" [loading]="loadings.jsonLogoIco.local" 
+                                [severity]="general.jsonLogoIco.local ? 'success' : 'danger'"
+                                pTooltip="Generar json para el logo y icon local"></p-button>
+
+                        <p-button label="Dev" class="mx-12" [loading]="loadings.jsonLogoIco.dev" 
+                                [disabled]="!general.jsonLogoIco.local || !general.carpetas.dev"
+                                [severity]="general.jsonLogoIco.dev ? 'success' : 'danger'"
+                                (click)="generarJsonIconLogoDev()"
+                                pTooltip="Generar json para el logo y icon local para el ambinete de dev" ></p-button>
+
+                        <p-button label="Prod" [loading]="loadings.jsonLogoIco.prod" 
+                                [severity]="general.jsonLogoIco.prod ? 'success' : 'danger'"
+                                [disabled]="true"
+                                pTooltip="Generar json para el logo y icon local para el ambinete de prod" ></p-button>
+
+                        <p-messages [value]="msgsJsonIconLogo" key="message-json-logo"></p-messages>
+                    </div>
+                </p-fieldset>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <h5>Se genera el archivo routing.php, es lo unico que se hace</h5>
+                <p-fieldset legend="Routing">
+                    <button pButton pRipple type="button"
+                            class="p-button-outlined p-button-warning" label="Generar archivo routing.php"
+                            [disabled]="!general.carpetas.local"
+                            (click)="generarRouting()"
+                            pTooltip="Genera el archivo routing"></button>
+
+                        <div class="col-12 text-right">
+                            <p-button label="Local" [loading]="loadings.routing.local" 
+                                      [severity]="general.routing.local ? 'success' : 'danger'"
+                                      pTooltip="Generar el archivo routing.php en local"></p-button>
+        
+                            <p-button label="Dev" class="mx-12" [loading]="loadings.routing.dev" 
+                                      [disabled]="!general.routing.local || !general.carpetas.dev"
+                                      [severity]="general.routing.dev ? 'success' : 'danger'"
+                                      (click)="subirRoutingDev()"
+                                      pTooltip="Generar el archivo routing.php en dev" ></p-button>
+        
+                            <p-button label="Prod" [loading]="loadings.routing.prod" 
+                                      [severity]="general.routing.prod ? 'success' : 'danger'"
+                                        [disabled]="true"
+                                        pTooltip="Generar el archivo routing.php en prod" ></p-button>
+        
+                            <p-messages [value]="msgsRouting" key="message-routing"></p-messages>
+                        </div>
                 </p-fieldset>
             </div>
         </div>

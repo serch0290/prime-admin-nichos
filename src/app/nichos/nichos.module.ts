@@ -26,6 +26,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { InputTextModule } from 'primeng/inputtext';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfiguracionBdComponent } from './configuracion-bd/configuracion-bd.component';
 
 let routes = [
     {
@@ -39,6 +40,10 @@ let routes = [
     {
         path: 'nicho/:nicho/general',
         component: ConfiguracionGeneralComponent
+    },
+    {
+        path: 'nicho/:nicho/BD',
+        component: ConfiguracionBdComponent
     }
 ]
 
@@ -69,7 +74,7 @@ let routes = [
         ConfirmDialogModule,
         RouterModule.forChild(routes)
     ],
-    declarations: [ListadoNichosComponent, PanoramaGeneralComponent, ConfiguracionGeneralComponent],
+    declarations: [ListadoNichosComponent, PanoramaGeneralComponent, ConfiguracionGeneralComponent, ConfiguracionBdComponent],
     providers: []
 })
 export class NichosModule { }
