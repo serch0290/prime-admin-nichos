@@ -21,14 +21,20 @@ export class ConfiguracionGeneralComponent implements OnInit{
   public loadings = {
     carpetas: {local: false, dev: false, prod: false},
     background: {local: false, dev: false, prod: false},
-    filesProyecto: {local: false, dev: false, prod: false}
+    filesProyecto: {local: false, dev: false, prod: false},
+    logo: {local: false, dev: false, prod: false},
+    icon: {local: false, dev: false, prod: false},
   };
   msgs: Message[] = [];
   msgsCarpeta: Message[] = [];
   msgsFuente: Message[] = [];
   msgsFileProyect: Message[] = [];
+  msgsLogo: Message[] = [];
+  msgsIcon: Message[] = [];
 
-  public headerFuentes : any;
+  public headerFuentes: any;
+  public headerLogo: any;
+  public headerIcon: any;
 
    constructor(private activatedRoute: ActivatedRoute,
                private nichosService: NichosService,
@@ -71,6 +77,18 @@ export class ConfiguracionGeneralComponent implements OnInit{
       'tipo': 1,
       'id':  this.nicho._id
      }
+
+     this.headerLogo = {
+      'path': `${cleanText(this.nicho.nombre)}/assets`,
+      'tipo': 2,
+      'id':  this.nicho._id
+     }
+
+     this.headerIcon = {
+      'path': `${cleanText(this.nicho.nombre)}/assets`,
+      'tipo': 3,
+      'id':  this.nicho._id
+     }
    }
 
    /**
@@ -96,8 +114,18 @@ export class ConfiguracionGeneralComponent implements OnInit{
         dev: false,
         prod: false
       },
-      logo: null,
-      icon: null,
+      logo: {
+        file: null,
+        local: false,
+        dev: false,
+        prod: false
+      },
+      icon: {
+        file: null,
+        local: false,
+        dev: false,
+        prod: false
+      },
       jsonLogoIco: {
         local: false,
         dev: false,
@@ -169,10 +197,10 @@ export class ConfiguracionGeneralComponent implements OnInit{
           this.guardarFuente(data);
           break;
          case '2':
-           //this.guardarLogo(data.url, data.cms);
+           this.guardarLogo(data.url, data.cms);
           break;
          case '3':
-           //this.guardarIcon(data.url, data.cms);
+           this.guardarIcon(data.url, data.cms);
           break;
     }
   }
@@ -279,6 +307,16 @@ export class ConfiguracionGeneralComponent implements OnInit{
         this.msgsFileProyect.push(mensaje);
         this.loadings.filesProyecto.dev = false;
         break;
+      case 3:
+        this.msgsLogo = [];
+        this.msgsLogo.push(mensaje);
+        this.loadings.logo.dev = false;
+        break;
+      case 4:
+        this.msgsIcon = [];
+        this.msgsIcon.push(mensaje);
+        this.loadings.icon.dev = false;
+        break;
     }
   }
 
@@ -355,6 +393,76 @@ export class ConfiguracionGeneralComponent implements OnInit{
   let mensaje: Message = { severity: 'success', summary: 'Correcto', detail: 'Se subieron los archivos necesarios al ambiente de pruebas', key: 'message-files-proyecto' };
   this.subirModificacionesDEV(comandos, campo, 2, mensaje);
 }
+
+/**
+   * Se guarda el logo en BD
+   */
+guardarLogo(urlFile: string, urlCMS: string){
+  let logo = {
+    file: urlFile, 
+    fileCMS: urlCMS,
+    local: true
+  }
+
+  this.loadings.logo.local = true;
+
+  this.configuracionService.guardarLogo(this.general._id, logo)
+      .subscribe(response=>{
+         this.general.logo = response.logo;
+         this.loadings.logo.local = false;
+      })
+}
+
+/**
+   * Se sube el logo a dev
+   */
+subirLogoDev(){
+   let comandos = [];
+   comandos.push(`cp server/nichos/${this.general.logo.file} /Applications/XAMPP/htdocs/${this.general.logo.file}`);
+   let campo = {
+    $set: {
+      'logo.dev': true
+    }
+  }
+  this.loadings.logo.dev = true;
+  let mensaje: Message = { severity: 'success', summary: 'Correcto', detail: 'Se subio el logo al ambiente de dev', key: 'message-logo' };
+  this.subirModificacionesDEV(comandos, campo, 3, mensaje);
+}
+
+  /**
+   * Se guarda el icon que va a tener el nicho
+   */
+  guardarIcon(urlFile: string, urlCMS: string){
+    let icon = {
+      file: urlFile, 
+      fileCMS: urlCMS,
+      local: true
+    }
+
+    this.loadings.icon.local = true;
+     this.configuracionService.guardarIcon(this.general._id, icon)
+        .subscribe(response=>{
+           this.general.icon = response.icon;
+           this.loadings.icon.local = false;
+        })
+  }
+
+  /**
+   * Se sube el logo a dev
+   */
+  subirIconDev(){
+    let comandos = [];
+    comandos.push(`cp server/nichos/${this.nicho.general.icon.file} /Applications/XAMPP/htdocs/${this.nicho.general.icon.file}`);
+    let campo = {
+      $set: {
+        'icon.dev': true
+      }
+    }
+
+    let mensaje: Message = { severity: 'success', summary: 'Correcto', detail: 'Se subio el icon del sitio correctamente al ambiente de dev', key: 'message-icon' };
+    this.subirModificacionesDEV(comandos, campo, 4, mensaje);
+  }
+
 
 
 

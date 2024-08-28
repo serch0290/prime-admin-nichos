@@ -163,7 +163,8 @@
         </div>
         <div class="col-12">
             <div class="card">
-                <h5>Se suben todos los archivos del proyecto que sean estaticos, es decir que su programacion no cambie con algun atributo de la pagina de forma dinamica</h5>
+                <h5>Se suben todos los archivos del proyecto que sean estaticos, es decir que su programacion no cambie con algun atributo de la pagina 
+                    de forma dinamica, pero tambien se generan los archivos que se tomas de forma dinamica</h5>
                 <p-fieldset legend="Archivos Proyecto">
                     <button pButton pRipple type="button" (click)="subirArchivos()"
                             class="p-button-outlined p-button-help" label="Subir archivos proyecto"
@@ -189,6 +190,76 @@
 
                         <p-messages [value]="msgsFileProyect" key="message-files-proyecto"></p-messages>
                     </div>
+                </p-fieldset>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <h5>Se sube el logo, solo sube la imagen en fisico a la carpeta necesaria</h5>
+
+                <p-fieldset legend="Logotipo del Sitio">
+                    <div class="col-12">
+                        <p-fileUpload name="logos[]"
+                                      [disabled]="!general.carpetas.local"
+                                      chooseLabel="Adjuntar Logo" 
+                                      url="http://localhost:5007/nchs/upload/file" 
+                                      [headers]="headerLogo"
+                                      (onUpload)="onUpload($event)">
+                        </p-fileUpload>
+                    </div>
+                    <div class="col-12 text-right">
+                        <p-button label="Local" [loading]="loadings.logo.local" 
+                                [severity]="general.logo.local ? 'success' : 'danger'"
+                                pTooltip="Subir logotipo al ambiente local"></p-button>
+                        
+                        <p-button label="Dev" class="mx-12" [loading]="loadings.logo.dev" 
+                                [disabled]="!general.logo.local || !general.carpetas.dev"
+                                (click)="subirLogoDev()"
+                                [severity]="general?.logo?.dev ? 'success' : 'danger'"
+                                pTooltip="Subir el logotipo al ambiente dev" ></p-button>
+
+                        <p-button label="Prod" [loading]="loadings.logo.prod" 
+                                    [severity]="general?.logo?.prod ? 'success' : 'danger'"
+                                    [disabled]="true"
+                                    pTooltip="Subir el logotipo al ambiente de prod" ></p-button>
+
+                        <p-messages [value]="msgsLogo" key="message-logo"></p-messages>
+                    </div>
+                </p-fieldset>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <h5>Se sube el icon del sitio, solo sube la icon en fisico a la carpeta necesaria</h5>
+                <p-fieldset legend="Icon del Sitio">
+                    <div class="col-12">
+                        <p-fileUpload name="icons[]"
+                                      [disabled]="!general.carpetas.local"
+                                      chooseLabel="Adjuntar Icon" 
+                                      url="http://localhost:5007/nchs/upload/file" 
+                                      [headers]="headerIcon"
+                                      (onUpload)="onUpload($event)">
+                        </p-fileUpload>
+                    </div>
+                    <div class="col-12 text-right">
+                        <p-button label="Local" [loading]="loadings.icon.local" 
+                                [severity]="general.icon.local ? 'success' : 'danger'"
+                                pTooltip="Subir icon al ambiente local"></p-button>
+                        
+                        <p-button label="Dev" class="mx-12" [loading]="loadings.icon.dev" 
+                                [disabled]="!general.icon.local || !general.carpetas.dev"
+                                (click)="subirIconDev()"
+                                [severity]="general.icon.dev ? 'success' : 'danger'"
+                                pTooltip="Subir el icon al ambiente dev" ></p-button>
+
+                        <p-button label="Prod" [loading]="loadings.icon.prod" 
+                                    [severity]="general.icon.prod ? 'success' : 'danger'"
+                                    [disabled]="true"
+                                    pTooltip="Subir el icon al ambiente de prod" ></p-button>
+
+                        <p-messages [value]="msgsLogo" key="message-icon"></p-messages>
+                    </div>
+
                 </p-fieldset>
             </div>
         </div>
