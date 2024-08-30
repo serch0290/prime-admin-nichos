@@ -77,4 +77,12 @@ export class NichosService
         return this._http.post(`${this.url}nichos/subir/actualizacion/dev`, data);  
     }
 
+    /**
+     * Se genera el archivo de conexión de forma local
+     * @returns 
+     */
+    subirConexionLocal(id: string, nicho: string){
+        return this._http.post(`${this.url}nichos/generar/file/conexion/local/${id}`, {nicho});
+    }
+
 }

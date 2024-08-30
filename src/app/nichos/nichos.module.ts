@@ -27,6 +27,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfiguracionBdComponent } from './configuracion-bd/configuracion-bd.component';
+import { ToastModule } from 'primeng/toast';
+import { ConfiguracionCategoriasComponent } from './configuracion-categorias/configuracion-categorias.component';
 
 let routes = [
     {
@@ -44,6 +46,10 @@ let routes = [
     {
         path: 'nicho/:nicho/BD',
         component: ConfiguracionBdComponent
+    },
+    {
+        path: 'nicho/:nicho/blog',
+        component: ConfiguracionCategoriasComponent
     }
 ]
 
@@ -72,9 +78,10 @@ let routes = [
         InputTextModule,
         ConfirmPopupModule,
         ConfirmDialogModule,
+        ToastModule,
         RouterModule.forChild(routes)
     ],
-    declarations: [ListadoNichosComponent, PanoramaGeneralComponent, ConfiguracionGeneralComponent, ConfiguracionBdComponent],
+    declarations: [ListadoNichosComponent, PanoramaGeneralComponent, ConfiguracionGeneralComponent, ConfiguracionBdComponent, ConfiguracionCategoriasComponent],
     providers: []
 })
 export class NichosModule { }

@@ -15,27 +15,63 @@
         </div>
     </div>
     <div class="col-12" *ngIf="!loading">
-        <div class="card p-fluid">
-            <div class="field">
-				<label htmlFor="host">Host</label>
-				<input pInputText id="host" name="host" type="text" [(ngModel)]="database.server"/>
-			</div>
-            <div class="field">
-				<label htmlFor="usuario">Usuario</label>
-				<input pInputText id="usuario" name="usuario" type="text" [(ngModel)]="database.username"/>
-			</div>
-            <div class="field">
-				<label htmlFor="password">Password</label>
-				<input pInputText id="password" name="password" type="text" [(ngModel)]="database.password"/>
-			</div>
-            <div class="field">
-				<label htmlFor="database">Database</label>
-				<input pInputText id="database" name="database" type="text" [(ngModel)]="database.database"/>
-			</div>
+        <div class="card" style="overflow: hidden;">
+            <p-fieldset legend="Data" [toggleable]="true" class="line-height-3 m-0" >
+                <ngx-json-viewer [json]="database" [expanded]="false"></ngx-json-viewer>
+            </p-fieldset>
+        </div>
+    </div>
+    <div class="col-12" *ngIf="!loading">
+        <div class="card">
+            <div class="p-fluid">
+                <div class="field">
+                    <label htmlFor="host">Host</label>
+                    <input pInputText id="host" name="host" type="text" [(ngModel)]="database.server"/>
+                </div>
+                <div class="field">
+                    <label htmlFor="usuario">Usuario</label>
+                    <input pInputText id="usuario" name="usuario" type="text" [(ngModel)]="database.username"/>
+                </div>
+                <div class="field">
+                    <label htmlFor="password">Password</label>
+                    <input pInputText id="password" name="password" type="text" [(ngModel)]="database.password"/>
+                </div>
+                <div class="field">
+                    <label htmlFor="database">Database</label>
+                    <input pInputText id="database" name="database" type="text" [(ngModel)]="database.database"/>
+                </div>
+            </div>
             <div class="col-12 text-right">
-                <button pButton pRipple type="button" class="p-button-help p-button-outlined">Guardar</button>
-                <button pButton pRipple type="button" class="p-button-info p-button-outlined">Validar Conexión</button>
-                <button pButton pRipple type="button" class="p-button-warning p-button-outlined">Crear Estructura</button>
+                <p-toast key="tst"></p-toast>
+                <button pButton pRipple type="button" class="p-button-help p-button-outlined"
+                        (click)="guardarConfiguracionBD()">Guardar</button>
+                <button pButton pRipple type="button" 
+                        class="p-button-info p-button-outlined mx-4"
+                        (click)="testBD()">Validar Conexión</button>
+                <button pButton pRipple type="button" 
+                        class="p-button-warning p-button-outlined"
+                        (click)="crearEstructuraBD()"
+                        [disabled]="database.estructura">Crear Estructura</button>
+            </div>
+            <div class="col-12 text-right">
+                <p-button label="Local" [loading]="loadings.local" 
+                          [disabled]="!database.estructura"
+                          (click)="subirArchivoConexionLocal()"
+                          [severity]="database.ambiente?.local ? 'success' : 'danger'"
+                           pTooltip="Generar carpetas en local api"></p-button>
+
+                <p-button label="Dev" class="mx-12" [loading]="loadings.dev" 
+                            (onClick)="subirModificacionesDEV()" 
+                            [disabled]="!general.carpetas.local"
+                            [severity]="database.ambiente?.dev ? 'success' : 'danger'"
+                            pTooltip="Generar carpetas en dev" ></p-button>
+
+                <p-button label="Prod" [loading]="loadings.prod" 
+                            [severity]="database.ambiente?.dev ? 'success' : 'danger'"
+                            [disabled]="true"
+                            pTooltip="Generar carpetas en producción" ></p-button>
+                
+                <p-messages [value]="msgs" key="message-bd"></p-messages>
             </div>
         </div>
     </div>
