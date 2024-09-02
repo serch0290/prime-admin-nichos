@@ -39,6 +39,7 @@ export class ConfiguracionGeneralComponent implements OnInit{
   public headerFuentes: any;
   public headerLogo: any;
   public headerIcon: any;
+  public selectedFiles: any[] = [];
 
    constructor(private activatedRoute: ActivatedRoute,
                private nichosService: NichosService,
@@ -207,6 +208,49 @@ export class ConfiguracionGeneralComponent implements OnInit{
            this.guardarIcon(data.url, data.cms);
           break;
     }
+  }
+
+  /**
+   * Se cambia el nombre del archivo si es el logo o el icon
+   */
+  changeName(event: any){
+   // Aquí agregamos los archivos renombrados al FormData
+   this.selectedFiles.forEach(file => {
+    event.formData.append("file", file, file.name);
+   });
+  }
+
+  /**
+   * 
+   * Se cambia el nombre del archivo
+   * @param tipo 
+   */
+  selectName(event: any, tipo: number){
+    // Aquí guardamos los archivos seleccionados
+    this.selectedFiles = event.currentFiles;
+
+     // Renombramos cada archivo según sea necesario
+     this.selectedFiles.forEach((file, index) => {
+      let extension = this.obtenerExtension(file.name);
+      let newFileName = null;
+      switch(tipo){
+        case 1:
+          newFileName = `logo.${extension}`;
+          break;
+        case 2:
+          newFileName = `icon.${extension}`;
+          break;
+      }
+      this.selectedFiles[index] = new File([file], newFileName, { type: file.type });
+    });
+  }
+
+  /**
+   * Se obtiene la extensión de la imagen que se acaba de subir
+   */
+  obtenerExtension(name: string){
+    let ext = name.split('.');
+    return ext[ext.length - 1]
   }
 
   /**
@@ -435,7 +479,7 @@ guardarLogo(urlFile: string, urlCMS: string){
    */
 subirLogoDev(){
    let comandos = [];
-   comandos.push(`cp server/nichos/${this.general.logo.file} /Applications/XAMPP/htdocs/${this.general.logo.file}`);
+   comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/${this.general.logo.file} /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/${this.general.logo.file}`);
    let campo = {
     $set: {
       'logo.dev': true
@@ -472,7 +516,7 @@ subirLogoDev(){
    */
   subirIconDev(){
     let comandos = [];
-    comandos.push(`cp server/nichos/${this.general.icon.file} /Applications/XAMPP/htdocs/${this.general.icon.file}`);
+    comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/${this.general.icon.file} /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/${this.general.icon.file}`);
     let campo = {
       $set: {
         'icon.dev': true

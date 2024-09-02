@@ -13,6 +13,43 @@
                         class="p-button-outlined p-button-success" label="Regresar"
                         (click)="regresar()"></button>
                 </div>
+                <div class="col-12">
+                    <button pButton pRipple type="button"
+                        class="p-button-outlined p-button-info" label="Alta categoria"
+                        (click)="altaCategoria = true"></button>
+                    <p-dialog header="Alta categoría" [(visible)]="altaCategoria" [modal]="true" showEffect="fade" [style]="{width: '60vw'}" [breakpoints]="{'960px': '75vw'}">
+                        <div class="p-fluid">
+                            <div class="field">
+                                <label htmlFor="categoria">Nombre de Categoría</label>
+                                <input pInputText id="categoria" name="categoria" type="text" [(ngModel)]="categoria.h1"/>
+                            </div>
+                            <div class="field">
+                                <label htmlFor="titulo">Titulo</label>
+                                <input pInputText id="titulo" name="titulo" type="text" [(ngModel)]="categoria.title"/>
+                            </div>
+                            <div class="field">
+                                <label htmlFor="url">Url</label>
+                                <input pInputText id="url" name="url" type="text" [(ngModel)]="categoria.url"/>
+                            </div>
+                            <div class="field">
+                                <h5>Menú</h5>
+                                <p-inputSwitch [(ngModel)]="categoria.menu"></p-inputSwitch>
+                            </div>
+                            <div class="field">
+                                <h5>Home</h5>
+                                <p-inputSwitch [(ngModel)]="categoria.home"></p-inputSwitch>
+                            </div>
+                        </div>
+                        <ng-template pTemplate="footer">
+                                <button pButton icon="pi pi-check" (click)="guardarCategoria()" 
+                                        [disabled]="!database.estructura"
+                                        label="Guardar" 
+                                        class="p-button-outlined"></button>
+                                <h6 *ngIf="!database.estructura">La estrcutura en bd no ha sido creada, no puedes crear categorias</h6>
+                                <h6>Al generar un nuevo catalogo, se actualiza el archivo routing</h6>
+                        </ng-template>
+                    </p-dialog>
+                </div>
             </div>
         </div>
         <div class="col-12">
@@ -23,12 +60,12 @@
                         <tr>
                             <th style="min-width: 12rem">
                                 <div class="flex justify-content-between align-items-center">
-                                    Nicho
+                                    Categoría
                                 </div>
                             </th>
                             <th style="min-width: 12rem">
                                 <div class="flex justify-content-between align-items-center">
-                                    Descripción
+                                    Ambiente
                                 </div>
                             </th>
                             <th style="min-width: 12rem">
@@ -38,24 +75,44 @@
                             </th>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-nicho>
+                    <ng-template pTemplate="body" let-categoria>
                         <tr>
                             <td>
-                                {{nicho.nombre}}
+                                {{categoria.h1}}
                             </td>
                             <td>
-                                {{nicho.descripcion}}
+                                <p-button label="Local" [loading]="loadings.local" 
+                                          [disabled]="!general?.carpetas?.local"
+                                          [severity]="categoria.local ? 'success' : 'danger'"
+                                          pTooltip="Generar el json de categoria para ambiente local"></p-button>
+
+                                <p-button label="Dev" class="mx-12" [loading]="loadings.dev" 
+                                          [disabled]="!general?.carpetas?.dev"
+                                          (click)="subirHomeDev(categoria)"
+                                          [severity]="categoria.dev ? 'success' : 'danger'"
+                                          pTooltip="Generar el json de categoria para ambiente de dev" ></p-button>
+
+                                <p-button label="Prod" [loading]="loadings.prod" 
+                                        [severity]="categoria.prod ? 'success' : 'danger'"
+                                        [disabled]="true"
+                                        pTooltip="Generar el json de categoria para ambiente de prod" ></p-button>
                             </td>
-                            <td>
-                                <button pButton pRipple type="button" label="Configurar" class="p-button-warning" (click)="irConfiguracionNicho(nicho)"></button>
-                                <button pButton pRipple type="button" label="Editar" class="p-button-primary mx-4"></button>
-                                <button pButton pRipple type="button" label="Eliminar" class="p-button-danger"></button>
+                            <td *ngIf="!categoria.home">
+                                <button pButton pRipple type="button" label="Add Noticias" class="p-button-outlined p-button-secondary"></button>
+                                <button pButton pRipple type="button" label="Editar" class="p-button-outlined p-button-warning mx-4"></button>
+                                <button pButton pRipple type="button" label="Eliminar" class="p-button-outlined p-button-info"></button>
+                            </td>
+                            <td *ngIf="categoria.home">
+                                <button pButton pRipple type="button" 
+                                        label="Configurar" 
+                                        class="p-button-outlined"
+                                        (click)="irConfiguracionHome(categoria._id)"></button>
                             </td>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="emptymessage">
                         <tr>
-                            <td colspan="3">No hay nichos dados de alta</td>
+                            <td colspan="3">No hay categorias dadas de alta</td>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="loadingbody">

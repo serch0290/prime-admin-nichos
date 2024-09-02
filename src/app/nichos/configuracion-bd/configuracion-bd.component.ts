@@ -39,6 +39,9 @@ export class ConfiguracionBdComponent implements OnInit{
     this.nichosService.consultaNichoById(this.idNicho)
         .subscribe(response=>{
           this.database = response.database;
+          if(!this.database){
+            this.database = {};
+          }
           this.nicho = response.nicho;
           this.general = response.general;
           this.loading = false;
@@ -62,6 +65,7 @@ export class ConfiguracionBdComponent implements OnInit{
       this.nichosService.guardarConfiguracionBD(this.database, this.nicho._id, nicho)
           .subscribe(response=>{
             this.database._id = response._id;
+            this.database = { ...this.database };
             this.msgs = [];
             this.msgs.push({ severity: 'success', summary: 'Correcto', detail: 'Se guardo la conexión correctamente', key: 'message-bd' });
           });
@@ -78,6 +82,7 @@ export class ConfiguracionBdComponent implements OnInit{
      this.nichosService.testBD(this.database)
          .subscribe(response=>{
             this.database.conexion = response.conn;
+            this.database = { ...this.database };
             if(response.conn){
                this.msgs = [];
                this.msgs.push({ severity: 'success', summary: 'Correcto', detail: 'Conexión creada correctamente', key: 'message-bd' });

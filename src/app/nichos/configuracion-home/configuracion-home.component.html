@@ -1,0 +1,84 @@
+<div class="grid">
+    <div class="flex flex-column align-items-center justify-content-center"
+         *ngIf="loading">
+        <p-progressSpinner ariaLabel="loading" />
+    </div>
+    <ng-container *ngIf="!loading">
+        <div class="col-12">
+            <div class="card">
+                <h4>Nicho: {{nicho.nombre}}</h4>
+                <h5>Descripcion: {{nicho.descripcion}}</h5>
+                <div class="col-12 text-right">
+                    <button pButton pRipple type="button" icon="pi pi-arrow-left" 
+                        class="p-button-outlined p-button-success" label="Regresar"
+                        (click)="regresar()"></button>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <p-toast key="tst"></p-toast>
+            <div class="card">
+                <div class="p-fluid">
+                    <div class="field">
+                        <label htmlFor="titulo">Titulo</label>
+                        <input pInputText id="titulo" name="titulo" type="text" [(ngModel)]="noticia.h1"/>
+                        <h6>*Este es el h1 del home</h6>
+                    </div>
+                    <div class="field">
+                        <h5>Paginador</h5>
+                        <p-inputSwitch [(ngModel)]="noticia.paginador" (onChange)="setDatosPaginador($event)"></p-inputSwitch>
+                    </div>
+                    <div class="field">
+                        <label htmlFor="titulo-paginador">Titulo</label>
+                        <input pInputText id="titulo-paginador" name="titulo-paginador" type="text" [(ngModel)]="noticia.noticias_style1.title"/>
+                        <h6>*Este es el titulo de listado de noticias que sale abajo de acerca de nosotros</h6>
+                    </div>
+                    <div class="col-12" *ngIf="noticia.paginador">
+                        <div class="field">
+                            <label htmlFor="dominio">Dominio</label>
+                            <input pInputText id="dominio" name="dominio" type="text" [(ngModel)]="noticia.noticias_style1.dominio"/>
+                        </div>
+                        <div class="field">
+                            <label htmlFor="prefijo">Prefijo</label>
+                            <input pInputText id="prefijo" name="prefijo" type="text" [(ngModel)]="noticia.noticias_style1.prefijo"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 text-center">
+                    <button pButton pRipple type="button" class="p-button-help p-button-outlined"
+                            (click)="guardarConfiguracion()">Guardar Configuración</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <h5>Datos del buscador</h5>
+                <div class="p-fluid">
+                    <div class="field">
+                        <label htmlFor="buscador-paginador">Titulo</label>
+                        <input pInputText id="buscador-paginador" 
+                               name="buscador-paginador" 
+                               type="text" 
+                               [(ngModel)]="buscador.noticias_style1.title"/>
+                    </div>
+                    <div class="field">
+                        <label htmlFor="dominio-buscador">Dominio</label>
+                        <input pInputText id="dominio-buscador" name="dominio-buscador" 
+                               type="text" 
+                               [(ngModel)]="buscador.noticias_style1.dominio"/>
+                    </div>
+                    <div class="field">
+                        <label htmlFor="prefijo-buscador">Prefijo</label>
+                        <input pInputText id="prefijo-buscador" 
+                               name="prefijo-buscador" type="text" 
+                               [(ngModel)]="buscador.noticias_style1.prefijo"/>
+                    </div>
+                </div>
+                <div class="col-12 text-center">
+                    <button pButton pRipple type="button" class="p-button-warning p-button-outlined"
+                            (click)="guardarBusqueda()">Guardar Configuración</button>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>

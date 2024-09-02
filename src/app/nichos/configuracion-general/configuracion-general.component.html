@@ -205,6 +205,8 @@
                                       chooseLabel="Adjuntar Logo" 
                                       url="http://localhost:5007/nchs/upload/file" 
                                       [headers]="headerLogo"
+                                      (onBeforeUpload)="changeName($event)"
+                                      (onSelect)="selectName($event, 1)"
                                       (onUpload)="onUpload($event)">
                         </p-fileUpload>
                     </div>
@@ -239,6 +241,8 @@
                                       chooseLabel="Adjuntar Icon" 
                                       url="http://localhost:5007/nchs/upload/file" 
                                       [headers]="headerIcon"
+                                      (onSelect)="selectName($event, 2)"
+                                      (onBeforeUpload)="changeName($event)"
                                       (onUpload)="onUpload($event)">
                         </p-fileUpload>
                     </div>
