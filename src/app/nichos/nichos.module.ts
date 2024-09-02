@@ -31,6 +31,7 @@ import { ToastModule } from 'primeng/toast';
 import { ConfiguracionCategoriasComponent } from './configuracion-categorias/configuracion-categorias.component';
 import { DialogModule } from 'primeng/dialog';
 import { ConfiguracionHomeComponent } from './configuracion-home/configuracion-home.component';
+import { ConfiguracionRepositorioComponent } from './configuracion-repositorio/configuracion-repositorio.component';
 
 let routes = [
     {
@@ -56,6 +57,10 @@ let routes = [
     {
         path: 'nicho/:nicho/categoria/:idCategoria/home',
         component: ConfiguracionHomeComponent
+    },
+    {
+        path: 'nicho/:nicho/repo',
+        component: ConfiguracionRepositorioComponent
     }
 ]
 
@@ -89,7 +94,8 @@ let routes = [
         RouterModule.forChild(routes)
     ],
     declarations: [ListadoNichosComponent, PanoramaGeneralComponent, ConfiguracionGeneralComponent, 
-                   ConfiguracionBdComponent, ConfiguracionCategoriasComponent, ConfiguracionHomeComponent],
+                   ConfiguracionBdComponent, ConfiguracionCategoriasComponent, ConfiguracionHomeComponent,
+                   ConfiguracionRepositorioComponent],
     providers: []
 })
 export class NichosModule { }
