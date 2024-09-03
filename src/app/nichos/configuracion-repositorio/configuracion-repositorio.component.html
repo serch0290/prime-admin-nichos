@@ -1,10 +1,4 @@
 <div class="grid">
-    <div class="col-12">
-        <div class="card text-right">
-            <button pButton pRipple type="button" icon="pi pi-plus-circle" 
-                    class="p-button-outlined p-button-success" label="Agregar"></button>
-        </div>
-    </div>
     <ng-container *ngIf="!loading">
         <div class="col-12">
             <div class="card">
@@ -99,15 +93,23 @@
                                 {{file.file}}
                             </td>
                             <td>
+                                <p-button label="Repo" [loading]="file.loading?.repo" 
+                                          [severity]="file.repo ? 'success' : 'danger'"
+                                          (click)="subirFileAlRepoPruebas(file)"
+                                          pTooltip="Subir el archvo al repo que esta en la api"></p-button>
+
                                 <p-button label="Local" [loading]="file.loading?.local" 
                                           [severity]="file.local ? 'success' : 'danger'"
+                                          (click)="subirFileLocal(file)"
+                                          class="ml-4"
                                           pTooltip="Subir el archivo a local"></p-button>
 
                                 <p-button label="Dev" class="mx-12" [loading]="file.loading?.dev" 
                                           [severity]="file.dev ? 'success' : 'danger'"
+                                          (click)="subirFileDev(file)"
                                           pTooltip="Subir el archivo a dev" ></p-button>
 
-                                <p-button label="Prod" [loading]="file.loading?.local" 
+                                <p-button label="Prod" [loading]="file.loading?.prod" 
                                         [severity]="file.prod ? 'success' : 'danger'"
                                         [disabled]="true"
                                         pTooltip="Subir el archivo a prod" ></p-button>
