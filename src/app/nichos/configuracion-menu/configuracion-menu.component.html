@@ -1,0 +1,39 @@
+<div class="grid">
+    <div class="flex flex-column align-items-center justify-content-center"
+         *ngIf="loading">
+        <p-progressSpinner ariaLabel="loading" />
+    </div>
+    <ng-container *ngIf="!loading">
+        <div class="col-12">
+            <div class="card">
+                <h1>Configuración general</h1>
+                <h5>Nicho: {{nicho.nombre}}</h5>
+
+                <div class="col-12 text-right">
+                    <button pButton pRipple type="button" icon="pi pi-arrow-left" 
+                        class="p-button-outlined p-button-success" label="Regresar"
+                        (click)="regresar()"></button>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <div class="p-fluid">
+                    <div class="field">
+                        <label htmlFor="name">Name</label>
+                        <input pInputText id="name" name="name" type="text" [(ngModel)]="menu.name"/>
+                    </div>
+                    <div class="field">
+                        <label htmlFor="name">Url</label>
+                        <input pInputText id="name" name="url" type="text" [(ngModel)]="menu.url"/>
+                    </div>
+                </div>
+                <div class="col-12 text-center">
+                    <button pButton pRipple type="button"
+                            class="p-button-outlined p-button-warning" label="Guardar"
+                            (click)="guardarMenu()"></button>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>

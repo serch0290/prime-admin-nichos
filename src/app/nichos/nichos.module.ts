@@ -32,6 +32,7 @@ import { ConfiguracionCategoriasComponent } from './configuracion-categorias/con
 import { DialogModule } from 'primeng/dialog';
 import { ConfiguracionHomeComponent } from './configuracion-home/configuracion-home.component';
 import { ConfiguracionRepositorioComponent } from './configuracion-repositorio/configuracion-repositorio.component';
+import { ConfiguracionMenuComponent } from './configuracion-menu/configuracion-menu.component';
 
 let routes = [
     {
@@ -61,6 +62,10 @@ let routes = [
     {
         path: 'nicho/:nicho/repo',
         component: ConfiguracionRepositorioComponent
+    },
+    {
+        path: 'nicho/:nicho/menu',
+        component: ConfiguracionMenuComponent
     }
 ]
 
@@ -95,7 +100,7 @@ let routes = [
     ],
     declarations: [ListadoNichosComponent, PanoramaGeneralComponent, ConfiguracionGeneralComponent, 
                    ConfiguracionBdComponent, ConfiguracionCategoriasComponent, ConfiguracionHomeComponent,
-                   ConfiguracionRepositorioComponent],
+                   ConfiguracionRepositorioComponent, ConfiguracionMenuComponent],
     providers: []
 })
 export class NichosModule { }
