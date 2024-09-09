@@ -33,6 +33,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ConfiguracionHomeComponent } from './configuracion-home/configuracion-home.component';
 import { ConfiguracionRepositorioComponent } from './configuracion-repositorio/configuracion-repositorio.component';
 import { ConfiguracionMenuComponent } from './configuracion-menu/configuracion-menu.component';
+import { PanelModule } from 'primeng/panel';
 
 let routes = [
     {
@@ -95,6 +96,7 @@ let routes = [
         ConfirmPopupModule,
         ConfirmDialogModule,
         ToastModule,
+        PanelModule,
         DialogModule,
         RouterModule.forChild(routes)
     ],

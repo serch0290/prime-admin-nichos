@@ -19,6 +19,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="p-fluid">
+                    <p-toast key="tst"></p-toast>
                     <div class="field">
                         <label htmlFor="name">Name</label>
                         <input pInputText id="name" name="name" type="text" [(ngModel)]="menu.name"/>
@@ -33,6 +34,16 @@
                             class="p-button-outlined p-button-warning" label="Guardar"
                             (click)="guardarMenu()"></button>
                 </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <h5>Menú</h5>
+                <p-panel *ngFor="let menu of menus">
+                    <p>
+                        {{menu.name}}
+                    </p>
+                </p-panel>
             </div>
         </div>
     </ng-container>
