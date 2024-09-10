@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { MenuService } from '../services/menu.service';
 import { forkJoin } from 'rxjs';
+import { BlogService } from '../services/blog.service';
+import { cleanText } from 'src/app/lib/helpers';
 
 @Component({
   selector: 'app-configuracion-menu',
@@ -18,12 +20,15 @@ export class ConfiguracionMenuComponent implements OnInit{
   public loading: boolean;
   public menu: any = {};
   public menus: Array<any> = [];
+  public categorias: Array<any> = [];
   public idMenu: string;
+  public selectedOption: any;
 
   constructor(private nichosService: NichosService,
               private router: Router,
               private service: MessageService,
               private menuService: MenuService,
+              private blogService: BlogService,
               private activatedRoute: ActivatedRoute){
 
   }
@@ -41,13 +46,24 @@ export class ConfiguracionMenuComponent implements OnInit{
     this.loading = true;
     forkJoin([
       this.nichosService.consultaNichoById(this.idNicho),
-      this.menuService.getMenu(this.idNicho)
-    ]).subscribe(([nicho, menus]) => {
+      this.menuService.getMenu(this.idNicho),
+      this.blogService.consultaListadoCategorias(this.idNicho)
+    ]).subscribe(([nicho, menus, categorias]) => {
       this.nicho = nicho.nicho;
+      console.log('nicho:' , this.nicho);
       this.menus = menus.menu;
       this.idMenu = menus._id;
+      this.categorias = categorias.filter(item=> !item.home);
       this.loading = false;
     });
+  }
+
+  /**
+   * 
+   * Datos de la categoria seleccionada
+   */
+  categoriaSelected(event: any){
+    console.log('evento seleccionado: ',event);
   }
 
   /**
@@ -73,14 +89,40 @@ export class ConfiguracionMenuComponent implements OnInit{
    * Se guarda el menu del nicho
    */
   guardarMenu(){
-    if(!this.menu.name || !this.menu.url){
-       this.service.add({ key: 'tst', severity: 'warn', summary: 'Alerta', detail: 'Favor de capturar el nombre y la url' });
+    if(!this.selectedOption){
+       this.service.add({ key: 'tst', severity: 'warn', summary: 'Alerta', detail: 'Favor de seleccionar una categoria' });
        return;
     }
-    this.menuService.saveMenu(this.idMenu, this.idNicho, this.menu)
+
+    this.menu.name = this.selectedOption.h1;
+    this.menu.url = this.selectedOption.url;
+    this.menuService.saveMenu(this.idMenu, this.idNicho, cleanText(this.nicho.nombre), this.menu)
         .subscribe(response=>{
           this.menu = {};
           this.getMenus();
         });
+  }
+
+  /**
+   * Se sube archivo de menú al ambiente de dev
+   */
+  subirModificacionesDev(){
+    let comandos = [];
+      comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/menu.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
+      let campos = {
+         $set : {
+           dev: true
+         }
+      }
+
+      let data = {
+        comandos: comandos,
+        campo: campos
+      }
+ 
+      this.menuService.subirModificaciones(this.idMenu, data)
+          .subscribe(response=>{
+           
+          });
   }
 }

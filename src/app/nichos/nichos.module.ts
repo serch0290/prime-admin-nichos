@@ -34,6 +34,7 @@ import { ConfiguracionHomeComponent } from './configuracion-home/configuracion-h
 import { ConfiguracionRepositorioComponent } from './configuracion-repositorio/configuracion-repositorio.component';
 import { ConfiguracionMenuComponent } from './configuracion-menu/configuracion-menu.component';
 import { PanelModule } from 'primeng/panel';
+import { DropdownModule } from 'primeng/dropdown';
 
 let routes = [
     {
@@ -98,6 +99,7 @@ let routes = [
         ToastModule,
         PanelModule,
         DialogModule,
+        DropdownModule,
         RouterModule.forChild(routes)
     ],
     declarations: [ListadoNichosComponent, PanoramaGeneralComponent, ConfiguracionGeneralComponent, 

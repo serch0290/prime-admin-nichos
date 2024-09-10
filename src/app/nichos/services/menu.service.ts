@@ -22,8 +22,8 @@ export class MenuService
     /**
      * Se guarda el menú
      */
-    saveMenu(_id: string, nicho: string, menu: any): Observable<any>{
-      return this._http.post(`${this.url}menus/guardar/menu`, {_id, nicho, menu});
+    saveMenu(_id: string, nicho: string, nombre: string, menu: any): Observable<any>{
+      return this._http.post(`${this.url}menus/guardar/menu`, {_id, nicho, menu, nombre});
     }
 
     /**
@@ -31,5 +31,12 @@ export class MenuService
      */
     getMenu(idNicho: string): Observable<any>{
         return this._http.get(`${this.url}menus/consulta/menu/${idNicho}`);
+    }
+
+    /**
+     * Se sube la modificación 
+     */
+    subirModificaciones(id: string, data: any): Observable<any>{
+        return this._http.post(`${this.url}menus/subir/modificaciones/dev/${id}`, data);
     }
 }

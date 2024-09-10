@@ -20,14 +20,20 @@
             <div class="card">
                 <div class="p-fluid">
                     <p-toast key="tst"></p-toast>
-                    <div class="field">
+                    <p-dropdown [options]="categorias" 
+                                optionLabel="h1"
+                                [(ngModel)]="selectedOption" 
+                                [optionValue]="option" 
+                                placeholder="Selecciona una categoria" 
+                                (onChange)="categoriaSelected($event)"/>
+                    <!--<div class="field">
                         <label htmlFor="name">Name</label>
                         <input pInputText id="name" name="name" type="text" [(ngModel)]="menu.name"/>
                     </div>
                     <div class="field">
                         <label htmlFor="name">Url</label>
                         <input pInputText id="name" name="url" type="text" [(ngModel)]="menu.url"/>
-                    </div>
+                    </div>-->
                 </div>
                 <div class="col-12 text-center">
                     <button pButton pRipple type="button"
@@ -39,11 +45,9 @@
         <div class="col-12">
             <div class="card">
                 <h5>Menú</h5>
-                <p-panel *ngFor="let menu of menus">
-                    <p>
-                        {{menu.name}}
-                    </p>
-                </p-panel>
+                <div class="col-12 p-message p-message-success" *ngFor="let menu of menus">
+                    {{menu.name}}
+                </div>
             </div>
         </div>
     </ng-container>
