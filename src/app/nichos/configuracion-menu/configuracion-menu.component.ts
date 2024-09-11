@@ -50,7 +50,6 @@ export class ConfiguracionMenuComponent implements OnInit{
       this.blogService.consultaListadoCategorias(this.idNicho)
     ]).subscribe(([nicho, menus, categorias]) => {
       this.nicho = nicho.nicho;
-      console.log('nicho:' , this.nicho);
       this.menus = menus.menu;
       this.idMenu = menus._id;
       this.categorias = categorias.filter(item=> !item.home);

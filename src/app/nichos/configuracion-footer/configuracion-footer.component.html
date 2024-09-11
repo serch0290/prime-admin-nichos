@@ -1,0 +1,63 @@
+<div class="grid">
+    <div class="flex flex-column align-items-center justify-content-center"
+         *ngIf="loading">
+        <p-progressSpinner ariaLabel="loading" />
+    </div>
+    <ng-container *ngIf="!loading">
+        <div class="col-12">
+            <div class="card">
+                <h1>Configuración general</h1>
+                <h5>Nicho: {{nicho.nombre}}</h5>
+
+                <div class="col-12 text-right">
+                    <button pButton pRipple type="button" icon="pi pi-arrow-left" 
+                        class="p-button-outlined p-button-success" label="Regresar"
+                        (click)="regresar()"></button>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <div class="p-fluid">
+                    <p-toast key="tst"></p-toast>
+                    <p-dropdown [options]="listadoFooter" 
+                                optionLabel="name"
+                                [(ngModel)]="selectedOption" 
+                                [optionValue]="option" 
+                                placeholder="Selecciona un menú"/>
+                </div>
+                <div class="col-12 text-center">
+                    <button pButton pRipple type="button"
+                            class="p-button-outlined p-button-warning" label="Guardar"
+                            (click)="guardarFooter()"></button>
+                </div>
+                <div class="col-12 text-right">
+                    <p-button label="Local" [loading]="loadings.local" 
+                                  [severity]="dataFooter.local ? 'success' : 'danger'"
+                                  pTooltip="Generar footer en local"></p-button>
+
+                    <p-button label="Dev" class="mx-12" [loading]="loadings.dev" 
+                                  (onClick)="subirModificacionesDev()" 
+                                  [disabled]="!dataFooter.local"
+                                  [severity]="dataFooter.dev ? 'success' : 'danger'"
+                                  pTooltip="Generar footer en dev" ></p-button>
+
+                    <p-button label="Prod" [loading]="loadings.prod" 
+                                  [severity]="dataFooter.prod ? 'success' : 'danger'"
+                                  [disabled]="true"
+                                  pTooltip="Generar footer en producción" ></p-button>
+
+                   <p-messages [value]="msgsFooter" key="message-footer"></p-messages>             
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <h5>Footer</h5>
+                <div class="col-12 p-message p-message-success" *ngFor="let footer of listadoFooter">
+                    {{footer.name}}
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>
