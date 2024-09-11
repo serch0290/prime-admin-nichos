@@ -46,7 +46,7 @@ export class ConfiguracionFooterComponent implements OnInit{
      this.listadoFooter.push({id: 5, name: 'Contacto', url: cleanText(this.nicho.nombre) + '/contacto'}); 
   }
 
-  /**
+  /**11
    * Se consulta toda la información del menú
    */
     consultaInformacion(){
