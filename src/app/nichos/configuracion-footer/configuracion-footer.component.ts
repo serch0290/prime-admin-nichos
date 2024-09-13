@@ -10,7 +10,7 @@ import { Message, MessageService } from 'primeng/api';
   selector: 'app-configuracion-footer',
   templateUrl: './configuracion-footer.component.html',
   styleUrl: './configuracion-footer.component.scss',
-  providers: [NichosService]
+  providers: [NichosService, MessageService]
 })
 export class ConfiguracionFooterComponent implements OnInit{
 
@@ -57,7 +57,7 @@ export class ConfiguracionFooterComponent implements OnInit{
       ]).subscribe(([nicho, footer]) => {
         this.nicho = nicho.nicho;
         this.llenarOpcionesFooter();
-        this.footer = footer.footer;
+        if(footer) this.footer = footer.footer;
         this.dataFooter = footer;
         this.loading = false;
       });
