@@ -37,6 +37,7 @@ import { PanelModule } from 'primeng/panel';
 import { DropdownModule } from 'primeng/dropdown';
 import { ConfiguracionFooterComponent } from './configuracion-footer/configuracion-footer.component';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ListadosNoticiasCategoriaComponent } from './listados-noticias-categoria/listados-noticias-categoria.component';
 
 let routes = [
     {
@@ -74,6 +75,10 @@ let routes = [
     {
         path: 'nicho/:nicho/footer',
         component: ConfiguracionFooterComponent
+    },
+    {
+        path: 'nicho/:nicho/categoria/:idCategoria/listado/noticias',
+        component: ListadosNoticiasCategoriaComponent
     }
 ]
 
@@ -111,7 +116,8 @@ let routes = [
     ],
     declarations: [ListadoNichosComponent, PanoramaGeneralComponent, ConfiguracionGeneralComponent, 
                    ConfiguracionBdComponent, ConfiguracionCategoriasComponent, ConfiguracionHomeComponent,
-                   ConfiguracionRepositorioComponent, ConfiguracionMenuComponent, ConfiguracionFooterComponent],
+                   ConfiguracionRepositorioComponent, ConfiguracionMenuComponent, ConfiguracionFooterComponent,
+                   ListadosNoticiasCategoriaComponent ],
     providers: []
 })
 export class NichosModule { }

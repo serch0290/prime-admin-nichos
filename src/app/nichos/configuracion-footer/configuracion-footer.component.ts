@@ -19,8 +19,7 @@ export class ConfiguracionFooterComponent implements OnInit{
   public loading: boolean;
   public listadoFooter: Array<any> = [];
   public selectedOption: any;
-  public footer: Array<any> = [];
-  public dataFooter: any;
+  public dataFooter: any = {}; 
   public loadings: any = {local: false, dev: false, prod: false}
   public msgsFooter: Message[] = [];
 
@@ -57,8 +56,9 @@ export class ConfiguracionFooterComponent implements OnInit{
       ]).subscribe(([nicho, footer]) => {
         this.nicho = nicho.nicho;
         this.llenarOpcionesFooter();
-        if(footer) this.footer = footer.footer;
-        this.dataFooter = footer;
+        if(footer){
+           this.dataFooter = footer;
+        } 
         this.loading = false;
       });
     }
@@ -70,7 +70,7 @@ export class ConfiguracionFooterComponent implements OnInit{
       this.loading = true;
       this.footerService.getFooter(this.idNicho)
           .subscribe(response=>{
-            this.footer = response.footer;
+            this.dataFooter = response;
             this.loading = false;
           });
     }
@@ -124,7 +124,7 @@ export class ConfiguracionFooterComponent implements OnInit{
     * Se regresa al listado de nichos
     */
    regresar(){
-    this.router.navigate(['/']);
+    this.router.navigate(['nicho/' + this.idNicho]);
    }
 
 }

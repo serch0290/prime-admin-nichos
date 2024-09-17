@@ -98,7 +98,9 @@
                                         pTooltip="Generar el json de categoria para ambiente de prod" ></p-button>
                             </td>
                             <td *ngIf="!categoria.home">
-                                <button pButton pRipple type="button" label="Add Noticias" class="p-button-outlined p-button-secondary"></button>
+                                <button pButton pRipple type="button" label="Add Noticias" 
+                                        class="p-button-outlined p-button-secondary"
+                                        (click)="irListadoNoticias(categoria)"></button>
                                 <button pButton pRipple type="button" label="Editar" class="p-button-outlined p-button-warning mx-4"></button>
                                 <button pButton pRipple type="button" label="Eliminar" class="p-button-outlined p-button-info"></button>
                             </td>

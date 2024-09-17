@@ -158,6 +158,13 @@ export class ConfiguracionCategoriasComponent implements OnInit{
            categoria.dev = response.categoria.dev;
           });
    }
+
+   /**
+    * Se reedireciona al listado de noticias que tiene la categoria
+    */
+   irListadoNoticias(categoria: any){
+    this.router.navigate([`nicho/${this.idNicho}/categoria/${categoria._id}/listado/noticias`]);
+   }
  
 
 

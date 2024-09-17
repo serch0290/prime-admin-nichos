@@ -1,0 +1,71 @@
+<div class="grid">
+    <div class="flex flex-column align-items-center justify-content-center"
+         *ngIf="loading">
+        <p-progressSpinner ariaLabel="loading" />
+    </div>
+    <ng-container *ngIf="!loading">
+        <div class="col-12">
+            <div class="card">
+                <h1>Configuración de categorias de notas</h1>
+                <h5>Nicho: {{nicho.nombre}}</h5>
+                <h5>Categoria: {{categoria.h1}}</h5>
+                <div class="col-12 text-right">
+                    <button pButton pRipple type="button" icon="pi pi-arrow-left" 
+                        class="p-button-outlined p-button-success" label="Regresar"
+                        (click)="regresar()"></button>
+                </div>
+                <div class="col-12">
+                    <button pButton pRipple type="button"
+                            class="p-button-outlined p-button-info" 
+                            label="Alta Noticia"></button>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <p-table [value]="listadoNoticias" [loading]="loading" [rows]="10" [rowHover]="true" [paginator]="true">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="min-width: 12rem">
+                                <div class="flex justify-content-between align-items-center">
+                                    Noticia
+                                </div>
+                            </th>
+                            <th style="min-width: 12rem">
+                                <div class="flex justify-content-between align-items-center">
+                                    Acciones
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-noticia>
+                        <tr>
+                            <td>
+                                {{noticia.h1}}
+                            </td>
+                            <td>
+                                <button pButton pRipple type="button" icon="pi pi-arrow-left" 
+                                        class="p-button-outlined p-button-success" label="Editar"></button>
+                                <button pButton pRipple type="button" icon="pi pi-arrow-left" 
+                                        class="p-button-outlined p-button-help" label="Publicar"></button>
+                                <button pButton pRipple type="button" icon="pi pi-arrow-left" 
+                                        class="p-button-outlined p-button-danger" label="Eliminar"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="3">No hay noticias para esta categoría</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="loadingbody">
+                        <tr>
+                            <td colspan="3">Cargando información, espera un momento</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+            </div>
+        </div>
+    </ng-container>
+</div>
