@@ -1,1 +1,36 @@
-<p>alta-noticia works!</p>
+<div class="grid">
+    <div class="flex flex-column align-items-center justify-content-center"
+         *ngIf="loading">
+        <p-progressSpinner ariaLabel="loading" />
+    </div>
+    <ng-container *ngIf="!loading">
+        <div class="col-12">
+            <div class="card">
+                <h1>Configuración de categorias de notas</h1>
+                <h5>Nicho: {{nicho.nombre}}</h5>
+                <h5>Categoria: {{categoria.h1}}</h5>
+                <div class="col-12 text-right">
+                    <button pButton pRipple type="button" icon="pi pi-arrow-left" 
+                        class="p-button-outlined p-button-success" label="Regresar"
+                        (click)="regresar()"></button>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <div class="p-fluid">
+                    <div class="field">
+                        <label htmlFor="titulo">Titulo</label>
+                        <input pInputText id="titulo" name="titulo" type="text" [(ngModel)]="noticia.h1"/>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button pButton pRipple type="button" label="Autores" 
+                            class="p-button-outlined p-button-danger"
+                            (click)="modalAutores = true;"></button>
+                </div>
+                <app-repositorio-autores [visible]="modalAutores" (close) = "modalAutores = false"></app-repositorio-autores>
+            </div>
+        </div>
+    </ng-container>
+</div>

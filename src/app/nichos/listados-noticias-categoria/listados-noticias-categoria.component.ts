@@ -63,6 +63,12 @@ export class ListadosNoticiasCategoriaComponent implements OnInit{
         });
  }
 
+ /**
+  * Se da de alta de noticia
+  */
+ irAltaNoticia(){
+  this.router.navigate(['nicho/' + this.idNicho + '/categoria/' + this.idCategoria + '/alta/noticia']);
+ }
 
   /**
     * Regresar a la configuracion de nicho

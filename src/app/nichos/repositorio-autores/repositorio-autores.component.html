@@ -1,0 +1,50 @@
+<p-dialog 
+    header="Autores" 
+    [modal]="true"
+    [(visible)]="visible" 
+    [style]="{ width: '50rem' }" 
+    [closable]="false"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+    <div class="flex flex-column align-items-center justify-content-center"
+         *ngIf="loading">
+        <p-progressSpinner ariaLabel="loading" />
+    </div>
+
+    <div class="col-12 text-left">
+        <button pButton pRipple type="button" label="Alta Autor" 
+                class="p-button-outlined p-button-warning"
+                (click)="altaAutor()"></button>
+    </div>
+
+    <div class="col-12" *ngIf="alta">
+        <p-toast key="tst"></p-toast>
+        <div class="p-fluid">
+            <div class="field">
+                <label htmlFor="autor">Autor</label>
+                <input pInputText id="autor" name="autor" type="text" [(ngModel)]="autor.autor"/>
+            </div>
+            <div class="field">
+                <label htmlFor="descripcion">Descripción</label>
+                <textarea pInputText id="descripcion" rows="5" name="descripcion" type="text" [(ngModel)]="autor.descripcion"></textarea>
+            </div>
+
+            <p-fileUpload name="autores[]"
+                          chooseLabel="Adjuntar foto autor" 
+                          url="http://localhost:5007/nchs/upload/file" 
+                          [headers]="header">
+            </p-fileUpload>
+
+        </div>
+    </div>
+
+    <div class="col-12 text-center">
+        <button pButton pRipple type="button" label="Guardar" 
+                class="p-button-raised p-button-success mr-4"
+                *ngIf="alta"
+                (click)="guardarAutor()"></button>
+
+        <button pButton pRipple type="button" label="Cerrar" 
+                class="p-button-raised p-button-danger"
+                (click)="cerrar()"></button>
+    </div>
+</p-dialog>
