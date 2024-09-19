@@ -29,7 +29,7 @@
                             class="p-button-outlined p-button-danger"
                             (click)="modalAutores = true;"></button>
                 </div>
-                <app-repositorio-autores [visible]="modalAutores" (close) = "modalAutores = false"></app-repositorio-autores>
+                <app-repositorio-autores [visible]="modalAutores" (close) = "modalAutores = false" (autorEmit) = "setAutor($event)"></app-repositorio-autores>
             </div>
         </div>
     </ng-container>

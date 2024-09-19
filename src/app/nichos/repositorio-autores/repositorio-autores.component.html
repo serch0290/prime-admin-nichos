@@ -13,7 +13,11 @@
     <div class="col-12 text-left">
         <button pButton pRipple type="button" label="Alta Autor" 
                 class="p-button-outlined p-button-warning"
-                (click)="altaAutor()"></button>
+                (click)="altaAutor()" *ngIf="!alta"></button>
+
+        <button pButton pRipple type="button" label="Regresar" 
+                class="p-button-outlined p-button-DANGER"
+                (click)="alta = false" *ngIf="alta"></button>
     </div>
 
     <div class="col-12" *ngIf="alta">
@@ -31,9 +35,18 @@
             <p-fileUpload name="autores[]"
                           chooseLabel="Adjuntar foto autor" 
                           url="http://localhost:5007/nchs/upload/file" 
-                          [headers]="header">
+                          [headers]="header"
+                          (onUpload)="onUpload($event)"
+                          (onSelect)="selectName($event, 1)">
             </p-fileUpload>
 
+        </div>
+    </div>
+    <div *ngIf="!alta" class="flex flex-row flex-wrap">
+        <div class="flex cursos-pointer" *ngFor="let autor of listadoAutores" 
+             (click)="seleccionaAutor(autor)">
+            <img [src]="autor.img" class="w-40"/>
+            {{autor.autor}}
         </div>
     </div>
 

@@ -49,6 +49,25 @@ export class AltaNoticiaComponent implements OnInit{
     }
 
     /**
+     * Se setea el autor seleccionado
+     */
+    setAutor(autor: any){
+      this.noticia.author = autor;
+    }
+
+    /**
+   * Se settean valores si es nueva noticia
+   */
+  nuevaNoticia(){
+    this.noticia.author = {};
+    this.noticia.noticiasLateral = {
+        title: "Lo mas reciente"
+    }
+    this.noticia.detalle = [];
+    this.noticia.idNoticia = 0;
+  }
+
+    /**
      * Se regresa a listado de noticias
      */
     regresar(){
