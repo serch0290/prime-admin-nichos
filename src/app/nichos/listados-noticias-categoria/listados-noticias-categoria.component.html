@@ -19,17 +19,48 @@
                             class="p-button-outlined p-button-info" 
                             label="Alta Noticia"
                             (click)="irAltaNoticia()"></button>
+
+                    <p-button label="Dev" class="mx-12" [loading]="loadings.dev"
+                            [severity]="general.routing.dev ? 'success' : 'danger'"
+                            (click)="subirRoutingDev()"
+                            pTooltip="Generar el archivo routing.php en dev" >
+                    </p-button>
+
+                    <p-button label="Prod" [loading]="loadings.prod"
+                            [severity]="general.routing.prod ? 'success' : 'danger'"
+                            pTooltip="Generar el archivo routing.php en prod" >
+                    </p-button>
+
+                    <p-messages [value]="msgs" key="message-routing"></p-messages>
                 </div>
             </div>
         </div>
+        <!-- Aquí está el contenedor donde se van a insertar los menús -->
+        
         <div class="col-12">
             <div class="card">
+                <p-toast key="tst"></p-toast>
                 <p-table [value]="listadoNoticias" [loading]="loading" [rows]="10" [rowHover]="true" [paginator]="true">
                     <ng-template pTemplate="header">
                         <tr>
                             <th style="min-width: 12rem">
                                 <div class="flex justify-content-between align-items-center">
                                     Noticia
+                                </div>
+                            </th>
+                            <th style="min-width: 12rem">
+                                <div class="flex justify-content-between align-items-center">
+                                    Ambientes
+                                </div>
+                            </th>
+                            <th style="min-width: 12rem">
+                                <div class="flex justify-content-between align-items-center">
+                                    Estatus
+                                </div>
+                            </th>
+                            <th style="min-width: 12rem">
+                                <div class="flex justify-content-between align-items-center">
+                                    Fecha / Portada
                                 </div>
                             </th>
                             <th style="min-width: 12rem">
@@ -45,11 +76,33 @@
                                 {{noticia.h1}}
                             </td>
                             <td>
-                                <button pButton pRipple type="button" icon="pi pi-arrow-left" 
-                                        class="p-button-outlined p-button-success" label="Editar"></button>
-                                <button pButton pRipple type="button" icon="pi pi-arrow-left" 
-                                        class="p-button-outlined p-button-help" label="Publicar"></button>
-                                <button pButton pRipple type="button" icon="pi pi-arrow-left" 
+                                <p-button label="Local"
+                                          severity="success"
+                                          pTooltip="Subir noticia a local"></p-button>
+
+                                <button type="button" (click)="onContextMenuDev($event, noticia)"
+                                        pButton pRipple 
+                                        [ngClass]="noticia.dev ? 'mx-12 p-button-success' : 'p-button-danger mx-12'"
+                                        pTooltip="Subir noticia al ambiente de dev">Dev</button>
+                                
+                                <button type="button" (click)="onContextMenuProd($event, noticia)"
+                                        pButton pRipple 
+                                        [ngClass]="noticia.prod ? 'p-button-success' : 'p-button-danger'"
+                                        pTooltip="Subir noticia al ambiente de prod">Prod</button>
+                            </td>
+                            <td>
+                                <span>Dev: <p-tag [severity]="noticia.publicado.dev ? 'success': 'danger'" [value]="noticia.publicado.dev ? 'Publicado': 'Sin publicar'"></p-tag></span><br><br>
+                                <span>Prod:  <p-tag [severity]="noticia.publicado.prod ? 'success': 'danger'" [value]="noticia.publicado.prod ? 'Publicado': 'Sin publicar'"></p-tag></span>
+                            </td>
+                            <td>
+                               <span>Fecha Creación: {{getFormatoFecha(noticia.fechaCreacion)}}</span><br>
+                               <span>Fecha Modificación: {{getFormatoFecha(noticia.fechaModificacion)}}</span><br>
+                               <span>Portada: <p-inputSwitch [(ngModel)]="noticia.portada"></p-inputSwitch></span>
+                            </td>
+                            <td>
+                                <button pButton pRipple type="button" (click)="editarNoticia(noticia._id)"
+                                        class="p-button-outlined p-button-success mx-12" label="Editar"></button>
+                                <button pButton pRipple type="button"
                                         class="p-button-outlined p-button-danger" label="Eliminar"></button>
                             </td>
                         </tr>
@@ -65,7 +118,8 @@
                         </tr>
                     </ng-template>
                 </p-table>
-
+                <p-contextMenu #contextMenuDev [model]="menuItems"></p-contextMenu>
+                <p-contextMenu #contextMenuProd [model]="menuItemsProd"></p-contextMenu>
             </div>
         </div>
     </ng-container>

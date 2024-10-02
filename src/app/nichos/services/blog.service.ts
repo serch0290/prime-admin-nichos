@@ -117,4 +117,19 @@ export class BlogService
         return this._http.post(`${this.url}blog/subir/modificaciones/categoria`, {commands, campos});
     }
 
+    /**
+     * Se sube noticia al ambiente de dev
+     */
+    subirNoticiaDev(id: string, commands: Array<any>, campo: any): Observable<any>{
+        return this._http.post(`${this.url}blog/subir/modificaciones/noticia/${id}/dev`, {commands, campo});
+    }
+
+    /**
+     * Se realiza acción para publicar o despublicar una noticia
+     * @returns 
+     */
+    publicarNoticiaDev(idNicho: string, campo: any, estatus: number): Observable<any>{
+        return this._http.patch(`${this.url}blog/publicar/noticia/nicho/${idNicho}`, {estatus, campo});
+    }
+
 }

@@ -259,7 +259,8 @@ export class ConfiguracionGeneralComponent implements OnInit{
   guardarFuente(data: any){
     let fuente = {
       file: data.filename,
-      name: data.filename.split('.')[0]
+      name: data.filename.split('.')[0],
+      new: true
     }
 
     this.general.fuentes.push(fuente);
@@ -271,7 +272,7 @@ export class ConfiguracionGeneralComponent implements OnInit{
    */
   guardarColorFuenteLocal(){
     if(!this.general.fuentes.length){
-       this.service.add({ key: 'tst', severity: 'warn', summary: 'Alerta', detail: 'No haz subido ninguna fuente.' });
+       this.service.add({ key: 'tst', severity: 'warn', summary: 'Alerta', detail: 'No has subido ninguna fuente.' });
        return;
     }
 
@@ -280,12 +281,18 @@ export class ConfiguracionGeneralComponent implements OnInit{
        return;
     }
 
+    let fuentes = this.general.fuentes.filter(item=> item.new) || [];
+    fuentes.forEach(element => {
+      delete element.new;
+    });
+
 
     this.loadings.background.local = true;
     let data = {
-      fuentes: this.general.fuentes,
+      fuentes: fuentes,
       nicho: cleanText(this.nicho.nombre),
-      background: this.general.background.value
+      background: this.general.background.value,
+      dominio: this.general.dominio
     }
 
     this.configuracionService.subirColorFuente(this.general._id, data)
@@ -297,6 +304,7 @@ export class ConfiguracionGeneralComponent implements OnInit{
            this.loadings.background.local = false;
         }, error=>{
           this.msgsFuente = [];
+          this.loadings.background.local = false;
           this.msgsFuente.push({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error al subir fuente y color', key: 'message-fuentes' });
         });
   }
@@ -337,6 +345,8 @@ export class ConfiguracionGeneralComponent implements OnInit{
             this.general = response.general;
             this.mostrarMensajeNotificacion(tipo, mensaje);
             this.general = { ...this.general };
+          }, error=>{
+            this.loadings.background.dev = true;
           });
   }
 
@@ -419,7 +429,10 @@ export class ConfiguracionGeneralComponent implements OnInit{
   */
   subirArchivos(){
     this.loadings.filesProyecto.local = true;
-    this.configuracionService.subirArchivos(this.general._id, cleanText(this.nicho.nombre))
+    let data = {
+      dominio: this.general.dominio
+    }
+    this.configuracionService.subirArchivos(this.general._id, cleanText(this.nicho.nombre), data)
           .subscribe(response=>{
             if(response.status){
                this.general = response.general;
@@ -441,6 +454,8 @@ export class ConfiguracionGeneralComponent implements OnInit{
   for(let file of files){
       comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}${file.path}${file.file} /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}${file.path}${file.file}`);
   }
+  
+  comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/.htaccess /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}`);
 
   let campo = {
     $set: {

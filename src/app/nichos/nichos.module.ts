@@ -40,6 +40,11 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ListadosNoticiasCategoriaComponent } from './listados-noticias-categoria/listados-noticias-categoria.component';
 import { AltaNoticiaComponent } from './alta-noticia/alta-noticia.component';
 import { RepositorioAutoresComponent } from './repositorio-autores/repositorio-autores.component';
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { CKEditorModule } from 'ckeditor4-angular';
+import { OrderListModule } from 'primeng/orderlist';
+import { ContextMenuModule } from 'primeng/contextmenu';
 
 let routes = [
     {
@@ -85,6 +90,10 @@ let routes = [
     {
         path: 'nicho/:nicho/categoria/:idCategoria/alta/noticia',
         component: AltaNoticiaComponent
+    },
+    {
+        path: 'nicho/:nicho/categoria/:idCategoria/alta/noticia/:idNoticia',
+        component: AltaNoticiaComponent
     }
 ]
 
@@ -118,6 +127,11 @@ let routes = [
         DialogModule,
         DropdownModule,
         CheckboxModule,
+        SelectButtonModule,
+        CKEditorModule,
+        ToggleButtonModule,
+        OrderListModule,
+        ContextMenuModule,
         RouterModule.forChild(routes)
     ],
     declarations: [ListadoNichosComponent, PanoramaGeneralComponent, ConfiguracionGeneralComponent, 

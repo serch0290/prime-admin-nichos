@@ -31,7 +31,6 @@
                 <label htmlFor="descripcion">Descripción</label>
                 <textarea pInputText id="descripcion" rows="5" name="descripcion" type="text" [(ngModel)]="autor.descripcion"></textarea>
             </div>
-
             <p-fileUpload name="autores[]"
                           chooseLabel="Adjuntar foto autor" 
                           url="http://localhost:5007/nchs/upload/file" 
@@ -39,17 +38,19 @@
                           (onUpload)="onUpload($event)"
                           (onSelect)="selectName($event, 1)">
             </p-fileUpload>
-
         </div>
     </div>
-    <div *ngIf="!alta" class="flex flex-row flex-wrap">
-        <div class="flex cursos-pointer" *ngFor="let autor of listadoAutores" 
+    <div *ngIf="!alta" class="flex flex-row flex-wrap mt-16">
+        <div class="flex flex-column align-items-center justify-content-center pointer mx-4" 
+             *ngFor="let autor of listadoAutores" 
              (click)="seleccionaAutor(autor)">
-            <img [src]="autor.img" class="w-40"/>
-            {{autor.autor}}
+            <img [src]="'http://localhost:3000/' + autor.img" class="w-60 border-circle"/>
+            <span class="font-size-16 pt-2">{{autor.autor}}</span>
+        </div>
+        <div class="p-20" *ngIf="!listadoAutores.length">
+            <strong class="font-size-20">Sin autores dados de alta</strong>
         </div>
     </div>
-
     <div class="col-12 text-center">
         <button pButton pRipple type="button" label="Guardar" 
                 class="p-button-raised p-button-success mr-4"

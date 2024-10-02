@@ -47,7 +47,7 @@ export class RepositorioAutoresComponent implements OnInit{
     altaAutor(){
        this.alta = true;
        this.header = {
-        'path': `${v4()}`,
+        'path': `autores/${v4()}`,
         'tipo': 5
        }
     }
@@ -57,9 +57,8 @@ export class RepositorioAutoresComponent implements OnInit{
      * Response del uploader
      */
     onUpload(response: any){
-      console.log('Response: ', response);
       let data = response.originalEvent.body;
-      this.autor.img = `autores/${data.path}/${data.filename}`;
+      this.autor.img = `${data.path}/${data.filename}`;
     }
 
     /**

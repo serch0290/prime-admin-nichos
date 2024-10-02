@@ -21,7 +21,7 @@
                 <div class="p-fluid">
                     <div class="field">
                         <label htmlFor="titulo">Titulo</label>
-                        <input pInputText id="titulo" name="titulo" type="text" [(ngModel)]="noticia.h1"/>
+                        <input pInputText id="titulo" name="titulo" type="text" [(ngModel)]="noticia.h1" (blur)="llenadoRedes()"/>
                     </div>
                 </div>
                 <div class="col-12">
@@ -31,6 +31,148 @@
                 </div>
                 <app-repositorio-autores [visible]="modalAutores" (close) = "modalAutores = false" (autorEmit) = "setAutor($event)"></app-repositorio-autores>
             </div>
+        </div>
+        <div class="col-12" *ngIf="noticia.author">
+            <div class="card">
+                <h4>Datos del autor</h4>
+                <h5>Nombre: {{noticia.author.nombre}}</h5>
+                <h5>Descripcion: {{noticia.author.descripcion}}</h5>
+                <img [src]="'http://localhost:3000/' + noticia.author.img" class="w-60 border-circle"/>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <div class="p-fluid">
+                    <div class="field">
+                        <label htmlFor="descripcion">Descripción Noticia</label>
+                        <textarea pInputText id="descripcion" rows="5" name="descripcion" type="text" [(ngModel)]="noticia.descripcion"></textarea>
+                    </div>
+                    <div class="field">
+                        <h5>Portada</h5>
+                        <p-inputSwitch [(ngModel)]="noticia.portada">Portada</p-inputSwitch>
+                    </div>
+                    <div class="field">
+                        <h5>Comentarios</h5>
+                        <p-inputSwitch [(ngModel)]="noticia.comentarios">Comentarios</p-inputSwitch>
+                    </div>
+                    <div class="col-12" *ngIf="noticia.h1">
+                        <button pButton pRipple type="button"
+                                class="p-button-outlined p-button-info w-160" 
+                                label="Seleccionar Todos"
+                                (click)="selecccionarTodos()"></button>
+                    </div>
+                    <div class="field flex-row flex-wrap">
+                        <div class="flex field-checkbox" *ngFor="let red of listadoRedes">
+                            <p-checkbox [binary]="true" [(ngModel)]="red.seleccionado" [id]="'red' + red.name"></p-checkbox>
+                            <label [for]="'red' + red.name">{{red.name}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card text-center">
+                <p-selectButton [options]="opcionesNoticia" 
+                                [(ngModel)]="tipoSeleccion"
+                                (onChange)="mostrarOpcion($event)">
+              </p-selectButton>
+            </div>
+        </div>
+        <div class="col-12" *ngFor="let detalle of noticia.detalle; let index = index">
+            <div class="card" *ngIf="detalle.type.includes('html')">
+                <h5>Type: {{detalle.type}}</h5>
+                <div [innerHtml]="detalle.html" *ngIf="!detalle.edit"></div>
+                <ckeditor class="h-100-p" *ngIf="detalle.edit" contenteditable="true"  [(ngModel)]="detalle.html">
+                </ckeditor>
+                <div class="col-12 text-center">
+                    <button pButton pRipple type="button"
+                        class="p-button-outlined p-button-success" [label]="detalle.edit ? 'Guardar' : 'Editar'"
+                        (click)="detalle.edit = !detalle.edit;"></button>
+                </div>
+            </div>
+            <div class="card" *ngIf="detalle.type.includes('h2') || detalle.type.includes('h3')">
+                <h5>Type: {{detalle.type}}</h5>
+                <div class="p-fluid">
+                    <div class="field">
+                        <label [htmlFor]="'descripcion' + index">Descripción</label>
+                        <textarea pInputText [id]="'descripcion' + index" rows="5" [name]="'descripcion' + index" type="text" [(ngModel)]="detalle.data"></textarea>
+                    </div>
+                </div>
+                <button pButton pRipple type="button"
+                        class="p-button-outlined p-button-success" label="Guardar"
+                        (click)="guardarH(detalle)"></button>
+            </div>
+            <div class="card" *ngIf="detalle.type.includes('list')">
+                <h5>Type: {{detalle.type}}</h5>
+                <div class="p-fluid">
+                    <div class="field">
+                        <label [htmlFor]="'descripcion' + index">Descripción</label>
+                        <textarea pInputText [id]="'descripcion' + index" rows="5" [name]="'descripcion' + index" type="text" [(ngModel)]="detalle.name"></textarea>
+                    </div>
+                </div>
+                <div class="col-12 text-center">
+                    <button pButton pRipple type="button"
+                            class="p-button-outlined p-button-success" label="Agregar"
+                            (click)="addList(detalle)"></button>
+                </div>
+                <div class="col-12" *ngIf="detalle.list.length">
+                    <p-orderList [value]="detalle.list" 
+                                  [listStyle]="{ 'max-height': '30rem' }" 
+                                  header="Opciones" 
+                                  [dragdrop]="true">
+                        <ng-template let-lista pTemplate="item">
+                            <div class="flex">
+                                {{lista.name}}
+                            </div>
+                        </ng-template>
+                    </p-orderList>
+                </div>
+                <div class="col-12 text-center" *ngIf="detalle.list.length">
+                    <button pButton pRipple type="button"
+                            class="p-button-outlined p-button-help" label="Guardar"
+                            (click)="llenarTableContent()"></button>
+                </div>
+            </div>
+            <div class="card" *ngIf="detalle.type.includes('table-content')">
+                <h5>Type: {{detalle.type}}</h5>
+                <ul>
+                    <li *ngFor="let content of detalle.list">
+                        {{content.name}}
+                        <ul *ngIf="content.sublist.length > 0">
+                            <li *ngFor="let list1 of content.sublist">
+                                {{list1.name}}
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="card" *ngIf="detalle.type.includes('video')">
+                <h5>Type: {{detalle.type}}</h5>
+                <div class="p-fluid">
+                    <div class="field">
+                        <label [htmlFor]="'descripcion' + index">Descripción</label>
+                        <textarea pInputText [id]="'descripcion' + index" rows="5" [name]="'descripcion' + index" type="text" [(ngModel)]="detalle.video"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="card" *ngIf="detalle.type.includes('img')">
+               <h5>Type: {{detalle.type}}</h5>
+               <p-fileUpload name="autores[]"
+                             chooseLabel="Adjuntar foto autor" 
+                             url="http://localhost:5007/nchs/upload/file" 
+                             [headers]="detalle.uploader"
+                             (onUpload)="guardarNoticia($event, detalle)"
+                             (onSelect)="selectName($event)">
+               </p-fileUpload>
+               <div *ngIf="detalle.uploader && detalle.img" class="mt-12">
+                <img [src]="'http://localhost:3000/' + detalle.imgVP" style="max-width: 200px;" />
+               </div>
+            </div>
+        </div>
+        <div class="col-12 text-center" *ngIf="noticia.detalle.length > 0">
+            <button pButton pRipple type="button"
+                        class="p-button-outlined p-button-info" label="Finalizar Noticia"
+                        (click)="finalizarNoticia()"></button>
         </div>
     </ng-container>
 </div>
