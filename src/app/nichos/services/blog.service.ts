@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -67,6 +67,7 @@ export class BlogService
      * @returns 
      */
     consultaNoticiaById(idNoticia: string): Observable<any>{
+        if(idNoticia == null) return of(null);
         return this._http.get(`${this.url}blog/consulta/noticia/${idNoticia}`);  
     }
 
