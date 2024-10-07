@@ -45,6 +45,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { CKEditorModule } from 'ckeditor4-angular';
 import { OrderListModule } from 'primeng/orderlist';
 import { ContextMenuModule } from 'primeng/contextmenu';
+import { BadgeModule } from 'primeng/badge';
 
 let routes = [
     {
@@ -132,6 +133,7 @@ let routes = [
         ToggleButtonModule,
         OrderListModule,
         ContextMenuModule,
+        BadgeModule,
         RouterModule.forChild(routes)
     ],
     declarations: [ListadoNichosComponent, PanoramaGeneralComponent, ConfiguracionGeneralComponent, 

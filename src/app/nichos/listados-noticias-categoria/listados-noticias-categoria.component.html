@@ -60,6 +60,11 @@
                             </th>
                             <th style="min-width: 12rem">
                                 <div class="flex justify-content-between align-items-center">
+                                    Adicionales
+                                </div>
+                            </th>
+                            <th style="min-width: 12rem">
+                                <div class="flex justify-content-between align-items-center">
                                     Fecha / Portada
                                 </div>
                             </th>
@@ -93,6 +98,10 @@
                             <td>
                                 <span>Dev: <p-tag [severity]="noticia.publicado.dev ? 'success': 'danger'" [value]="noticia.publicado.dev ? 'Publicado': 'Sin publicar'"></p-tag></span><br><br>
                                 <span>Prod:  <p-tag [severity]="noticia.publicado.prod ? 'success': 'danger'" [value]="noticia.publicado.prod ? 'Publicado': 'Sin publicar'"></p-tag></span>
+                            </td>
+                            <td>
+                                <span>Noticias Enlazadas: <p-badge [value]="getTotalNoticiasRelacionadas(noticia.IDNoticiasEnlazado)" severity="info"></p-badge></span><br>
+                                <span>Noticias Relacionadas: <p-badge [value]="getTotalNoticiasRelacionadas(noticia.IDNoticiasRelacionadas)" severity="info"></p-badge></span>
                             </td>
                             <td>
                                <span>Fecha Creación: {{getFormatoFecha(noticia.fechaCreacion)}}</span><br>

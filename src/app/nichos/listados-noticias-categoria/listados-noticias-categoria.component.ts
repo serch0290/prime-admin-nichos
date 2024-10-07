@@ -129,7 +129,6 @@ export class ListadosNoticiasCategoriaComponent implements OnInit{
   subirNoticia(noticia: any){
     let comandos = [];
     comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json${noticia.url}.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
-    console.log('noticia: ', noticia);
 
     for(let item of noticia.detalle){
       if(item.type.includes('img')){
@@ -147,6 +146,10 @@ export class ListadosNoticiasCategoriaComponent implements OnInit{
         comandos.push(`cp server/nichos/${img1024} /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/images/noticias/${time}`);
       }
     }
+
+    let arrayAutor = noticia.author.VP.split('/');
+    comandos.push(`cp -r server/nichos/autores/${arrayAutor[1]} /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/images/autores`);
+
     console.log('comandos: ', comandos);
 
     let campo = {
@@ -170,8 +173,6 @@ export class ListadosNoticiasCategoriaComponent implements OnInit{
    * Se publica noticia y ahora si se tiene que mostrar en dev
    */
   publicarNoticia(noticia: any){
-    console.log('publicar noticia: ', noticia);
-
     let campo = {
       $set: {
         'publicado.dev': !noticia.publicado.dev,
@@ -250,6 +251,14 @@ export class ListadosNoticiasCategoriaComponent implements OnInit{
    */
   getFormatoFecha(fecha: string){
     return moment(fecha).format('DD-MM-YYYY');
+  }
+
+  /**
+   * 
+   * Se obtiene en total de noticias relacionadas
+   */
+  getTotalNoticiasRelacionadas(totalNoticias: string){
+    return totalNoticias.split(',').filter(item=> !item.includes('0')).length;
   }
   
 

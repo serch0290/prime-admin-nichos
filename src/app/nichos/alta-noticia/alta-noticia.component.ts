@@ -62,7 +62,6 @@ export class AltaNoticiaComponent implements OnInit{
         this.nicho = nicho.nicho;
         this.general = nicho.general;
         this.categoria = categoria;
-        console.log('categoria: ', this.categoria);
 
         /**
          * Si trae la noticia si es una noticia ya guardada
@@ -104,7 +103,10 @@ export class AltaNoticiaComponent implements OnInit{
     setAutor(autor: any){
       this.noticia.author = {};
       this.noticia.author = autor;
+      this.noticia.author.VP = this.noticia.author.img;
+      this.noticia.author.img = this.general.dominio + '/assets/images/' +this.noticia.author.VP;
       this.modalAutores = false;
+      
     }
 
     /**
@@ -120,6 +122,9 @@ export class AltaNoticiaComponent implements OnInit{
       prod: false
     };
     this.noticia.idNoticia = 0;
+    this.noticia.comentarios = false;
+    this.noticia.IDNoticiasEnlazado = '0';
+    this.noticia.IDNoticiasRelacionadas = '0';
   }
 
     /**
@@ -134,14 +139,14 @@ export class AltaNoticiaComponent implements OnInit{
    */
   llenadoRedes(){
     if(!this.noticia.h1 || this.listadoRedes.length) return;
-    this.listadoRedes.push({link: `https://www.facebook.com/sharer/sharer.php?u=`, name:'Facebook', class: 'facebook', icons: 'fa-brands fa-facebook-f', seleccionado: false});
+    this.listadoRedes.push({link: `https://www.facebook.com/sharer/sharer.php?u=`, name:'Facebook', class: 'facebook', icon: 'fa-brands fa-facebook-f', seleccionado: false});
     this.listadoRedes.push({link: `fb-messenger://share/?link=`, name:'Facebook Messenger', class: "facebook-messenger", icon: 'fa-brands fa-facebook-messenger', seleccionado: false});
     this.listadoRedes.push({link: `https://x.com/intent/tweet?text=${this.noticia.h1}&url=`, name:'Twitter', class: 'twitter', icon: 'fa-brands fa-x-twitter', seleccionado: false});
     this.listadoRedes.push({link: `https://pinterest.com/pin/create/button/?url=`, name:'Pinterest', class: 'pinterest',icon: 'fa-brands fa-pinterest-p', seleccionado: false});
     this.listadoRedes.push({link: `https://wa.me/?text=${this.noticia.h1}%20-%20`, name:'Whatsapp', class: 'whatsapp', icon: 'fa-brands fa-whatsapp', seleccionado: false});
     this.listadoRedes.push({link: 'https://tumblr.com/widgets/share/tool?canonicalUrl=', name:'Tumblr', class: 'tumblr', icon: 'fa-brands fa-tumblr', seleccionado: false});
     this.listadoRedes.push({link: 'https://www.linkedin.com/shareArticle?mini=true&url=', name:'Linkedin', class: 'linkedin', icon: 'fa-brands fa-linkedin', seleccionado: false});
-    this.listadoRedes.push({link: `https://t.me/share/url?text=${this.noticia.h1}&url=`, name:'Telegram', class: 'telegram", icon: "fa-brands fa-telegram', seleccionado: false});
+    this.listadoRedes.push({link: `https://t.me/share/url?text=${this.noticia.h1}&url=`, name:'Telegram', class: 'telegram', icon: 'fa-brands fa-telegram', seleccionado: false});
     this.listadoRedes.push({link: `mailto:?subject=${this.noticia.h1}&body=`, name:'Mail', class: 'email', icon: 'fa-regular fa-envelope', seleccionado: false});
     this.listadoRedes.push({link: `http://reddit.com/submit?title=${this.noticia.h1}&url=`, name:'Reddit', class: 'reedit', icon: 'fa-brands fa-reddit-alien', seleccionado: false});
   }
@@ -318,7 +323,6 @@ export class AltaNoticiaComponent implements OnInit{
   this.noticia.breadcrumb.push({name: 'Inicio', link: this.general.dominio});
   this.noticia.breadcrumb.push({name: this.categoria.h1, link: this.general.dominio + this.categoria.url});
   this.noticia.breadcrumb.push({name: this.noticia.h1});
-  console.log('noticia: ', this.noticia);
 }
 
 /**
@@ -348,6 +352,14 @@ getHeader(date:  number){
 
   return uploader;
 }
+
+//Pendientes
+//En el listado de noticia agregar la opcion si ya hay noticias relacionadas y enlazadas Listo
+//Mover la foto del autor y generar bien la url
+//Agregar archivos de comentarios faltantes para que se agreguen
+//En archivo de repo quitar .ignore para que aunque este en oficina o casa yo actualizarlo y lo tome de los 2 lados
+//Validar si funciona bien la opcion de los hash # con la tabla de contenido
+//ver si puedo hacer que con un h3 que en automatico se agregue contenido <p> porque solo deja los titulos y necesito texto
 
 }
 

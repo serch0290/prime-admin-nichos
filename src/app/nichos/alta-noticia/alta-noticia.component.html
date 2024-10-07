@@ -35,9 +35,9 @@
         <div class="col-12" *ngIf="noticia.author">
             <div class="card">
                 <h4>Datos del autor</h4>
-                <h5>Nombre: {{noticia.author.nombre}}</h5>
+                <h5>Nombre: {{noticia.author.autor}}</h5>
                 <h5>Descripcion: {{noticia.author.descripcion}}</h5>
-                <img [src]="'http://localhost:3000/' + noticia.author.img" class="w-60 border-circle"/>
+                <img [src]="'http://localhost:3000/' + noticia.author.VP" class="w-60 border-circle"/>
             </div>
         </div>
         <div class="col-12">
