@@ -78,95 +78,97 @@
               </p-selectButton>
             </div>
         </div>
-        <div class="col-12" *ngFor="let detalle of noticia.detalle; let index = index">
-            <div class="card" *ngIf="detalle.type.includes('html')">
-                <h5>Type: {{detalle.type}}</h5>
-                <div [innerHtml]="detalle.html" *ngIf="!detalle.edit"></div>
-                <ckeditor class="h-100-p" *ngIf="detalle.edit" contenteditable="true"  [(ngModel)]="detalle.html">
-                </ckeditor>
-                <div class="col-12 text-center">
-                    <button pButton pRipple type="button"
-                        class="p-button-outlined p-button-success" [label]="detalle.edit ? 'Guardar' : 'Editar'"
-                        (click)="detalle.edit = !detalle.edit;"></button>
-                </div>
-            </div>
-            <div class="card" *ngIf="detalle.type.includes('h2') || detalle.type.includes('h3')">
-                <h5>Type: {{detalle.type}}</h5>
-                <div class="p-fluid">
-                    <div class="field">
-                        <label [htmlFor]="'descripcion' + index">Descripción</label>
-                        <textarea pInputText [id]="'descripcion' + index" rows="5" [name]="'descripcion' + index" type="text" [(ngModel)]="detalle.data"></textarea>
+        <div cdkDropList class="contenedor" (cdkDropListDropped)="drop($event)">
+            <div class="col-12 box" cdkDrag  *ngFor="let detalle of noticia.detalle; let index = index">
+                <div class="card" *ngIf="detalle.type.includes('html')">
+                    <h5>Type: {{detalle.type}}</h5>
+                    <div [innerHtml]="detalle.html" *ngIf="!detalle.edit"></div>
+                    <ckeditor class="h-100-p" *ngIf="detalle.edit" contenteditable="true"  [(ngModel)]="detalle.html" >
+                    </ckeditor>
+                    <div class="col-12 text-center">
+                        <button pButton pRipple type="button"
+                            class="p-button-outlined p-button-success" [label]="detalle.edit ? 'Guardar' : 'Editar'"
+                            (click)="detalle.edit = !detalle.edit;"></button>
                     </div>
                 </div>
-                <button pButton pRipple type="button"
-                        class="p-button-outlined p-button-success" label="Guardar"
-                        (click)="guardarH(detalle)"></button>
-            </div>
-            <div class="card" *ngIf="detalle.type.includes('list')">
-                <h5>Type: {{detalle.type}}</h5>
-                <div class="p-fluid">
-                    <div class="field">
-                        <label [htmlFor]="'descripcion' + index">Descripción</label>
-                        <textarea pInputText [id]="'descripcion' + index" rows="5" [name]="'descripcion' + index" type="text" [(ngModel)]="detalle.name"></textarea>
+                <div class="card" *ngIf="detalle.type.includes('h2') || detalle.type.includes('h3')">
+                    <h5>Type: {{detalle.type}}</h5>
+                    <div class="p-fluid">
+                        <div class="field">
+                            <label [htmlFor]="'descripcion' + index">Descripción</label>
+                            <textarea pInputText [id]="'descripcion' + index" rows="5" [name]="'descripcion' + index" type="text" [(ngModel)]="detalle.data"></textarea>
+                        </div>
+                    </div>
+                    <button pButton pRipple type="button"
+                            class="p-button-outlined p-button-success" label="Guardar"
+                            (click)="guardarH(detalle)"></button>
+                </div>
+                <div class="card" *ngIf="detalle.type.includes('list')">
+                    <h5>Type: {{detalle.type}}</h5>
+                    <div class="p-fluid">
+                        <div class="field">
+                            <label [htmlFor]="'descripcion' + index">Descripción</label>
+                            <textarea pInputText [id]="'descripcion' + index" rows="5" [name]="'descripcion' + index" type="text" [(ngModel)]="detalle.name"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-12 text-center">
+                        <button pButton pRipple type="button"
+                                class="p-button-outlined p-button-success" label="Agregar"
+                                (click)="addList(detalle)"></button>
+                    </div>
+                    <div class="col-12" *ngIf="detalle.list.length">
+                        <p-orderList [value]="detalle.list" 
+                                    [listStyle]="{ 'max-height': '30rem' }" 
+                                    header="Opciones" 
+                                    [dragdrop]="true">
+                            <ng-template let-lista pTemplate="item">
+                                <div class="flex">
+                                    {{lista.name}}
+                                </div>
+                            </ng-template>
+                        </p-orderList>
+                    </div>
+                    <div class="col-12 text-center" *ngIf="detalle.list.length">
+                        <button pButton pRipple type="button"
+                                class="p-button-outlined p-button-help" label="Guardar"
+                                (click)="llenarTableContent()"></button>
                     </div>
                 </div>
-                <div class="col-12 text-center">
-                    <button pButton pRipple type="button"
-                            class="p-button-outlined p-button-success" label="Agregar"
-                            (click)="addList(detalle)"></button>
+                <div class="card" *ngIf="detalle.type.includes('table-content')">
+                    <h5>Type: {{detalle.type}}</h5>
+                    <ul>
+                        <li *ngFor="let content of detalle.list">
+                            {{content.name}}
+                            <ul *ngIf="content.sublist.length > 0">
+                                <li *ngFor="let list1 of content.sublist">
+                                    {{list1.name}}
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
-                <div class="col-12" *ngIf="detalle.list.length">
-                    <p-orderList [value]="detalle.list" 
-                                  [listStyle]="{ 'max-height': '30rem' }" 
-                                  header="Opciones" 
-                                  [dragdrop]="true">
-                        <ng-template let-lista pTemplate="item">
-                            <div class="flex">
-                                {{lista.name}}
-                            </div>
-                        </ng-template>
-                    </p-orderList>
-                </div>
-                <div class="col-12 text-center" *ngIf="detalle.list.length">
-                    <button pButton pRipple type="button"
-                            class="p-button-outlined p-button-help" label="Guardar"
-                            (click)="llenarTableContent()"></button>
-                </div>
-            </div>
-            <div class="card" *ngIf="detalle.type.includes('table-content')">
-                <h5>Type: {{detalle.type}}</h5>
-                <ul>
-                    <li *ngFor="let content of detalle.list">
-                        {{content.name}}
-                        <ul *ngIf="content.sublist.length > 0">
-                            <li *ngFor="let list1 of content.sublist">
-                                {{list1.name}}
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <div class="card" *ngIf="detalle.type.includes('video')">
-                <h5>Type: {{detalle.type}}</h5>
-                <div class="p-fluid">
-                    <div class="field">
-                        <label [htmlFor]="'descripcion' + index">Descripción</label>
-                        <textarea pInputText [id]="'descripcion' + index" rows="5" [name]="'descripcion' + index" type="text" [(ngModel)]="detalle.video"></textarea>
+                <div class="card" *ngIf="detalle.type.includes('video')">
+                    <h5>Type: {{detalle.type}}</h5>
+                    <div class="p-fluid">
+                        <div class="field">
+                            <label [htmlFor]="'descripcion' + index">Descripción</label>
+                            <textarea pInputText [id]="'descripcion' + index" rows="5" [name]="'descripcion' + index" type="text" [(ngModel)]="detalle.video"></textarea>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="card" *ngIf="detalle.type.includes('img')">
-               <h5>Type: {{detalle.type}}</h5>
-               <p-fileUpload name="autores[]"
-                             chooseLabel="Adjuntar foto autor" 
-                             url="http://localhost:5007/nchs/upload/file" 
-                             [headers]="detalle.uploader"
-                             (onUpload)="guardarNoticia($event, detalle)"
-                             (onSelect)="selectName($event)">
-               </p-fileUpload>
-               <div *ngIf="detalle.uploader && detalle.img" class="mt-12">
-                <img [src]="'http://localhost:3000/' + detalle.imgVP" style="max-width: 200px;" />
-               </div>
+                <div class="card" *ngIf="detalle.type.includes('img')">
+                <h5>Type: {{detalle.type}}</h5>
+                <p-fileUpload name="autores[]"
+                                chooseLabel="Adjuntar foto autor" 
+                                url="http://localhost:5007/nchs/upload/file" 
+                                [headers]="detalle.uploader"
+                                (onUpload)="guardarNoticia($event, detalle)"
+                                (onSelect)="selectName($event)">
+                </p-fileUpload>
+                <div *ngIf="detalle.uploader && detalle.img" class="mt-12">
+                    <img [src]="'http://localhost:3000/' + detalle.imgVP" style="max-width: 200px;" />
+                </div>
+                </div>
             </div>
         </div>
         <div class="col-12 text-center" *ngIf="noticia.detalle.length > 0">

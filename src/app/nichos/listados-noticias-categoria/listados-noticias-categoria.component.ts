@@ -179,7 +179,7 @@ export class ListadosNoticiasCategoriaComponent implements OnInit{
         'fechaModificacion': new Date()
       }, 
       _id: noticia._id,
-      idSQL: noticia.idSQL
+      idSQL: noticia.idNoticia
     }
 
     let estatus = noticia.publicado.dev ? 1 : 2;

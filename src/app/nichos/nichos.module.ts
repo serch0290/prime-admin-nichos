@@ -46,6 +46,7 @@ import { CKEditorModule } from 'ckeditor4-angular';
 import { OrderListModule } from 'primeng/orderlist';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { BadgeModule } from 'primeng/badge';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 let routes = [
     {
@@ -134,6 +135,7 @@ let routes = [
         OrderListModule,
         ContextMenuModule,
         BadgeModule,
+        DragDropModule,
         RouterModule.forChild(routes)
     ],
     declarations: [ListadoNichosComponent, PanoramaGeneralComponent, ConfiguracionGeneralComponent, 

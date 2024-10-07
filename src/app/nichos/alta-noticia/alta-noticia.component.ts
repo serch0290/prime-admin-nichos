@@ -7,6 +7,7 @@ import { cleanText } from 'src/app/lib/helpers';
 import { v4 } from 'uuid';
 import { BlogService } from '../services/blog.service';
 import { ConfiguracionService } from '../services/configuracion.service';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-alta-noticia',
@@ -351,6 +352,10 @@ getHeader(date:  number){
   }
 
   return uploader;
+}
+
+drop(event: CdkDragDrop<any[]>) {
+  moveItemInArray(this.noticia.detalle, event.previousIndex, event.currentIndex);
 }
 
 //Pendientes
