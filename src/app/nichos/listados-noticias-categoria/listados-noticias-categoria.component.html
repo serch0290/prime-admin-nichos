@@ -100,8 +100,13 @@
                                 <span>Prod:  <p-tag [severity]="noticia.publicado.prod ? 'success': 'danger'" [value]="noticia.publicado.prod ? 'Publicado': 'Sin publicar'"></p-tag></span>
                             </td>
                             <td>
-                                <span>Noticias Enlazadas: <p-badge [value]="getTotalNoticiasRelacionadas(noticia.IDNoticiasEnlazado)" severity="info"></p-badge></span><br>
-                                <span>Noticias Relacionadas: <p-badge [value]="getTotalNoticiasRelacionadas(noticia.IDNoticiasRelacionadas)" severity="info"></p-badge></span>
+                                <span>Noticias Enlazadas: <p-badge [value]="getTotalNoticiasRelacionadas(noticia.IDNoticiasEnlazado)" severity="info" 
+                                                                   (click)="abrirModalNoticias(noticia._id)"
+                                                                   class="pointer"></p-badge></span><br>
+                                <span>Noticias Relacionadas: <p-badge [value]="getTotalNoticiasRelacionadas(noticia.IDNoticiasRelacionadas)" 
+                                                                      severity="info" 
+                                                                      class="pointer"></p-badge></span>
+                                <app-noticias-relacionadas [visible]="visible" [idNoticia]="idNoticiaSelected" *ngIf="idNoticiaSelected"></app-noticias-relacionadas>
                             </td>
                             <td>
                                <span>Fecha Creación: {{getFormatoFecha(noticia.fechaCreacion)}}</span><br>

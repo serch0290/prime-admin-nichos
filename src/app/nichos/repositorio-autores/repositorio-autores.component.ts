@@ -35,7 +35,6 @@ export class RepositorioAutoresComponent implements OnInit{
        this.loading = true;
        this.autorService.listadoAutores()
            .subscribe(response=>{
-            console.log('listado autores: ', response);
             this.listadoAutores = response;
             this.loading = false;
            })

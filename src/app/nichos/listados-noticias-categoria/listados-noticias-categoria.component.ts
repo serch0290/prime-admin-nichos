@@ -33,6 +33,9 @@ export class ListadosNoticiasCategoriaComponent implements OnInit{
   public menuItemsProd: MenuItem[] = [];
   @ViewChild('contextMenuProd') contextMenuProd!: ContextMenu;
 
+  public visible: boolean;
+  public idNoticiaSelected: string;
+
   constructor(private nichosService: NichosService,
               private router: Router,
               private service: MessageService,
@@ -150,8 +153,6 @@ export class ListadosNoticiasCategoriaComponent implements OnInit{
     let arrayAutor = noticia.author.VP.split('/');
     comandos.push(`cp -r server/nichos/autores/${arrayAutor[1]} /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/images/autores`);
 
-    console.log('comandos: ', comandos);
-
     let campo = {
       $set: {
         'dev': true
@@ -260,6 +261,13 @@ export class ListadosNoticiasCategoriaComponent implements OnInit{
   getTotalNoticiasRelacionadas(totalNoticias: string){
     return totalNoticias.split(',').filter(item=> !item.includes('0')).length;
   }
-  
+   
+  /**
+   * Se abre modal de noticias
+   */
+  abrirModalNoticias(id: string){
+    this.idNoticiaSelected = id;
+    this.visible = true;
+  }
 
 }

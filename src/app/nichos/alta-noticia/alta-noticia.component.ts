@@ -296,7 +296,6 @@ export class AltaNoticiaComponent implements OnInit{
    */
  finalizarNoticia(){
   this.setBreadCrumbs();
-  this.generarRouting();
   this.noticia.redesSociales = this.listadoRedes.filter(item=> item.seleccionado);
   this.noticia.url = '/' + cleanText(this.noticia.h1);
   let nota = JSON.parse(JSON.stringify(this.noticia));
@@ -314,7 +313,8 @@ export class AltaNoticiaComponent implements OnInit{
   }
   this.blogService.guardarNoticia(this.idCategoria, nota, nicho)
       .subscribe(response=>{
-          this.regresar();
+        this.generarRouting();
+        this.regresar();
       });
  }
 

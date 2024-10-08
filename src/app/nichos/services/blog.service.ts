@@ -133,4 +133,11 @@ export class BlogService
         return this._http.patch(`${this.url}blog/publicar/noticia/nicho/${idNicho}`, {estatus, campo});
     }
 
+    /**
+     * Consulta noticias relacionadas
+     */
+    consultaNoticiasRelacionadas(id: string): Observable<any>{
+        return this._http.get(`${this.url}blog/consulta/noticias/relacionadas/${id}`);
+    }
+
 }
