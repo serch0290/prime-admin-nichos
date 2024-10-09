@@ -136,8 +136,8 @@ export class BlogService
     /**
      * Consulta noticias relacionadas
      */
-    consultaNoticiasRelacionadas(id: string): Observable<any>{
-        return this._http.get(`${this.url}blog/consulta/noticias/relacionadas/${id}`);
+    consultaNoticiasRelacionadas(id: string, idCategoria: string): Observable<any>{
+        return this._http.get(`${this.url}blog/consulta/noticias/relacionadas/${id}/categoria/${idCategoria}`);
     }
 
 }

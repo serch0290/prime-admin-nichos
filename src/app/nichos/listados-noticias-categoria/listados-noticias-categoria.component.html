@@ -101,12 +101,11 @@
                             </td>
                             <td>
                                 <span>Noticias Enlazadas: <p-badge [value]="getTotalNoticiasRelacionadas(noticia.IDNoticiasEnlazado)" severity="info" 
-                                                                   (click)="abrirModalNoticias(noticia._id)"
+                                                                   (click)="abrirModalNoticias(noticia)"
                                                                    class="pointer"></p-badge></span><br>
                                 <span>Noticias Relacionadas: <p-badge [value]="getTotalNoticiasRelacionadas(noticia.IDNoticiasRelacionadas)" 
                                                                       severity="info" 
                                                                       class="pointer"></p-badge></span>
-                                <app-noticias-relacionadas [visible]="visible" [idNoticia]="idNoticiaSelected" *ngIf="idNoticiaSelected"></app-noticias-relacionadas>
                             </td>
                             <td>
                                <span>Fecha Creación: {{getFormatoFecha(noticia.fechaCreacion)}}</span><br>
@@ -134,6 +133,11 @@
                 </p-table>
                 <p-contextMenu #contextMenuDev [model]="menuItems"></p-contextMenu>
                 <p-contextMenu #contextMenuProd [model]="menuItemsProd"></p-contextMenu>
+                <app-noticias-relacionadas [visible]="visible" [idNoticia]="noticiaSelected._id" 
+                                            *ngIf="noticiaSelected" 
+                                            [idCategoria]="noticiaSelected.categoria"
+                                            (guardar)="guardarNoticiasEnlazado($event)"
+                                            (close)="noticiaSelected = null"></app-noticias-relacionadas>
             </div>
         </div>
     </ng-container>

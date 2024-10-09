@@ -1,12 +1,44 @@
 <p-dialog 
-    header="Autores" 
+    header="Noticias Relacionadas" 
     [modal]="true"
     [(visible)]="visible" 
     [style]="{ width: '50rem' }" 
     [closable]="false"
     [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
-    <div class="col-12 text-left">
+        <div class="col-12 text-left">
+            <div class="flex flex-column align-items-center justify-content-center"
+            *ngIf="loading">
+            <p-progressSpinner ariaLabel="loading" />
+        </div>
 
+        <div class="flex flex-row flex-wrap" *ngIf="!loading">
+            <p-toast key="tst-nr"></p-toast>
+            <div class="flex flex-column align-items-center justify-content-center pointer mx-4" 
+                *ngFor="let noticia of listadoNoticias">
+                <div class="text-right w-100-p mb-2">
+                    <p-checkbox [(ngModel)]="noticia.selected" 
+                                [binary]="true" 
+                                inputId="binary"
+                                (onChange)="validaNoticias($event, noticia)" />
+                </div>
+                <img [src]="'https://prueba.com/assets/images/noticias/1728424038057/noticia_1024.webp'" class="w-200" style="max-height: 200px;"/>
+                    
+                <span class="font-size-16 pt-2">{{noticia.h1}}</span>
+            </div>
+            <div class="p-20" *ngIf="!listadoNoticias.length">
+                <strong class="font-size-20">Sin noticias relacionadas</strong>
+            </div>
+        </div>
+        <div class="col-12 text-center">
+            <p-button label="Cerrar"
+                      severity="danger"
+                      pTooltip="Cerrar"
+                      (click)="close.emit()"></p-button>
 
+            <p-button label="Guardar"
+                      severity="success"
+                      pTooltip="Guardar Noticias relacionadas"
+                      (click)="guardarNoticiasRelacionadas()"></p-button>
+        </div>
     </div>
 </p-dialog>
