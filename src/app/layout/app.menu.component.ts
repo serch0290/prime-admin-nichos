@@ -187,7 +187,8 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Configuración menú', icon: 'pi pi-fw pi-list', routerLink: [`/nicho/${idNicho}/menu`] },
                     { label: 'Configuración footer', icon: 'pi pi-fw pi-align-right', routerLink: [`/nicho/${idNicho}/footer`] },
                     { label: 'Configuración FTP', icon: 'pi pi-fw pi-folder-open', routerLink: [`/nicho/${idNicho}/FTP`] },
-                    { label: 'Repositorio', icon: 'pi pi-fw pi-server', routerLink: [`/nicho/${idNicho}/repo`] }
+                    { label: 'Repositorio', icon: 'pi pi-fw pi-server', routerLink: [`/nicho/${idNicho}/repo`] },
+                    { label: 'Configuración privacidad', icon: 'pi pi-fw pi-sliders-h', routerLink: [`/nicho/${idNicho}/privacidad`] }
                 ] 
             }
         ];

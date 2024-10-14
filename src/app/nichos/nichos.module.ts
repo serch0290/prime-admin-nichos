@@ -48,6 +48,7 @@ import { ContextMenuModule } from 'primeng/contextmenu';
 import { BadgeModule } from 'primeng/badge';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NoticiasRelacionadasComponent } from './noticias-relacionadas/noticias-relacionadas.component';
+import { ConfiguracionPrivacidadComponent } from './configuracion-privacidad/configuracion-privacidad.component';
 
 let routes = [
     {
@@ -97,6 +98,10 @@ let routes = [
     {
         path: 'nicho/:nicho/categoria/:idCategoria/alta/noticia/:idNoticia',
         component: AltaNoticiaComponent
+    },
+    {
+        path: 'nicho/:nicho/privacidad',
+        component: ConfiguracionPrivacidadComponent
     }
 ]
 
@@ -143,7 +148,7 @@ let routes = [
                    ConfiguracionBdComponent, ConfiguracionCategoriasComponent, ConfiguracionHomeComponent,
                    ConfiguracionRepositorioComponent, ConfiguracionMenuComponent, ConfiguracionFooterComponent,
                    ListadosNoticiasCategoriaComponent, AltaNoticiaComponent, RepositorioAutoresComponent,
-                   NoticiasRelacionadasComponent ],
+                   NoticiasRelacionadasComponent, ConfiguracionPrivacidadComponent ],
     providers: []
 })
 export class NichosModule { }

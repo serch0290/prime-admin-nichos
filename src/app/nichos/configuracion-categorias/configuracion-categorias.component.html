@@ -89,8 +89,17 @@
                                 <p-button label="Dev" class="mx-12" [loading]="loadings.dev" 
                                           [disabled]="!general?.carpetas?.dev"
                                           (click)="subirHomeDev(categoria)"
+                                          *ngIf="categoria.home"
                                           [severity]="categoria.dev ? 'success' : 'danger'"
                                           pTooltip="Generar el json de categoria para ambiente de dev" ></p-button>
+
+                                <p-button label="Dev" class="mx-12" [loading]="loadings.dev" 
+                                          [disabled]="!general?.carpetas?.dev"
+                                          (click)="subirCategoriaDev(categoria)"
+                                          *ngIf="!categoria.home"
+                                          [severity]="categoria.dev ? 'success' : 'danger'"
+                                          pTooltip="Generar el json de categoria para ambiente de dev" ></p-button>
+                                
 
                                 <p-button label="Prod" [loading]="loadings.prod" 
                                         [severity]="categoria.prod ? 'success' : 'danger'"

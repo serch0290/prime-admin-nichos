@@ -98,7 +98,15 @@ export class ConfiguracionCategoriasComponent implements OnInit{
     this.categoria.nicho = this.nicho._id;
     let nicho = {
       nombre: cleanText(this.nicho.nombre)
-   }
+    }
+
+    this.categoria.noticiasLateral = {
+      "title": "Lo más reciente"
+    };
+
+    this.categoria.intereses = {
+        "title": "Tambien te puede interesar"
+    }
 
     this.blogService.guardarCategoria(this.nicho._id, this.categoria, nicho)
         .subscribe(response=>{
@@ -145,6 +153,8 @@ export class ConfiguracionCategoriasComponent implements OnInit{
       comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/menu.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
       comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/footer.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
       comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/busqueda.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
+      
+
  
       let campos = {
        _id: categoria._id,
@@ -157,6 +167,25 @@ export class ConfiguracionCategoriasComponent implements OnInit{
           .subscribe(response=>{
            categoria.dev = response.categoria.dev;
           });
+   }
+
+   /**
+    * Se sube categoria a dev
+    */
+   subirCategoriaDev(categoria: any){
+    let comandos = [];
+    comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/${categoria.h1}.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
+    let campos = {
+      _id: categoria._id,
+        $set : {
+          dev: true
+        }
+     }
+
+     this.blogService.subirModificacionesDEV(comandos, campos)
+         .subscribe(response=>{
+          categoria.dev = response.categoria.dev;
+         });
    }
 
    /**
