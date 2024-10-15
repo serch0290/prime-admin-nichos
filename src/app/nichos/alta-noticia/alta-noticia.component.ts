@@ -359,13 +359,8 @@ drop(event: CdkDragDrop<any[]>) {
 }
 
 //Pendientes
-//En el listado de noticia agregar la opcion si ya hay noticias relacionadas y enlazadas Listo
-//Mover la foto del autor y generar bien la url
-//Agregar archivos de comentarios faltantes para que se agreguen
-//En archivo de repo quitar .ignore para que aunque este en oficina o casa yo actualizarlo y lo tome de los 2 lados
-//Validar si funciona bien la opcion de los hash # con la tabla de contenido
-//ver si puedo hacer que con un h3 que en automatico se agregue contenido <p> porque solo deja los titulos y necesito texto
 //si actualizo el nombre de la noticia, no se actualiza en bd de mysql
+//La foto generica de los comentarios no la tengo lista, ni la mando al nicho todavia
 
 }
 

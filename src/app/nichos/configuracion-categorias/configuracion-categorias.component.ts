@@ -57,6 +57,7 @@ export class ConfiguracionCategoriasComponent implements OnInit{
        this.general = nicho.general;
        this.database = nicho.database || {};
        this.listadoCategorias = categorias;
+       console.log('categorias: ', this.listadoCategorias)
        this.loading = false;
     });
   }
@@ -107,6 +108,10 @@ export class ConfiguracionCategoriasComponent implements OnInit{
     this.categoria.intereses = {
         "title": "Tambien te puede interesar"
     }
+
+    this.categoria.local = true;
+    this.categoria.dev = false;
+    this.categoria.prod = false;
 
     this.blogService.guardarCategoria(this.nicho._id, this.categoria, nicho)
         .subscribe(response=>{
@@ -174,10 +179,11 @@ export class ConfiguracionCategoriasComponent implements OnInit{
     */
    subirCategoriaDev(categoria: any){
     let comandos = [];
-    comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/${categoria.h1}.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
+    comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json${categoria.url}.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
     let campos = {
       _id: categoria._id,
         $set : {
+          local: true,
           dev: true
         }
      }

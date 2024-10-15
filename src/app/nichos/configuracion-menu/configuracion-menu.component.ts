@@ -50,8 +50,11 @@ export class ConfiguracionMenuComponent implements OnInit{
       this.blogService.consultaListadoCategorias(this.idNicho)
     ]).subscribe(([nicho, menus, categorias]) => {
       this.nicho = nicho.nicho;
-      this.menus = menus.menu;
-      this.idMenu = menus._id;
+      if(menus){
+         this.menu = menus;
+         this.menus = menus.menu;
+         this.idMenu = menus._id;
+      } 
       this.categorias = categorias.filter(item=> !item.home);
       this.loading = false;
     });
@@ -121,7 +124,7 @@ export class ConfiguracionMenuComponent implements OnInit{
  
       this.menuService.subirModificaciones(this.idMenu, data)
           .subscribe(response=>{
-           
+             this.menu = response.menu;
           });
   }
 }

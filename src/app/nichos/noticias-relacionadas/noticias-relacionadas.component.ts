@@ -16,6 +16,8 @@ export class NoticiasRelacionadasComponent implements OnInit{
   @Input() idCategoria: string;
   public loading: boolean;
   public listadoNoticias: Array<any> = [];
+  @Input() noticia: any;
+  @Input() tipo: number;
 
   @Output() close: EventEmitter<void> = new EventEmitter<void>();
   @Output() guardar: EventEmitter<string> = new EventEmitter<string>();
@@ -37,11 +39,31 @@ export class NoticiasRelacionadasComponent implements OnInit{
       this.loading = true;
       this.blogService.consultaNoticiasRelacionadas(this.idNoticia, this.idCategoria)
           .subscribe(response=>{
+            let arrayEnlazado = this.noticia.IDNoticiasEnlazado.split(',').map(Number);//1
+            let arrayRelacionado = this.noticia.IDNoticiasRelacionadas.split(',').map(Number);//2
+
             this.listadoNoticias = response;
+            this.listadoNoticias.forEach(item=>{
+              if(arrayEnlazado.includes(item.idNoticia) && this.tipo == 1 || 
+                 arrayRelacionado.includes(item.idNoticia) && this.tipo == 2){
+                 item.selected = true;
+              }
+
+              if(arrayEnlazado.includes(item.idNoticia) && this.tipo == 2 || 
+                 arrayRelacionado.includes(item.idNoticia) && this.tipo == 1){
+                 item.selected = true;
+                 item.disabled = true;
+              }
+            }); 
             this.loading = false;
           });
   }
 
+  /**
+   * 
+   * Se obtiene la imagen de la noticia
+   * @returns 
+   */
   getImagen(noticia: any){
     let img = noticia.detalle.find(item=> item.type.includes('img'));
     if(img) return img.imgVP;
@@ -63,7 +85,7 @@ export class NoticiasRelacionadasComponent implements OnInit{
    * Se guardan las noticias relacionadas
    */
   guardarNoticiasRelacionadas(){
-    let noticiasEnlazado = this.listadoNoticias.filter(item=> item.selected).map(elem=> elem.idNoticia).toString();
+    let noticiasEnlazado = this.listadoNoticias.filter(item=> item.selected && !item.disabled).map(elem=> elem.idNoticia).toString();
     this.guardar.emit(noticiasEnlazado);
   }
 

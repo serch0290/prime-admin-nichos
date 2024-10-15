@@ -48,6 +48,13 @@
                 <div class="col-12 p-message p-message-success" *ngFor="let menu of menus">
                     {{menu.name}}
                 </div>
+                <div class="col-12 text-right">
+                    <button pButton pRipple type="button"
+                            class="p-button-outlined p-button-help" 
+                            [ngClass]="menu.dev ? 'p-button-help' : 'p-button-danger'"
+                            label="Dev"
+                            (click)="subirModificacionesDev()"></button>
+                </div>
             </div>
         </div>
     </ng-container>

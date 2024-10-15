@@ -101,10 +101,11 @@
                             </td>
                             <td>
                                 <span>Noticias Enlazadas: <p-badge [value]="getTotalNoticiasRelacionadas(noticia.IDNoticiasEnlazado)" severity="info" 
-                                                                   (click)="abrirModalNoticias(noticia)"
+                                                                   (click)="abrirModalNoticias(noticia, 1)"
                                                                    class="pointer"></p-badge></span><br>
                                 <span>Noticias Relacionadas: <p-badge [value]="getTotalNoticiasRelacionadas(noticia.IDNoticiasRelacionadas)" 
                                                                       severity="info" 
+                                                                      (click)="abrirModalNoticias(noticia, 2)"
                                                                       class="pointer"></p-badge></span>
                             </td>
                             <td>
@@ -135,6 +136,8 @@
                 <p-contextMenu #contextMenuProd [model]="menuItemsProd"></p-contextMenu>
                 <app-noticias-relacionadas [visible]="visible" [idNoticia]="noticiaSelected._id" 
                                             *ngIf="noticiaSelected" 
+                                            [tipo] = "tipo"
+                                            [noticia]="noticiaSelected"
                                             [idCategoria]="noticiaSelected.categoria"
                                             (guardar)="guardarNoticiasEnlazado($event)"
                                             (close)="noticiaSelected = null"></app-noticias-relacionadas>

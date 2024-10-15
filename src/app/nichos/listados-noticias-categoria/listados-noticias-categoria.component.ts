@@ -37,6 +37,7 @@ export class ListadosNoticiasCategoriaComponent implements OnInit{
   public idNoticiaSelected: string;
   public idCategoriaSelected: string;
   public noticiaSelected: any;
+  public tipo: number;
 
   constructor(private nichosService: NichosService,
               private router: Router,
@@ -267,8 +268,9 @@ export class ListadosNoticiasCategoriaComponent implements OnInit{
   /**
    * Se abre modal de noticias
    */
-  abrirModalNoticias(noticia: any){
+  abrirModalNoticias(noticia: any, tipo: number){
     this.noticiaSelected = noticia;
+    this.tipo = tipo;
     this.visible = true;
   }
 
@@ -278,7 +280,11 @@ export class ListadosNoticiasCategoriaComponent implements OnInit{
   guardarNoticiasEnlazado(idEnlazado: string){
     this.visible = false;
 
-    this.noticiaSelected.IDNoticiasEnlazado = idEnlazado;
+    if(this.tipo == 1)
+       this.noticiaSelected.IDNoticiasEnlazado = idEnlazado;
+    else
+       this.noticiaSelected.IDNoticiasRelacionadas = idEnlazado;
+
     this.noticiaSelected.local = true;
     this.noticiaSelected.dev = false;
     this.noticiaSelected.prod = false;
@@ -292,6 +298,7 @@ export class ListadosNoticiasCategoriaComponent implements OnInit{
     this.blogService.guardarNoticia(this.idCategoria, this.noticiaSelected, nicho)
         .subscribe(response=>{
           this.noticiaSelected = null;
+          this.tipo = null;
         });
   }
 

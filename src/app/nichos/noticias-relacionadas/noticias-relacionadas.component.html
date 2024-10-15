@@ -4,7 +4,7 @@
     [(visible)]="visible" 
     [style]="{ width: '50rem' }" 
     [closable]="false"
-    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+    [breakpoints]="{ '1599px': '75vw', '575px': '90vw' }">
         <div class="col-12 text-left">
             <div class="flex flex-column align-items-center justify-content-center"
             *ngIf="loading">
@@ -19,9 +19,10 @@
                     <p-checkbox [(ngModel)]="noticia.selected" 
                                 [binary]="true" 
                                 inputId="binary"
+                                [disabled]="noticia.disabled"
                                 (onChange)="validaNoticias($event, noticia)" />
                 </div>
-                <img [src]="'https://prueba.com/assets/images/noticias/1728424038057/noticia_1024.webp'" class="w-200" style="max-height: 200px;"/>
+                <img [src]="'http://localhost:3000/' + getImagen(noticia)" class="w-200" style="height: 200px;"/>
                     
                 <span class="font-size-16 pt-2">{{noticia.h1}}</span>
             </div>
@@ -31,6 +32,7 @@
         </div>
         <div class="col-12 text-center">
             <p-button label="Cerrar"
+                      class="mr-4"
                       severity="danger"
                       pTooltip="Cerrar"
                       (click)="close.emit()"></p-button>

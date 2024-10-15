@@ -452,7 +452,7 @@ export class ConfiguracionGeneralComponent implements OnInit{
 
   let comandos = [];
   for(let file of files){
-      comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}${file.path}${file.file} /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}${file.path}${file.file}`);
+      comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}${file.path}${file.file} /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}${file.path}`);
   }
   
   comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/.htaccess /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}`);
