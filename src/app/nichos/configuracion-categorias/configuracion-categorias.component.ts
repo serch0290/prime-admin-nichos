@@ -118,7 +118,7 @@ export class ConfiguracionCategoriasComponent implements OnInit{
           this.consultaListadoCategorias();
           this.generarRouting();
           this.altaCategoria = false;
-          this.categoria = { idSQL: 0 };
+          this.categoria = { idCategoria: 0 };
         });
   }
 
@@ -139,7 +139,7 @@ export class ConfiguracionCategoriasComponent implements OnInit{
   setBreadCrumbs(){
     this.categoria.breadcrumb = [];
     this.categoria.breadcrumb.push({name: 'Inicio', link: '/' + this.general.dominio});
-    this.categoria.breadcrumb.push({name: this.categoria.nombre});
+    this.categoria.breadcrumb.push({name: this.categoria.h1});
   }
 
   /**
@@ -200,7 +200,14 @@ export class ConfiguracionCategoriasComponent implements OnInit{
    irListadoNoticias(categoria: any){
     this.router.navigate([`nicho/${this.idNicho}/categoria/${categoria._id}/listado/noticias`]);
    }
- 
+  
+   /**
+    * Se editan los datos de la categoria
+    */
+   editarCategoria(categoria: any){
+     this.altaCategoria = true;
+     this.categoria = categoria;
+   }
 
 
 }
