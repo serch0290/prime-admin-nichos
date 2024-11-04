@@ -64,6 +64,8 @@ export class AltaNoticiaComponent implements OnInit{
         this.general = nicho.general;
         this.categoria = categoria;
 
+        console.log('categoria: ', this.categoria);
+
         /**
          * Si trae la noticia si es una noticia ya guardada
          */
@@ -309,7 +311,7 @@ export class AltaNoticiaComponent implements OnInit{
   let nicho = {
     nombre: cleanText(this.nicho.nombre),
     id: this.nicho._id,
-    idCategoria: this.categoria.idSQL
+    idCategoria: this.categoria.idCategoria
   }
   this.blogService.guardarNoticia(this.idCategoria, nota, nicho)
       .subscribe(response=>{
@@ -361,6 +363,7 @@ drop(event: CdkDragDrop<any[]>) {
 //Pendientes
 //si actualizo el nombre de la noticia, no se actualiza en bd de mysql
 //La foto generica de los comentarios no la tengo lista, ni la mando al nicho todavia
+//En buscador si no se encontraron noticias, poner noticias interesantes, actualmente no hay
 
 }
 
