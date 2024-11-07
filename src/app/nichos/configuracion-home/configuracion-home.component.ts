@@ -20,6 +20,7 @@ export class ConfiguracionHomeComponent implements OnInit{
   public idCategoria: string;
   public noticia: any = {};
   public buscador: any = {};
+  public general: any = {};
 
   constructor(private router: Router,
               private nichosService: NichosService,
@@ -45,6 +46,7 @@ export class ConfiguracionHomeComponent implements OnInit{
       this.blogService.getHome(this.idCategoria)
     ]).subscribe(([nicho, categoria]) => {
       this.nicho = nicho.nicho;
+      this.general = nicho.general;
       this.noticia = categoria.home || {};
       if(!this.noticia.noticias_style1){
          this.noticia.noticias_style1 = {}
@@ -84,12 +86,12 @@ export class ConfiguracionHomeComponent implements OnInit{
    */
   guardarConfiguracion(){
     if(this.noticia.paginador){
-       this.noticia.noticias_style1.mascara = `${this.noticia.noticias_style1.prefijo}/pagina/{idPagina}`;
+       this.noticia.noticias_style1.mascara = `${this.general.dominio}/pagina/{idPagina}`;
        this.noticia.noticias_style1.pagination = {
          name: "pagina",
-         mask: `${this.noticia.noticias_style1.prefijo}/pagina/#`,
-         prefix : `${this.noticia.noticias_style1.prefijo}/pagina/`,
-         dominio: this.noticia.noticias_style1.dominio,
+         mask: `${this.general.dominio}/pagina/#`,
+         prefix : `${this.general.dominio}/pagina/`,
+         dominio: this.general.dominio,
          paginasMostrar: 6
        };
     }else if(this.noticia.noticias_style1){
@@ -127,14 +129,14 @@ export class ConfiguracionHomeComponent implements OnInit{
   }
 
   guardarBusqueda(){
-    this.buscador.noticias_style1.mascara = `${this.buscador.noticias_style1.prefijo}/pagina/{idPagina}`;
+    this.buscador.noticias_style1.mascara = `${this.general.dominio}/pagina/{idPagina}`;
 
     if(this.noticia.paginador){
        this.buscador.noticias_style1.pagination = {
         name: "pagina",
-        mask: `${this.buscador.noticias_style1.prefijo}/pagina/#`,
-        prefix : `${this.buscador.noticias_style1.prefijo}/pagina/`,
-        dominio: this.buscador.noticias_style1.dominio,
+        mask: `${this.general.dominio}/pagina/#`,
+        prefix : `${this.general.dominio}/pagina/`,
+        dominio: this.general.dominio,
         paginasMostrar: 6
        };
     }else{

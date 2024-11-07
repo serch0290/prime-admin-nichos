@@ -363,7 +363,7 @@ drop(event: CdkDragDrop<any[]>) {
 //Pendientes
 //si actualizo el nombre de la noticia, no se actualiza en bd de mysql
 //La foto generica de los comentarios no la tengo lista, ni la mando al nicho todavia
-//Me falta el buscador
+//Me falta el buscador --Listo
 //Me falta la pagina de no_found
 //y las faltantes que serian de privacidad y acerca de mi, contacto
 //checar que en todas las paginas salgan las cookies y tengo muchos ajustes pendientes en el otro repo checarlo.
