@@ -1,0 +1,93 @@
+<div class="grid">
+    <div class="flex flex-column align-items-center justify-content-center"
+         *ngIf="loading">
+        <p-progressSpinner ariaLabel="loading" />
+    </div>
+    <div class="col-12">
+        <div class="card" *ngIf="!loading">
+            <h1>Configuración para la conexión en BD</h1>
+            <h5>Nicho: {{nicho.nombre}}</h5>
+            <div class="col-12 text-right">
+                <button pButton pRipple type="button" icon="pi pi-arrow-left" 
+                    class="p-button-outlined p-button-success" label="Regresar"
+                    (click)="regresar()"></button>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card" *ngIf="!loading">
+            <div class="flex flex-row">
+                <div class="flex flex-column align-items-center justify-content-center pointer mx-4 p-2" 
+                     *ngFor="let autor of autores" 
+                     [ngClass]="{'selected': autor.selected}"
+                     (click)="seleccionarAutor(autor)">
+                    <img [src]="'http://localhost:3000/' + autor.img" class="w-60 border-circle"/>
+                    <span class="font-size-16 pt-2">{{autor.autor}}</span>
+                    <span *ngIf="autor.home" class="">Home</span>
+                </div>
+            </div>
+            <div class="p-20" *ngIf="!autores.length">
+                <strong class="font-size-20">Sin autores dados de alta</strong>
+            </div>
+        </div>
+    </div>
+    <div class="col-12" *ngIf="showDetalle">
+        <div class="card">
+            <div class="p-fluid">
+                <div class="field text-center">
+                    <img [src]="'http://localhost:3000/' + autor.img" class="w-120 border-circle"/>
+                </div>
+                <div class="field">
+                    <label htmlFor="autor">Autor</label>
+                    <input pInputText id="autor" name="autor" type="text" [(ngModel)]="autor.autor"/>
+                </div>
+                <div class="field">
+                    <label htmlFor="descripcion">Descripción</label>
+                    <textarea pInputText id="descripcion" rows="5" name="descripcion" type="text" [(ngModel)]="autor.descripcion"></textarea>
+                </div>
+                <div class="field">
+                    <label htmlFor="descripcionLarga">Descripción larga</label>
+                    <ckeditor class="h-100-p" name="descripcionLarga" contenteditable="true"  [(ngModel)]="autor.descripcionLarga" >
+                    </ckeditor>
+                </div>
+                <p-fileUpload name="autores[]"
+                              chooseLabel="Actualizar foto autor" 
+                              url="http://localhost:5007/nchs/upload/file" 
+                              [headers]="header"
+                              (onUpload)="onUpload($event)"
+                              (onSelect)="selectName($event, 1)">
+                </p-fileUpload>
+            </div>
+            <div class="field mt-2">
+                <p-checkbox [binary]="true" name="home" inputId="home" [(ngModel)]="autor.home"></p-checkbox>
+                <label for="home">Home</label>
+            </div>
+            <div class="field">
+                <p-checkbox [binary]="true" name="sobremi" inputId="sobremi" [(ngModel)]="autor.sobremi"></p-checkbox>
+                <label for="sobremi">Sobre Mi</label>
+            </div>
+            <div class="col-12 text-right">
+                <p-button label="Local" [loading]="loadings.local" 
+                          [severity]="autor.ambiente?.local ? 'success' : 'danger'"
+                          pTooltip="Autor generado en local"></p-button>
+
+                <p-button label="Dev" [loading]="loadings.dev" 
+                          class="mx-4"
+                          (click)="subirModificacionesDEV()"
+                          [severity]="autor.ambiente?.dev ? 'success' : 'danger'"
+                          pTooltip="Autor generado en dev"></p-button>
+
+                <p-button label="Prod" [loading]="loadings.local" 
+                          [severity]="autor.ambiente?.prod ? 'success' : 'danger'"
+                          pTooltip="Autor generado en prod"></p-button>
+            </div>
+            <div class="col-12 text-center">
+                <p-toast key="tst"></p-toast>
+                <button pButton pRipple type="button" label="Guardar" 
+                        (click)="guardarAutor()"
+                        class="p-button-raised p-button-success mr-4"></button>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -89,7 +89,14 @@ export class RepositorioAutoresComponent implements OnInit{
      * Se guarda el autor
      */
     guardarAutor(){
-      this.autorService.guardarAutor(this.autor)
+      this.autor.ambiente = {
+        local: true,
+        dev: false,
+        prod: false
+      }
+      this.autor.home = false;
+      this.autor.sobremi = false;
+      this.autorService.guardarAutor(this.autor, {})
           .subscribe(response=>{
             this.consultaListadoAutores();
             this.alta = false;

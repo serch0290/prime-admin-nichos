@@ -368,6 +368,8 @@ drop(event: CdkDragDrop<any[]>) {
 //y las faltantes que serian de privacidad y acerca de mi, contacto
 //checar que en todas las paginas salgan las cookies y tengo muchos ajustes pendientes en el otro repo checarlo.
 //tambien debo de checar que funciona la paginacion
-
+//En alta de noticia autor, imagen y redes sociales deben de ser obligatorios, si no lo capturo mandar mensaje
+//Foto de autor esta muy pesada mucha calidad y es jpg cambiarla al formato de las otras
+//Ver si con ftp puedo hacer respaldos del codigo, para que cuando suba alga primero se respalde todo y suba por si desmadro algo poderlo regresar
 }
 

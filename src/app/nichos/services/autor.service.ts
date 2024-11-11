@@ -36,8 +36,18 @@ export class AutorService
      * @param autor SCF
      * Se guarda el autor
      */
-    guardarAutor(autor: any): Observable<any>{
-        return this._http.post(`${this.url}autor/guardar/autor`, autor);
+    guardarAutor(autor: any, nicho: any): Observable<any>{
+        return this._http.post(`${this.url}autor/guardar/autor`, {autor, nicho});
+    }
+
+    /**
+     * 
+     * @param data
+     * Se sube data del autor
+     */
+    subirAutorDev(data: any): Observable<any>{
+        return this._http.post(`${this.url}autor/subir/autor/dev`, data);
+        
     }
 }
 

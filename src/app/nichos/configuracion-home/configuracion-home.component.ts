@@ -89,8 +89,8 @@ export class ConfiguracionHomeComponent implements OnInit{
        this.noticia.noticias_style1.mascara = `${this.general.dominio}/pagina/{idPagina}`;
        this.noticia.noticias_style1.pagination = {
          name: "pagina",
-         mask: `${this.general.dominio}/pagina/#`,
-         prefix : `${this.general.dominio}/pagina/`,
+         mask: `/pagina/#`,
+         prefix : `/pagina/`,
          dominio: this.general.dominio,
          paginasMostrar: 6
        };
@@ -134,8 +134,8 @@ export class ConfiguracionHomeComponent implements OnInit{
     if(this.noticia.paginador){
        this.buscador.noticias_style1.pagination = {
         name: "pagina",
-        mask: `${this.general.dominio}/pagina/#`,
-        prefix : `${this.general.dominio}/pagina/`,
+        mask: `/pagina/#`,
+        prefix : `/pagina/`,
         dominio: this.general.dominio,
         paginasMostrar: 6
        };
