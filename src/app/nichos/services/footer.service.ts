@@ -22,8 +22,8 @@ export class FooterService
     /**
      * Se guarda el menú
      */
-    saveFooter(_id: string, nicho: string, nombre: string, footer: any): Observable<any>{
-      return this._http.post(`${this.url}footer/guardar/footer`, {_id, nicho, footer, nombre});
+    saveFooter(_id: string, nicho: string, nombre: string, footer: any, breadcrumb: any): Observable<any>{
+      return this._http.post(`${this.url}footer/guardar/footer`, {_id, nicho, footer, nombre, breadcrumb});
     }
 
     /**

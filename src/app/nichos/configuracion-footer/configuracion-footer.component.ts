@@ -45,7 +45,7 @@ export class ConfiguracionFooterComponent implements OnInit{
      this.listadoFooter.push({id: 2, name: 'Aviso Legal', url: this.general.dominio + '/aviso-legal', urlAlone: '/aviso-legal', file: 'sp_privacidad.php'}); 
      this.listadoFooter.push({id: 3, name: 'Política de Cookies', url: this.general.dominio + '/cookies', urlAlone: '/cookies', file: 'sp_privacidad.php'}); 
      this.listadoFooter.push({id: 4, name: 'Política de privacidad', url: this.general.dominio + '/politica-privacidad', urlAlone: '/politica-privacidad', file: 'sp_privacidad.php'}); 
-     this.listadoFooter.push({id: 5, name: 'Contacto', url: this.general.dominio + '/contacto', urlAlone: '/contacto', file: 'sp_contacto.php'}); 
+     this.listadoFooter.push({id: 5, name: 'Contacto', url: this.general.dominio + '/contacto', urlAlone: '/contacto', file: 'sp_contacto.php', json: true, fileJson: 'contacto.json'}); 
   }
 
   /**11
@@ -88,8 +88,10 @@ export class ConfiguracionFooterComponent implements OnInit{
        return;
     }
 
+    let breadcrumb = this.generaBreadcums(this.selectedOption.name);
+
     this.loadings.local = true;
-    this.footerService.saveFooter(this.dataFooter._id, this.idNicho, cleanText(this.nicho.nombre), this.selectedOption)
+    this.footerService.saveFooter(this.dataFooter._id, this.idNicho, cleanText(this.nicho.nombre), this.selectedOption, breadcrumb)
         .subscribe(response=>{
             this.msgsFooter = [];
             this.msgsFooter.push({ severity: 'success', summary: 'Correcto', detail: 'Se guardo footer en local correctamente', key: 'message-footer' });
@@ -157,6 +159,13 @@ export class ConfiguracionFooterComponent implements OnInit{
         }, error=>{
           this.loadings.dev = false;
         });
+  }
+
+  generaBreadcums(seccion: string){
+    let breadcrumb = [];
+    breadcrumb.push({name: 'Inicio', link: this.general.dominio});
+    breadcrumb.push({name: seccion});
+    return breadcrumb;
   }
 
   /**
