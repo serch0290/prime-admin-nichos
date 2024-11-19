@@ -189,7 +189,6 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Configuración FTP', icon: 'pi pi-fw pi-folder-open', routerLink: [`/nicho/${idNicho}/FTP`] },
                     { label: 'Repositorio', icon: 'pi pi-fw pi-server', routerLink: [`/nicho/${idNicho}/repo`] },
                     { label: 'Autores', icon: 'pi pi-fw pi-user', routerLink: [`/nicho/${idNicho}/autores`] },
-                    { label: 'Politicas', icon: 'pi pi-fw pi-user', routerLink: [`/nicho/${idNicho}/politicas`] },
                     { label: 'Configuración privacidad', icon: 'pi pi-fw pi-sliders-h', routerLink: [`/nicho/${idNicho}/privacidad`] }
                 ] 
             }

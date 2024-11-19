@@ -39,4 +39,11 @@ export class FooterService
     subirModificaciones(id: string, data: any): Observable<any>{
         return this._http.post(`${this.url}footer/subir/modificaciones/dev/${id}`, data);
     }
+
+    /**
+     * Se actualizan los datos del footer y los json para las secciones
+     */
+    actualizarFooter(footer: any, idNicho: string, nombre: string, selected: any, breadcrumb: any): Observable<any>{
+        return this._http.post(`${this.url}footer/actualizar/footer`, {footer, idNicho, nombre, selected, breadcrumb});
+    }
 }

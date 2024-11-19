@@ -8,12 +8,23 @@
             <h1>Configuración para la conexión en BD</h1>
             <h5>Nicho: {{nicho.nombre}}</h5>
             <div class="col-12 text-right">
+                <button pButton pRipple type="button"
+                    class="p-button-outlined p-button-success mr-4" 
+                    label="Alta Autor"
+                    (click)="modalAutores = true"></button>
+
                 <button pButton pRipple type="button" icon="pi pi-arrow-left" 
                     class="p-button-outlined p-button-success" label="Regresar"
                     (click)="regresar()"></button>
             </div>
         </div>
     </div>
+    <app-repositorio-autores [visible]="modalAutores" 
+                             (close) = "modalAutores = false" 
+                             [idNicho] = "idNicho"
+                             [cAlta] = "true"
+                             *ngIf="modalAutores"
+                             (autorEmit) = "consultarInformacion()"></app-repositorio-autores>
     <div class="col-12">
         <div class="card" *ngIf="!loading">
             <div class="flex flex-row">

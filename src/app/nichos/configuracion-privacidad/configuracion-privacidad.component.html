@@ -1,6 +1,6 @@
 <div class="grid">
     <div class="col-12">
-        <div class="card">
+        <div class="card" *ngIf="!loading">
             <h1>Configuración privacidad del sitio</h1>
             <h5>Nicho: {{nicho.nombre}}</h5>
 
@@ -8,6 +8,98 @@
                 <button pButton pRipple type="button" icon="pi pi-arrow-left" 
                     class="p-button-outlined p-button-success" label="Regresar"
                     (click)="regresar()"></button>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <h4>Policita de Privacidad</h4>
+            <ckeditor class="h-100-p" name="privacidad" contenteditable="true"  [(ngModel)]="privacidad.texto" >
+            </ckeditor>
+            <div class="col-12 text-center">
+                <button pButton pRipple type="button" label="Guardar Politica de privacidad" 
+                        class="p-button-raised p-button-success mr-4"
+                        (click)="guardarPrivacidad(1)"></button>
+            </div>
+            <div class="col-12 text-right">
+                <p-button label="Local" [loading]="loadingsPriv.local" 
+                                  [severity]="privacidad.local ? 'success' : 'danger'"
+                                  pTooltip="Generar privacidad en local"></p-button>
+
+                    <p-button label="Dev" class="mx-12" [loading]="loadingsPriv.dev" 
+                                  [disabled]="!privacidad.local"
+                                  (click)="subirModificacionesDev(1)"
+                                  [severity]="privacidad.dev ? 'success' : 'danger'"
+                                  pTooltip="Generar privacidad en dev" ></p-button>
+
+                    <p-button label="Prod" [loading]="loadingsPriv.prod" 
+                                  [severity]="privacidad.prod ? 'success' : 'danger'"
+                                  [disabled]="true"
+                                  pTooltip="Generar privacidad en producción" ></p-button>
+
+                   <p-messages [value]="msgsPrivacidad" key="message-privacidad"></p-messages>             
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <h4>Policita de Cookies</h4>
+            <ckeditor class="h-100-p" name="cookies" contenteditable="true"  [(ngModel)]="cookies.texto" >
+            </ckeditor>
+            <div class="col-12 text-center">
+                <button pButton pRipple type="button" label="Guardar Politica de cookies" 
+                        class="p-button-raised p-button-success mr-4"
+                        (click)="guardarPrivacidad(2)"></button>
+            </div>
+            <div class="col-12 text-right">
+                <p-button label="Local" [loading]="loadingsCook.local" 
+                                  [severity]="cookies.local ? 'success' : 'danger'"
+                                  pTooltip="Generar cookies en local"></p-button>
+
+                    <p-button label="Dev" class="mx-12" [loading]="loadingsCook.dev" 
+                                  [disabled]="!cookies.local"
+                                  (click)="subirModificacionesDev(2)"
+                                  [severity]="cookies.dev ? 'success' : 'danger'"
+                                  pTooltip="Generar cookies en dev" ></p-button>
+
+                    <p-button label="Prod" [loading]="loadingsCook.prod" 
+                                  [severity]="cookies.prod ? 'success' : 'danger'"
+                                  [disabled]="true"
+                                  pTooltip="Generar cookies en producción" ></p-button>
+
+                   <p-messages [value]="msgsCookies" key="message-cookies"></p-messages>             
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <h4>Aviso Legal</h4>
+            <ckeditor class="h-100-p" name="aviso" contenteditable="true"  [(ngModel)]="aviso.texto" >
+            </ckeditor>
+            <div class="col-12 text-center">
+                <button pButton pRipple type="button" label="Guardar Aviso legal" 
+                        class="p-button-raised p-button-success mr-4"
+                        (click)="guardarPrivacidad(3)"></button>
+            </div>
+            <div class="col-12 text-right">
+                <p-button label="Local" [loading]="loadingsAviso.local" 
+                                  [severity]="aviso.local ? 'success' : 'danger'"
+                                  pTooltip="Generar aviso legal en local"></p-button>
+
+                    <p-button label="Dev" class="mx-12" [loading]="loadingsAviso.dev" 
+                                  [disabled]="!aviso.local"
+                                  (click)="subirModificacionesDev(3)"
+                                  [severity]="aviso.dev ? 'success' : 'danger'"
+                                  pTooltip="Generar aviso legal en dev" ></p-button>
+
+                    <p-button label="Prod" [loading]="loadingsAviso.prod" 
+                                  [severity]="aviso.prod ? 'success' : 'danger'"
+                                  [disabled]="true"
+                                  pTooltip="Generar aviso legal en producción" ></p-button>
+
+                   <p-messages [value]="msgsCookies" key="message-aviso"></p-messages>             
             </div>
         </div>
     </div>

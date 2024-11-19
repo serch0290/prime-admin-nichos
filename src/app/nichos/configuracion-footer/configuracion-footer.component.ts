@@ -88,8 +88,8 @@ export class ConfiguracionFooterComponent implements OnInit{
        return;
     }
 
-    let breadcrumb = this.generaBreadcums(this.selectedOption.name);
-
+    let breadcrumb = {breadcrumb: this.generaBreadcums(this.selectedOption.name) }
+ 
     this.loadings.local = true;
     this.footerService.saveFooter(this.dataFooter._id, this.idNicho, cleanText(this.nicho.nombre), this.selectedOption, breadcrumb)
         .subscribe(response=>{
@@ -102,11 +102,40 @@ export class ConfiguracionFooterComponent implements OnInit{
   }
 
   /**
+   * Se actualzia el footer
+   */
+  actualizarFooter(){
+    if(!this.selectedOption){
+      this.service.add({ key: 'tst', severity: 'warn', summary: 'Alerta', detail: 'Favor de seleccionar una opción' });
+      return;
+   }
+
+   let breadcrumb = { breadcrumb: this.generaBreadcums(this.selectedOption.name) }
+
+   this.loadings.local = true;
+   this.footerService.actualizarFooter(this.dataFooter, this.idNicho, cleanText(this.nicho.nombre), this.selectedOption, breadcrumb)
+       .subscribe(response=>{
+           this.msgsFooter = [];
+           this.msgsFooter.push({ severity: 'success', summary: 'Correcto', detail: 'Se guardo footer en local correctamente', key: 'message-footer' });
+           this.consultaFooter();
+           this.loadings.local = false;
+       });
+  }
+
+  /**
    * Se sube archivo de menú al ambiente de dev
    */
   subirModificacionesDev(){
     let comandos = [];
       comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/footer.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
+    
+      for(let footer of this.dataFooter.footer){
+          if(footer.json){
+             comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/${footer.fileJson} /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
+          }
+          
+      }
+
       let campos = {
          $set : {
            dev: true
@@ -123,6 +152,7 @@ export class ConfiguracionFooterComponent implements OnInit{
           .subscribe(response=>{
             this.msgsFooter = [];
             this.subirRoutingDev();
+            this.consultaFooter();
             this.msgsFooter.push({ severity: 'success', summary: 'Correcto', detail: 'Se guardo footer en dev correctamente', key: 'message-footer' });
             this.loadings.dev = false;
           });

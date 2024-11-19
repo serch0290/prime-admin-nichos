@@ -24,6 +24,7 @@ export class ConfiguracionAutoresComponent implements OnInit{
    public header: any = {};
    public general: any = {};
    public loadings: any = {local: false, dev: false, prod: false};
+   public modalAutores: boolean = false;
 
    constructor(public autorService: AutorService,
                private nichosService: NichosService,
@@ -57,6 +58,7 @@ export class ConfiguracionAutoresComponent implements OnInit{
    */
   consultarInformacion(){
     this.loading = true;
+    this.modalAutores = false;
     forkJoin([
       this.nichosService.consultaNichoById(this.idNicho),
       this.autorService.listadoAutores()
@@ -72,6 +74,7 @@ export class ConfiguracionAutoresComponent implements OnInit{
    * Se selecciona el autor que se va a verificar sus descripciones
    */
   seleccionarAutor(autor: any){
+    this.autores.forEach(item=> item.selected = false);
     autor.selected = true;
     this.autor = autor;
     this.headerAutor();
@@ -139,6 +142,7 @@ export class ConfiguracionAutoresComponent implements OnInit{
       .subscribe(response=>{
         this.autor = response;
         this.service.add({ key: 'tst', severity: 'success', summary: 'Alerta', detail: 'Se guardo el autor correctamente' });
+        this.consultarInformacion();
       });
 }
 
@@ -149,6 +153,9 @@ subirModificacionesDEV(){
   let comandos: Array<any> = [];
   comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/about-us.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
   comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/sobre-mi.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
+
+  let arrayAutor = this.autor.img.split('/');
+  comandos.push(`cp -r server/nichos/autores/${arrayAutor[1]} /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/images/autores`);
 
   let campo = {
     _id: this.autor._id,

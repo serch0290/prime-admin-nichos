@@ -107,7 +107,7 @@ export class AltaNoticiaComponent implements OnInit{
       this.noticia.author = {};
       this.noticia.author = autor;
       this.noticia.author.VP = this.noticia.author.img;
-      this.noticia.author.img = this.general.dominio + '/assets/images/' +this.noticia.author.VP;
+      this.noticia.author.img = this.noticia.author.img400;
       this.modalAutores = false;
       
     }
