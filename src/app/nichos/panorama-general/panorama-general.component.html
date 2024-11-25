@@ -10,13 +10,44 @@
             </div>
         </div>
     </div>
-    <div class="col-6">
+    <div class="col-12" *ngIf="!loading">
         <div class="card">
-            <h4>Configuracion general</h4>
-            <h5>Generación de carpetas: </h5>
-        </div>
-    </div>
-    <div class="col-6">
-
+            <p-table [value]="panoramaGeneral" 
+                     [scrollable]="true" 
+                      scrollHeight="800px"
+                      rowGroupMode="subheader"
+                      groupRowsBy="proceso.id"  
+                      [tableStyle]="{'min-width': '60rem'}">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Proceso</th>
+                        <th>Local</th>
+                        <th>Dev</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="groupheader" let-panorama>
+                    <tr pRowGroupHeader>
+                        <td colspan="3">
+                            <span class="font-bold ml-2">{{panorama.proceso.name}}</span>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-panorama let-rowIndex="rowIndex">
+                    <tr>
+                        <td>
+                            {{panorama.name}}
+                        </td>
+                        <td>
+                            <i class="pi" 
+                               [ngClass]="{'true-icon pi-check-circle text-green-500': panorama.local, 'false-icon pi-times-circle text-pink-500': !panorama.local}"></i>
+                        </td>
+                        <td>
+                            <i class="pi" 
+                               [ngClass]="{'true-icon pi-check-circle text-green-500': panorama.dev, 'false-icon pi-times-circle text-pink-500': !panorama.dev}"></i>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div> 
     </div>
 </div>

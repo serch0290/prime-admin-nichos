@@ -276,6 +276,12 @@ export class ConfiguracionGeneralComponent implements OnInit{
        return;
     }
 
+    let negrita = this.general.fuentes.filter(item=> item.negrita);
+    if(negrita.length != 1){
+       this.service.add({ key: 'tst', severity: 'warn', summary: 'Alerta', detail: 'Debe de seleccionar una en negrita.' });
+       return;
+    }
+
     if(this.general.background.value.includes('#ffffff')){
        this.service.add({ key: 'tst', severity: 'warn', summary: 'Alerta', detail: 'El sitoi no puede tener un color blanco.' });
        return;
