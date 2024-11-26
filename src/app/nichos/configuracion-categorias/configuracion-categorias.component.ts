@@ -6,13 +6,14 @@ import { BlogService } from '../services/blog.service';
 import { forkJoin } from 'rxjs';
 import { cleanText } from 'src/app/lib/helpers';
 import { ConfiguracionService } from '../services/configuracion.service';
+import { PanoramaBDService } from '../services/bd.panorama.service';
 
 
 @Component({
   selector: 'app-configuracion-categorias',
   templateUrl: './configuracion-categorias.component.html',
   styleUrl: './configuracion-categorias.component.scss',
-  providers: [NichosService, ConfiguracionService]
+  providers: [NichosService, ConfiguracionService, PanoramaBDService]
 })
 export class ConfiguracionCategoriasComponent implements OnInit{
 
@@ -25,11 +26,13 @@ export class ConfiguracionCategoriasComponent implements OnInit{
   public altaCategoria: boolean;
   public categoria: any = {};
   public database: any;
+  public panorama: any;
 
   constructor(private nichosService: NichosService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
               private blogService: BlogService,
+              private panoramaBDService: PanoramaBDService,
               private configuracionService: ConfiguracionService,
               public layoutService: LayoutService){
 
@@ -52,12 +55,14 @@ export class ConfiguracionCategoriasComponent implements OnInit{
     forkJoin([
       this.nichosService.consultaNichoById(this.idNicho),
       this.blogService.consultaListadoCategorias(this.idNicho),
-    ]).subscribe(([nicho, categorias]) => {
+      this.panoramaBDService.getPanorama(this.idNicho)
+    ]).subscribe(([nicho, categorias, panorama]) => {
        this.nicho = nicho.nicho;
        this.general = nicho.general;
        this.database = nicho.database || {};
        this.listadoCategorias = categorias;
-       console.log('categorias: ', this.listadoCategorias)
+       this.panorama = panorama;
+       console.log('panorama: ', this.panorama)
        this.loading = false;
     });
   }
@@ -117,6 +122,7 @@ export class ConfiguracionCategoriasComponent implements OnInit{
         .subscribe(response=>{
           this.consultaListadoCategorias();
           this.generarRouting();
+          this.guardarPanorama({local: true, dev: false, prod: false});
           this.altaCategoria = false;
           this.categoria = { idCategoria: 0 };
         });
@@ -171,6 +177,7 @@ export class ConfiguracionCategoriasComponent implements OnInit{
       this.blogService.subirModificacionesDEV(comandos, campos)
           .subscribe(response=>{
            categoria.dev = response.categoria.dev;
+           this.guardarPanorama({local: true, dev: true, prod: false});
           });
    }
 
@@ -200,6 +207,13 @@ export class ConfiguracionCategoriasComponent implements OnInit{
    irListadoNoticias(categoria: any){
     this.router.navigate([`nicho/${this.idNicho}/categoria/${categoria._id}/listado/noticias`]);
    }
+
+   configuracionHome(){
+    console.log('entra home');
+      this.categoria.h1 = 'Home';
+      this.categoria.title = 'Home';
+      this.categoria.url = '/';
+   }
   
    /**
     * Se editan los datos de la categoria
@@ -209,5 +223,20 @@ export class ConfiguracionCategoriasComponent implements OnInit{
      this.categoria = categoria;
    }
 
+   /**
+    * Se guarda el panorama general
+    */
+   guardarPanorama(home: any){
+      if(!this.panorama){
+         this.panorama = { home: { local: false, dev: false, prod:false } };
+         this.panorama.nicho = this.idNicho;
+      }
 
+      this.panorama.home = home;
+
+      this.panoramaBDService.savePanoramaBD(this.panorama)
+          .subscribe(response=>{
+             this.panoramaBDService.createUpdatePanorama(this.idNicho, this.panorama);
+          });
+   }
 }
