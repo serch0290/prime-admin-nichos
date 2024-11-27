@@ -29,7 +29,10 @@
                             class="p-button-outlined p-button-danger"
                             (click)="modalAutores = true;"></button>
                 </div>
-                <app-repositorio-autores [visible]="modalAutores" (close) = "modalAutores = false" (autorEmit) = "setAutor($event)"></app-repositorio-autores>
+                <app-repositorio-autores [visible]="modalAutores" (close) = "modalAutores = false" 
+                                         [idNicho]="idNicho"
+                                         (autorEmit) = "setAutor($event)" 
+                                         *ngIf="modalAutores"></app-repositorio-autores>
             </div>
         </div>
         <div class="col-12" *ngIf="noticia.author">
