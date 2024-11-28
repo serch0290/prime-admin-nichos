@@ -7,13 +7,14 @@ import { forkJoin } from 'rxjs';
 import { cleanText } from 'src/app/lib/helpers';
 import { ConfiguracionService } from '../services/configuracion.service';
 import { PanoramaBDService } from '../services/bd.panorama.service';
+import { VersionService } from '../services/version.service';
 
 
 @Component({
   selector: 'app-configuracion-categorias',
   templateUrl: './configuracion-categorias.component.html',
   styleUrl: './configuracion-categorias.component.scss',
-  providers: [NichosService, ConfiguracionService, PanoramaBDService]
+  providers: [NichosService, ConfiguracionService, PanoramaBDService, VersionService]
 })
 export class ConfiguracionCategoriasComponent implements OnInit{
 
@@ -27,11 +28,13 @@ export class ConfiguracionCategoriasComponent implements OnInit{
   public categoria: any = {};
   public database: any;
   public panorama: any;
+  public version: any;
 
   constructor(private nichosService: NichosService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
               private blogService: BlogService,
+              private versionService: VersionService,
               private panoramaBDService: PanoramaBDService,
               private configuracionService: ConfiguracionService,
               public layoutService: LayoutService){
@@ -55,14 +58,16 @@ export class ConfiguracionCategoriasComponent implements OnInit{
     forkJoin([
       this.nichosService.consultaNichoById(this.idNicho),
       this.blogService.consultaListadoCategorias(this.idNicho),
-      this.panoramaBDService.getPanorama(this.idNicho)
-    ]).subscribe(([nicho, categorias, panorama]) => {
+      this.panoramaBDService.getPanorama(this.idNicho),
+      this.versionService.getVersionNicho(this.idNicho)
+    ]).subscribe(([nicho, categorias, panorama, version]) => {
        this.nicho = nicho.nicho;
        this.general = nicho.general;
        this.database = nicho.database || {};
        this.listadoCategorias = categorias;
        this.panorama = panorama;
-       console.log('panorama: ', this.panorama)
+       this.version = version;
+       console.log('panorama: ', this.panorama, this.version)
        this.loading = false;
     });
   }
@@ -160,7 +165,7 @@ export class ConfiguracionCategoriasComponent implements OnInit{
    */
     subirHomeDev(categoria: any){
       let comandos = [];
-      comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/home.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
+      comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/home_${this.version.home.versionLocal}.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
       comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/menu.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
       comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/footer.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
       comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/busqueda.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);

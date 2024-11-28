@@ -99,6 +99,7 @@ export class ConfiguracionHomeComponent implements OnInit{
     }
 
     let nicho = {
+       id: this.nicho.id,
        nombre: cleanText(this.nicho.nombre)
     }
 
