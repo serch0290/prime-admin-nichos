@@ -5,12 +5,13 @@ import { BlogService } from '../services/blog.service';
 import { forkJoin } from 'rxjs';
 import { cleanText } from 'src/app/lib/helpers';
 import { MessageService } from 'primeng/api';
+import { ConfiguracionService } from '../services/configuracion.service';
 
 @Component({
   selector: 'app-configuracion-home',
   templateUrl: './configuracion-home.component.html',
   styleUrl: './configuracion-home.component.scss',
-  providers:[MessageService]
+  providers:[MessageService, ConfiguracionService]
 })
 export class ConfiguracionHomeComponent implements OnInit{
 
@@ -26,7 +27,8 @@ export class ConfiguracionHomeComponent implements OnInit{
               private nichosService: NichosService,
               private activatedRoute: ActivatedRoute,
               private blogService: BlogService,
-              private service: MessageService
+              private service: MessageService,
+              private configuracionService: ConfiguracionService
   ){
 
   }
@@ -107,6 +109,7 @@ export class ConfiguracionHomeComponent implements OnInit{
     this.blogService.guardarHome(this.noticia, nicho)
         .subscribe(response=>{
            this.actualizarEstatusAmbiente();
+           this.generarRouting();
         });
   }
 
@@ -158,6 +161,19 @@ export class ConfiguracionHomeComponent implements OnInit{
   setBuscador(){
     this.buscador.noticias_style1 = {};
     this.buscador.noticias_style1.pagination = {};
+  }
+  
+  /**
+   * Se genera el routing de la pagina de acuerdo a las rutas que haya dispinibles
+   */
+  generarRouting(){
+    let data = {
+      dominio: this.general.dominio,
+      proyecto: cleanText(this.nicho.nombre)
+    }
+    this.configuracionService.generarRutas(this.nicho._id, data)
+        .subscribe(response=>{
+        });
   }
 
   //Agregar mensaje de guardado y loading en caregoria y home, no los agregue

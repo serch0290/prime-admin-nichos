@@ -28,7 +28,6 @@ export class ConfiguracionCategoriasComponent implements OnInit{
   public categoria: any = {};
   public database: any;
   public panorama: any;
-  public version: any;
 
   constructor(private nichosService: NichosService,
               private activatedRoute: ActivatedRoute,
@@ -58,16 +57,14 @@ export class ConfiguracionCategoriasComponent implements OnInit{
     forkJoin([
       this.nichosService.consultaNichoById(this.idNicho),
       this.blogService.consultaListadoCategorias(this.idNicho),
-      this.panoramaBDService.getPanorama(this.idNicho),
-      this.versionService.getVersionNicho(this.idNicho)
-    ]).subscribe(([nicho, categorias, panorama, version]) => {
+      this.panoramaBDService.getPanorama(this.idNicho)
+    ]).subscribe(([nicho, categorias, panorama]) => {
        this.nicho = nicho.nicho;
        this.general = nicho.general;
        this.database = nicho.database || {};
        this.listadoCategorias = categorias;
        this.panorama = panorama;
-       this.version = version;
-       console.log('panorama: ', this.panorama, this.version)
+       console.log('panorama: ', this.panorama)
        this.loading = false;
     });
   }
@@ -126,7 +123,7 @@ export class ConfiguracionCategoriasComponent implements OnInit{
     this.blogService.guardarCategoria(this.nicho._id, this.categoria, nicho)
         .subscribe(response=>{
           this.consultaListadoCategorias();
-          this.generarRouting();
+          if(!this.categoria.home) this.generarRouting();//Desde aqui se genera routing pero que no sea home
           this.guardarPanorama({local: true, dev: false, prod: false});
           this.altaCategoria = false;
           this.categoria = { idCategoria: 0 };
@@ -165,7 +162,7 @@ export class ConfiguracionCategoriasComponent implements OnInit{
    */
     subirHomeDev(categoria: any){
       let comandos = [];
-      comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/home_${this.version.home.versionLocal}.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
+      comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/home_${categoria.version.local}.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
       comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/menu.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
       comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/footer.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
       comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/busqueda.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
@@ -175,7 +172,8 @@ export class ConfiguracionCategoriasComponent implements OnInit{
       let campos = {
        _id: categoria._id,
          $set : {
-           dev: true
+           dev: true,
+           version: { dev: categoria.version.local }
          }
       }
  
