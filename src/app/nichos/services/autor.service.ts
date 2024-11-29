@@ -47,7 +47,23 @@ export class AutorService
      */
     subirAutorDev(data: any): Observable<any>{
         return this._http.post(`${this.url}autor/subir/autor/dev`, data);
-        
+    }
+
+    /**
+     * 
+     * @param autor SCF
+     * Se guarda el autor
+     */
+    guardarNichoAutor(autor: any, nichoAutor: any, nicho: any): Observable<any>{
+        return this._http.post(`${this.url}autor/guardar/autor`, {autor, nichoAutor, nicho});
+    }
+
+    /**
+     * Se consulta el autor del nicho
+     * @returns 
+     */
+    getAutorNicho(idNicho: string): Observable<any>{
+        return this._http.get(`${this.url}autor/consulta/autor/nicho/${idNicho}`);
     }
 }
 

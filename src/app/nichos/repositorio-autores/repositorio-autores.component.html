@@ -31,6 +31,11 @@
                 <label htmlFor="descripcion">Descripción</label>
                 <textarea pInputText id="descripcion" rows="5" name="descripcion" type="text" [(ngModel)]="autor.descripcion"></textarea>
             </div>
+            <div class="field">
+                <label htmlFor="descripcionLarga">Descripción larga</label>
+                <ckeditor class="h-100-p" name="descripcionLarga" contenteditable="true"  [(ngModel)]="autor.descripcionLarga" >
+                </ckeditor>
+            </div>
             <p-fileUpload name="autores[]"
                           chooseLabel="Adjuntar foto autor" 
                           url="http://localhost:5007/nchs/upload/file" 

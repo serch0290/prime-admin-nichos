@@ -5,12 +5,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { cleanText } from 'src/app/lib/helpers';
+import { ConfiguracionService } from '../services/configuracion.service';
 
 @Component({
   selector: 'app-configuracion-autores',
   templateUrl: './configuracion-autores.component.html',
   styleUrl: './configuracion-autores.component.scss',
-  providers: [AutorService, NichosService, MessageService]
+  providers: [AutorService, NichosService, MessageService, ConfiguracionService]
 })
 export class ConfiguracionAutoresComponent implements OnInit{
 
@@ -20,6 +21,7 @@ export class ConfiguracionAutoresComponent implements OnInit{
    public autores: Array<any> = [];
    public showDetalle: boolean;
    public autor: any = {};
+   public nichoAutor: any = {};
    public selectedFiles: any[] = [];
    public header: any = {};
    public general: any = {};
@@ -30,7 +32,8 @@ export class ConfiguracionAutoresComponent implements OnInit{
                private nichosService: NichosService,
                private activatedRoute: ActivatedRoute,
                private router: Router,
-               private service: MessageService
+               private service: MessageService,
+               private configuracionService: ConfiguracionService
    ){
    }
 
@@ -61,11 +64,17 @@ export class ConfiguracionAutoresComponent implements OnInit{
     this.modalAutores = false;
     forkJoin([
       this.nichosService.consultaNichoById(this.idNicho),
-      this.autorService.listadoAutores()
-    ]).subscribe(([nicho, autores]) => {
+      this.autorService.listadoAutores(),
+      this.autorService.getAutorNicho(this.idNicho)
+    ]).subscribe(([nicho, autores, autorNicho]) => {
        this.nicho = nicho.nicho;
        this.general = nicho.general;
        this.autores = autores;
+       this.nichoAutor = autorNicho;
+       if(this.nichoAutor){
+          this.autor = this.autores.find(item=> item._id == this.nichoAutor.autor);
+          this.autor.selected = true;
+       }
        this.loading = false;
     });
   }
@@ -121,27 +130,32 @@ export class ConfiguracionAutoresComponent implements OnInit{
      * Se guarda el autor
      */
  guardarAutor(){
-    this.autor.ambiente = {
+    this.nichoAutor.ambiente = {
        local: true,
        dev: false,
        prod: false
     }
 
   let nicho = {
+    nicho: this.nicho._id,
     nombre: cleanText(this.nicho.nombre),
     dominio: this.general.dominio
   }
 
-  if(this.autor.sobremi){
+  if(this.nichoAutor.sobremi){
      this.setBreadCrumbs();
   }else{
-     this.autor.breadcrumb = [];
+     this.nichoAutor.breadcrumb = [];
   }
   
-  this.autorService.guardarAutor(this.autor, nicho)
+  this.nichoAutor.nicho = this.nicho._id;
+  this.nichoAutor.autor = this.autor.id;
+  
+  this.autorService.guardarNichoAutor(this.autor, this.nichoAutor, nicho)
       .subscribe(response=>{
-        this.autor = response;
+        this.nichoAutor = response;
         this.service.add({ key: 'tst', severity: 'success', summary: 'Alerta', detail: 'Se guardo el autor correctamente' });
+        this.generarRouting();
         this.consultarInformacion();
       });
 }
@@ -151,16 +165,17 @@ export class ConfiguracionAutoresComponent implements OnInit{
   */
 subirModificacionesDEV(){
   let comandos: Array<any> = [];
-  comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/about-us.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
-  comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/sobre-mi.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
+  comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/about-us_${this.nichoAutor.version.local}.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
+  comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/sobre-mi_${this.nichoAutor.version.local}.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
 
   let arrayAutor = this.autor.img.split('/');
   comandos.push(`cp -r server/nichos/autores/${arrayAutor[1]} /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/images/autores`);
 
   let campo = {
-    _id: this.autor._id,
+    _id: this.nichoAutor._id,
     $set: {
-      'ambiente.dev': true
+      'ambiente.dev': true,
+      'version.dev': this.nichoAutor.version.local
     }
   }
 
@@ -189,9 +204,22 @@ subirModificacionesDEV(){
 
   /**Se ponen los breadcrumbs */
   setBreadCrumbs(){ 
-    this.autor.breadcrumb = [];
-    this.autor.breadcrumb.push({name: 'Inicio', link: this.general.dominio});
-    this.autor.breadcrumb.push({name: 'Sobre Mi'});
+    this.nichoAutor.breadcrumb = [];
+    this.nichoAutor.breadcrumb.push({name: 'Inicio', link: this.general.dominio});
+    this.nichoAutor.breadcrumb.push({name: 'Sobre Mi'});
+  }
+
+  /**
+   * Se genera el routing de la pagina de acuerdo a las rutas que haya dispinibles
+   */
+  generarRouting(){
+    let data = {
+      dominio: this.general.dominio,
+      proyecto: cleanText(this.nicho.nombre)
+    }
+    this.configuracionService.generarRutas(this.nicho._id, data)
+        .subscribe(response=>{
+        });
   }
 
 }

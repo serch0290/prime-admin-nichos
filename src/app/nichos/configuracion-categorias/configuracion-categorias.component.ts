@@ -163,8 +163,8 @@ export class ConfiguracionCategoriasComponent implements OnInit{
     subirHomeDev(categoria: any){
       let comandos = [];
       comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/home_${categoria.version.local}.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
-      comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/menu.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
-      comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/footer.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
+      //comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/menu.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
+      //comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/footer.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
       comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/busqueda.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
       comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/noticias-recomended.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
 

@@ -109,8 +109,6 @@ export class RepositorioAutoresComponent implements OnInit{
         dev: false,
         prod: false
       }
-      this.autor.home = false;
-      this.autor.sobremi = false;
       this.autorService.guardarAutor(this.autor, {})
           .subscribe(response=>{
             this.consultarInformacion();

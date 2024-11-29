@@ -50,31 +50,23 @@
                 </div>
                 <div class="field">
                     <label htmlFor="autor">Autor</label>
-                    <input pInputText id="autor" name="autor" type="text" [(ngModel)]="autor.autor"/>
+                    <input pInputText id="autor" name="autor" type="text" [(ngModel)]="autor.autor" disabled/>
                 </div>
                 <div class="field">
                     <label htmlFor="descripcion">Descripción</label>
-                    <textarea pInputText id="descripcion" rows="5" name="descripcion" type="text" [(ngModel)]="autor.descripcion"></textarea>
+                    <textarea pInputText id="descripcion" rows="5" name="descripcion" type="text" [(ngModel)]="autor.descripcion" disabled></textarea>
                 </div>
                 <div class="field">
                     <label htmlFor="descripcionLarga">Descripción larga</label>
-                    <ckeditor class="h-100-p" name="descripcionLarga" contenteditable="true"  [(ngModel)]="autor.descripcionLarga" >
-                    </ckeditor>
+                    <p [innerHtml]="autor.descripcionLarga"></p>
                 </div>
-                <p-fileUpload name="autores[]"
-                              chooseLabel="Actualizar foto autor" 
-                              url="http://localhost:5007/nchs/upload/file" 
-                              [headers]="header"
-                              (onUpload)="onUpload($event)"
-                              (onSelect)="selectName($event, 1)">
-                </p-fileUpload>
             </div>
             <div class="field mt-2">
-                <p-checkbox [binary]="true" name="home" inputId="home" [(ngModel)]="autor.home"></p-checkbox>
+                <p-checkbox [binary]="true" name="home" inputId="home" [(ngModel)]="nichoAutor.home"></p-checkbox>
                 <label for="home">Home</label>
             </div>
             <div class="field">
-                <p-checkbox [binary]="true" name="sobremi" inputId="sobremi" [(ngModel)]="autor.sobremi"></p-checkbox>
+                <p-checkbox [binary]="true" name="sobremi" inputId="sobremi" [(ngModel)]="nichoAutor.sobremi"></p-checkbox>
                 <label for="sobremi">Sobre Mi</label>
             </div>
             <div class="col-12 text-right">

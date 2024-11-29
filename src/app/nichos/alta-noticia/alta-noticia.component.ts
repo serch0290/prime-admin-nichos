@@ -373,5 +373,6 @@ drop(event: CdkDragDrop<any[]>) {
 //Ver si con ftp puedo hacer respaldos del codigo, para que cuando suba alga primero se respalde todo y suba por si desmadro algo poderlo regresar
 //La noticia h1, agregar que no sea mayor de 100 caracteres
 //mis pendientes son el panorama general del home y noticias, autor y las esas cosas del footer
+//del home me faltan 3 json, home, about-us y busqueda
 }
 
