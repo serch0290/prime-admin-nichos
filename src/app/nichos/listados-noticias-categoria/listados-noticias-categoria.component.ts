@@ -134,7 +134,7 @@ export class ListadosNoticiasCategoriaComponent implements OnInit{
    */
   subirNoticia(noticia: any){
     let comandos = [];
-    comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json${noticia.url}.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
+    comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json${noticia.url}_${noticia.version.local}.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
 
     for(let item of noticia.detalle){
       if(item.type.includes('img')){

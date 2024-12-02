@@ -169,6 +169,9 @@ export class ConfiguracionHomeComponent implements OnInit{
 
   setBuscador(){
     this.buscador.noticias_style1 = {};
+    this.buscador.noticias.style1.title = 'Resultados de la búsqueda';
+    this.buscador.noticias_style1.dominio = this.general.dominio;
+    this.buscador.noticias_style1.prefijo = this.general.dominio + '/pagina/';
     this.buscador.noticias_style1.pagination = {};
   }
   

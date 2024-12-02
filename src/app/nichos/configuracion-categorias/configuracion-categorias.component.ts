@@ -165,9 +165,7 @@ export class ConfiguracionCategoriasComponent implements OnInit{
       comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/home_${categoria.version.local}.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
       //comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/menu.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
       //comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/footer.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
-      //comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/busqueda.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);temporal
-      comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/noticias-recomended.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
-
+      comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/busqueda.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
       comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/noticias-recomended.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
 
  
@@ -192,18 +190,20 @@ export class ConfiguracionCategoriasComponent implements OnInit{
     */
    subirCategoriaDev(categoria: any){
     let comandos = [];
-    comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json${categoria.url}.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
+    comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json${categoria.url}_${categoria.version.local}.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
     let campos = {
       _id: categoria._id,
         $set : {
           local: true,
-          dev: true
+          dev: true,
+          'version.dev': categoria.version.local
         }
      }
 
      this.blogService.subirModificacionesDEV(comandos, campos)
          .subscribe(response=>{
           categoria.dev = response.categoria.dev;
+          this.subirRoutingDev();
          });
    }
 
