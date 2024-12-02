@@ -55,7 +55,7 @@ export class AutorService
      * Se guarda el autor
      */
     guardarNichoAutor(autor: any, nichoAutor: any, nicho: any): Observable<any>{
-        return this._http.post(`${this.url}autor/guardar/autor`, {autor, nichoAutor, nicho});
+        return this._http.post(`${this.url}autor/guardar/nicho/autor`, {autor, nichoAutor, nicho});
     }
 
     /**

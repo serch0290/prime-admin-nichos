@@ -71,9 +71,15 @@ export class ConfiguracionAutoresComponent implements OnInit{
        this.general = nicho.general;
        this.autores = autores;
        this.nichoAutor = autorNicho;
+
        if(this.nichoAutor){
           this.autor = this.autores.find(item=> item._id == this.nichoAutor.autor);
           this.autor.selected = true;
+          this.showDetalle = true;
+       }else{
+        this.nichoAutor = {
+          version: { local:0, dev:0, prod:0 }
+        };
        }
        this.loading = false;
     });
@@ -149,7 +155,7 @@ export class ConfiguracionAutoresComponent implements OnInit{
   }
   
   this.nichoAutor.nicho = this.nicho._id;
-  this.nichoAutor.autor = this.autor.id;
+  this.nichoAutor.autor = this.autor._id;
   
   this.autorService.guardarNichoAutor(this.autor, this.nichoAutor, nicho)
       .subscribe(response=>{
@@ -187,8 +193,9 @@ subirModificacionesDEV(){
   this.loadings.dev = true; 
   this.autorService.subirAutorDev(data)
       .subscribe(response=>{
-        this.autor = response.autor;
+        this.nichoAutor = response;
         this.loadings.dev = false; 
+        this.subirRoutingDev();
         this.service.add({ key: 'tst', severity: 'success', summary: 'Alerta', detail: 'Se subio autor al ambiente de pruebas correctamente' });
       });
 }
@@ -219,6 +226,28 @@ subirModificacionesDEV(){
     }
     this.configuracionService.generarRutas(this.nicho._id, data)
         .subscribe(response=>{
+        });
+  }
+
+  /**
+   * Se sube archivo routing a DEV
+   */
+  subirRoutingDev(){
+    let comandos = [];
+    comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/routing.php /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}`);
+    let campo = {
+      $set: {
+        'routing.dev': true
+      }
+    }
+
+    let data = {
+      commands: comandos,
+      campo: campo
+    }
+    this.configuracionService.subirModificacionesDEV(this.general._id, data)
+        .subscribe(response=>{
+        }, error=>{
         });
   }
 

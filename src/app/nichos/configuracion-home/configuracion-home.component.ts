@@ -22,6 +22,7 @@ export class ConfiguracionHomeComponent implements OnInit{
   public noticia: any = {};
   public buscador: any = {};
   public general: any = {};
+  public categoria: any = {};
 
   constructor(private router: Router,
               private nichosService: NichosService,
@@ -50,6 +51,8 @@ export class ConfiguracionHomeComponent implements OnInit{
       this.nicho = nicho.nicho;
       this.general = nicho.general;
       this.noticia = categoria.home || {};
+      this.categoria = categoria.categoria;
+      
       if(!this.noticia.noticias_style1){
          this.noticia.noticias_style1 = {}
       }
@@ -78,8 +81,14 @@ export class ConfiguracionHomeComponent implements OnInit{
   setDatosPaginador(event: any){
     if(event.checked){
        this.noticia.noticias_style1.pagination = {}
+       this.noticia.noticias_style1.dominio = this.general.dominio;
+       this.noticia.noticias_style1.prefijo = this.general.dominio + '/pagina/';
+       this.noticia.noticias_style1.title = 'Todas las noticias';
     }else{
        delete this.noticia.noticias_style1.pagination;
+       this.noticia.noticias_style1.dominio = '';
+       this.noticia.noticias_style1.prefijo = '';
+       this.noticia.noticias_style1.title = '';
     }
   }
 
@@ -101,12 +110,12 @@ export class ConfiguracionHomeComponent implements OnInit{
     }
 
     let nicho = {
-       id: this.nicho.id,
+       id: this.idNicho,
        nombre: cleanText(this.nicho.nombre)
     }
 
     this.noticia.categoria = this.idCategoria;
-    this.blogService.guardarHome(this.noticia, nicho)
+    this.blogService.guardarHome(this.noticia, this.categoria, nicho)
         .subscribe(response=>{
            this.actualizarEstatusAmbiente();
            this.generarRouting();
@@ -150,7 +159,7 @@ export class ConfiguracionHomeComponent implements OnInit{
 
     let nicho = {
       nombre: cleanText(this.nicho.nombre)
-   }
+    }
    this.buscador.categoria = this.idCategoria;
     this.blogService.guardarBusqueda(this.buscador, nicho)
         .subscribe(response=>{

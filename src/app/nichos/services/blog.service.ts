@@ -75,8 +75,8 @@ export class BlogService
      * 
      * @returns Se guarda la home
      */
-    guardarHome(home: any, nicho: any): Observable<any>{
-        return this._http.post(`${this.url}blog/guardar/home`, {home, nicho});
+    guardarHome(home: any, categoria: any, nicho: any): Observable<any>{
+        return this._http.post(`${this.url}blog/guardar/home`, {home, nicho, categoria});
     }
 
     /**

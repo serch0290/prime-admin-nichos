@@ -165,7 +165,9 @@ export class ConfiguracionCategoriasComponent implements OnInit{
       comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/home_${categoria.version.local}.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
       //comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/menu.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
       //comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/footer.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
-      comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/busqueda.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
+      //comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/busqueda.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);temporal
+      comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/noticias-recomended.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
+
       comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/noticias-recomended.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
 
  
@@ -173,14 +175,15 @@ export class ConfiguracionCategoriasComponent implements OnInit{
        _id: categoria._id,
          $set : {
            dev: true,
-           version: { dev: categoria.version.local }
+           'version.dev': categoria.version.local
          }
       }
  
       this.blogService.subirModificacionesDEV(comandos, campos)
           .subscribe(response=>{
            categoria.dev = response.categoria.dev;
-           this.guardarPanorama({local: true, dev: true, prod: false});
+           this.subirRoutingDev();
+           //this.guardarPanorama({local: true, dev: true, prod: false});
           });
    }
 
@@ -242,4 +245,27 @@ export class ConfiguracionCategoriasComponent implements OnInit{
              this.panoramaBDService.createUpdatePanorama(this.idNicho, this.panorama);
           });
    }
+
+
+  /**
+   * Se sube archivo routing a DEV
+   */
+  subirRoutingDev(){
+    let comandos = [];
+    comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/routing.php /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}`);
+    let campo = {
+      $set: {
+        'routing.dev': true
+      }
+    }
+
+    let data = {
+      commands: comandos,
+      campo: campo
+    }
+    this.configuracionService.subirModificacionesDEV(this.general._id, data)
+        .subscribe(response=>{
+        }, error=>{
+        });
+  }
 }

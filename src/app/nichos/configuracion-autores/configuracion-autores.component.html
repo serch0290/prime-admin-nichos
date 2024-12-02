@@ -71,17 +71,17 @@
             </div>
             <div class="col-12 text-right">
                 <p-button label="Local" [loading]="loadings.local" 
-                          [severity]="autor.ambiente?.local ? 'success' : 'danger'"
+                          [severity]="nichoAutor.ambiente?.local ? 'success' : 'danger'"
                           pTooltip="Autor generado en local"></p-button>
 
                 <p-button label="Dev" [loading]="loadings.dev" 
                           class="mx-4"
                           (click)="subirModificacionesDEV()"
-                          [severity]="autor.ambiente?.dev ? 'success' : 'danger'"
+                          [severity]="nichoAutor.ambiente?.dev ? 'success' : 'danger'"
                           pTooltip="Autor generado en dev"></p-button>
 
                 <p-button label="Prod" [loading]="loadings.local" 
-                          [severity]="autor.ambiente?.prod ? 'success' : 'danger'"
+                          [severity]="nichoAutor.ambiente?.prod ? 'success' : 'danger'"
                           pTooltip="Autor generado en prod"></p-button>
             </div>
             <div class="col-12 text-center">
