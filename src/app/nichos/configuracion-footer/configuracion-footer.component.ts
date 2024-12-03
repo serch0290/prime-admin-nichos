@@ -45,7 +45,7 @@ export class ConfiguracionFooterComponent implements OnInit{
      this.listadoFooter.push({id: 2, name: 'Aviso Legal', url: this.general.dominio + '/aviso-legal', urlAlone: '/aviso-legal', file: 'sp_privacidad.php'}); 
      this.listadoFooter.push({id: 3, name: 'Política de Cookies', url: this.general.dominio + '/cookies', urlAlone: '/cookies', file: 'sp_privacidad.php'}); 
      this.listadoFooter.push({id: 4, name: 'Política de privacidad', url: this.general.dominio + '/politica-privacidad', urlAlone: '/politica-privacidad', file: 'sp_privacidad.php'}); 
-     this.listadoFooter.push({id: 5, name: 'Contacto', url: this.general.dominio + '/contacto', urlAlone: '/contacto', file: 'sp_contacto.php', json: true, fileJson: 'contacto'}); 
+     this.listadoFooter.push({id: 5, name: 'Contacto', url: this.general.dominio + '/contacto', urlAlone: '/contacto', file: 'sp_contacto.php', json: true, fileJson: 'contacto.json', title: 'Contacto - ' + this.general.dominio}); 
   }
 
   /**11

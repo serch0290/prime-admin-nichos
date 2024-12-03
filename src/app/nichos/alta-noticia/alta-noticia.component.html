@@ -23,6 +23,11 @@
                         <label htmlFor="titulo">Titulo</label>
                         <input pInputText id="titulo" name="titulo" type="text" [(ngModel)]="noticia.h1" (blur)="llenadoRedes()"/>
                     </div>
+
+                    <div class="field">
+                        <label htmlFor="titulo">Meta title</label>
+                        <input pInputText id="title" name="title" type="text" [(ngModel)]="noticia.title"/>
+                    </div>
                 </div>
                 <div class="col-12">
                     <button pButton pRipple type="button" label="Autores" 

@@ -25,6 +25,11 @@
                         <h6>*Este es el h1 del home</h6>
                     </div>
                     <div class="field">
+                        <label htmlFor="titulo">Meta title</label>
+                        <input pInputText id="titulo" name="titulo" type="text" [(ngModel)]="noticia.title"/>
+                        <h6>*Este meta title de la home</h6>
+                    </div>
+                    <div class="field">
                         <h5>Paginador</h5>
                         <p-inputSwitch [(ngModel)]="noticia.paginador" (onChange)="setDatosPaginador($event)"></p-inputSwitch>
                     </div>

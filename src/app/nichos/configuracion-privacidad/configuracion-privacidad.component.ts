@@ -5,12 +5,13 @@ import { PrivacidadService } from '../services/privacidad.service';
 import { forkJoin } from 'rxjs';
 import { Message, MessageService } from 'primeng/api';
 import { cleanText } from 'src/app/lib/helpers';
+import { ConfiguracionService } from '../services/configuracion.service';
 
 @Component({
   selector: 'app-configuracion-privacidad',
   templateUrl: './configuracion-privacidad.component.html',
   styleUrl: './configuracion-privacidad.component.scss',
-  providers: [PrivacidadService, NichosService, MessageService]
+  providers: [PrivacidadService, NichosService, MessageService, ConfiguracionService]
 })
 export class ConfiguracionPrivacidadComponent implements OnInit{
    
@@ -33,6 +34,7 @@ export class ConfiguracionPrivacidadComponent implements OnInit{
    constructor(private nichosService: NichosService,
                private activatedRoute: ActivatedRoute,
                private router: Router,
+               private configuracionService: ConfiguracionService,
                private service: MessageService,
                private privacidadService: PrivacidadService){
 
@@ -71,6 +73,7 @@ export class ConfiguracionPrivacidadComponent implements OnInit{
     this.privacidadService.savePrivacidad(data, cleanText(this.nicho.nombre))
         .subscribe(response=>{
           this.consultarInformacion();
+          this.generarRouting();
           this.finishData(tipo);
         });
   }
@@ -85,9 +88,10 @@ export class ConfiguracionPrivacidadComponent implements OnInit{
         this.privacidad.dev = false;
         this.privacidad.prod = false;
         this.privacidad.nicho = this.idNicho;
+        this.privacidad.title = 'Política de Privacidad - ' + this.general.dominio;
         this.privacidad.breadcrumb = this.generaBreadcums('Política de Privacidad');
         this.privacidad.tipo = 1;
-        this.privacidad.json = 'privacidad-privacidad.json';
+        this.privacidad.json = 'privacidad-privacidad';
         this.loadingsPriv.local = true;
         this.privacidad.h1 = 'Política de Privacidad';
         return this.privacidad;
@@ -98,8 +102,9 @@ export class ConfiguracionPrivacidadComponent implements OnInit{
         this.cookies.nicho = this.idNicho;
         this.cookies.breadcrumb = this.generaBreadcums('Política de Cookies');
         this.cookies.tipo = 2;
-        this.cookies.json = 'cookies.json';
+        this.cookies.json = 'cookies';
         this.loadingsCook.local = true;
+        this.cookies.title = 'Política de Cookies - ' + this.general.dominio;
         this.cookies.h1 = 'Política de Cookies';
         return this.cookies;
       case 3://aviso legal
@@ -109,9 +114,10 @@ export class ConfiguracionPrivacidadComponent implements OnInit{
         this.aviso.nicho = this.idNicho;
         this.aviso.breadcrumb = this.generaBreadcums('Aviso Legal');
         this.aviso.tipo = 3;
-        this.aviso.json = 'aviso-legal.json';
+        this.aviso.json = 'aviso-legal';
         this.loadingsAviso.local = true;
         this.aviso.h1 = 'Aviso Legal';
+        this.aviso.title = 'Aviso Legal - ' + this.general.dominio;
         return this.aviso;
     }
   }
@@ -208,6 +214,7 @@ export class ConfiguracionPrivacidadComponent implements OnInit{
       this.privacidadService.subirModificacionesDev(privacidad._id, data)
           .subscribe(response=>{
             this.finishDataDev(tipo);
+            this.subirRoutingDev();
             this.consultarInformacion();
           });
   }
@@ -219,6 +226,51 @@ export class ConfiguracionPrivacidadComponent implements OnInit{
   regresar(){
     this.router.navigate(['nicho/' + this.idNicho]);
   }
+
+    /**
+   * Se sube archivo routing a DEV
+   */
+    subirRoutingDev(){
+      let comandos = [];
+      comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/routing.php /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}`);
+      let campo = {
+        $set: {
+          'routing.dev': true
+        }
+      }
+  
+      this.subirModificacionesDEV(comandos, campo);
+    }
+  
+    /**
+     * Se suben modificaciones a DEV
+     */
+    subirModificacionesDEV(commands: Array<any>, campo: any){
+      let data = {
+        commands: commands,
+        campo: campo
+      }
+      this.configuracionService.subirModificacionesDEV(this.general._id, data)
+          .subscribe(response=>{
+            this.general = response.general;
+          }, error=>{
+           
+          });
+    }
+
+    /**
+     * Se genera el routing de la pagina de acuerdo a las rutas que haya dispinibles
+     */
+    generarRouting(){
+      let data = {
+        dominio: this.general.dominio,
+        proyecto: cleanText(this.nicho.nombre)
+      }
+      this.configuracionService.generarRutas(this.nicho._id, data)
+          .subscribe(response=>{
+            console.log('response: ', response);
+      });
+    }
 
 
 }
