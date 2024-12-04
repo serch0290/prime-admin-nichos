@@ -158,7 +158,8 @@ export class ListadosNoticiasCategoriaComponent implements OnInit{
 
     let campo = {
       $set: {
-        'dev': true
+        'dev': true,
+        'version.dev': noticia.version.local
       }
     }
 

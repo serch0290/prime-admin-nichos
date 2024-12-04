@@ -6,12 +6,13 @@ import { MenuService } from '../services/menu.service';
 import { forkJoin } from 'rxjs';
 import { BlogService } from '../services/blog.service';
 import { cleanText } from 'src/app/lib/helpers';
+import { ConfiguracionService } from '../services/configuracion.service';
 
 @Component({
   selector: 'app-configuracion-menu',
   templateUrl: './configuracion-menu.component.html',
   styleUrl: './configuracion-menu.component.scss',
-  providers: [NichosService, MessageService, MenuService]
+  providers: [NichosService, MessageService, MenuService, ConfiguracionService]
 })
 export class ConfiguracionMenuComponent implements OnInit{
 
@@ -23,11 +24,13 @@ export class ConfiguracionMenuComponent implements OnInit{
   public categorias: Array<any> = [];
   public idMenu: string;
   public selectedOption: any;
+  public general: any;
 
   constructor(private nichosService: NichosService,
               private router: Router,
               private service: MessageService,
               private menuService: MenuService,
+              private configuracionService: ConfiguracionService,
               private blogService: BlogService,
               private activatedRoute: ActivatedRoute){
 
@@ -50,6 +53,7 @@ export class ConfiguracionMenuComponent implements OnInit{
       this.blogService.consultaListadoCategorias(this.idNicho)
     ]).subscribe(([nicho, menus, categorias]) => {
       this.nicho = nicho.nicho;
+      this.general = nicho.general;
       if(menus){
          this.menu = menus;
          this.menus = menus.menu;
@@ -101,6 +105,7 @@ export class ConfiguracionMenuComponent implements OnInit{
     this.menuService.saveMenu(this.idMenu, this.idNicho, cleanText(this.nicho.nombre), this.menu)
         .subscribe(response=>{
           this.menu = {};
+          this.generarRouting();
           this.getMenus();
         });
   }
@@ -125,6 +130,51 @@ export class ConfiguracionMenuComponent implements OnInit{
       this.menuService.subirModificaciones(this.idMenu, data)
           .subscribe(response=>{
              this.menu = response.menu;
+             this.subirRoutingDev();
           });
+  }
+
+  /**
+   * Se genera el routing de la pagina de acuerdo a las rutas que haya dispinibles
+   */
+  generarRouting(){
+    let data = {
+      dominio: this.general.dominio,
+      proyecto: cleanText(this.nicho.nombre)
+    }
+    this.configuracionService.generarRutas(this.nicho._id, data)
+        .subscribe(response=>{
+           console.log('response: ', response);
+    });
+  }
+
+  /**
+   * Se sube archivo routing a DEV
+   */
+  subirRoutingDev(){
+    let comandos = [];
+    comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/routing.php /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}`);
+    let campo = {
+      $set: {
+        'routing.dev': true
+      }
+    }
+
+    this.subirModificacionesDEV(comandos, campo);
+  }
+
+  /**
+   * Se suben modificaciones a DEV
+   */
+  subirModificacionesDEV(commands: Array<any>, campo: any){
+    let data = {
+      commands: commands,
+      campo: campo
+    }
+    this.configuracionService.subirModificacionesDEV(this.general._id, data)
+        .subscribe(response=>{
+          this.general = response.general;
+        }, error=>{
+        });
   }
 }

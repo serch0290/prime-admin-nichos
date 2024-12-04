@@ -215,7 +215,6 @@ export class ConfiguracionCategoriasComponent implements OnInit{
    }
 
    configuracionHome(){
-    console.log('entra home');
       this.categoria.h1 = 'Home';
       this.categoria.title = 'Home';
       this.categoria.url = '/';

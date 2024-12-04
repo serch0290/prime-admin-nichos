@@ -118,6 +118,7 @@ export class ConfiguracionFooterComponent implements OnInit{
            this.msgsFooter = [];
            this.msgsFooter.push({ severity: 'success', summary: 'Correcto', detail: 'Se guardo footer en local correctamente', key: 'message-footer' });
            this.consultaFooter();
+           this.generarRouting();
            this.loadings.local = false;
        });
   }

@@ -1,7 +1,7 @@
 /**
  * Función para limpiar una cadena de texto
  */
-export function cleanText(cadena: string): string {
+export function cleanText(cadena: string, tipo: number = 0): string {
     var specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,";
     // Definimos los caracteres que queremos eliminar
     var specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,";
@@ -10,7 +10,10 @@ export function cleanText(cadena: string): string {
         cadena = cadena.replace(new RegExp("\\" + specialChars[j], 'gi'), '');
     }
 
-    cadena = cadena.replace(/ /g, "_");
+    if(tipo == 0)
+       cadena = cadena.replace(/ /g, "_");
+    else 
+       cadena = cadena.replace(/ /g, "-");
 
     cadena = cadena.replace(/á/gi, "a");
     cadena = cadena.replace(/é/gi, "e");

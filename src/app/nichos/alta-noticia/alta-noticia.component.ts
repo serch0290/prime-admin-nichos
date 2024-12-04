@@ -299,7 +299,7 @@ export class AltaNoticiaComponent implements OnInit{
  finalizarNoticia(){
   this.setBreadCrumbs();
   this.noticia.redesSociales = this.listadoRedes.filter(item=> item.seleccionado);
-  this.noticia.url = '/' + cleanText(this.noticia.h1);
+  this.noticia.url = '/' + cleanText(this.noticia.h1, 1);
   let nota = JSON.parse(JSON.stringify(this.noticia));
   nota.local = true;
   nota.dev = false;
@@ -374,5 +374,7 @@ drop(event: CdkDragDrop<any[]>) {
 //La noticia h1, agregar que no sea mayor de 100 caracteres
 //mis pendientes son el panorama general del home y noticias, autor y las esas cosas del footer
 //del home me faltan 3 json, home, about-us y busqueda
+// Al ir al home desde la categoria esta mal, sale mal la url y manda a algo extraño
+//Los breadcrums de las noticias tambien estan raros
 }
 
