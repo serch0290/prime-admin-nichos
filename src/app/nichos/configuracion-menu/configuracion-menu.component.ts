@@ -7,12 +7,13 @@ import { forkJoin } from 'rxjs';
 import { BlogService } from '../services/blog.service';
 import { cleanText } from 'src/app/lib/helpers';
 import { ConfiguracionService } from '../services/configuracion.service';
+import { VersionService } from '../services/version.service';
 
 @Component({
   selector: 'app-configuracion-menu',
   templateUrl: './configuracion-menu.component.html',
   styleUrl: './configuracion-menu.component.scss',
-  providers: [NichosService, MessageService, MenuService, ConfiguracionService]
+  providers: [NichosService, MessageService, MenuService, ConfiguracionService, VersionService]
 })
 export class ConfiguracionMenuComponent implements OnInit{
 
@@ -25,6 +26,7 @@ export class ConfiguracionMenuComponent implements OnInit{
   public idMenu: string;
   public selectedOption: any;
   public general: any;
+  public version: any;
 
   constructor(private nichosService: NichosService,
               private router: Router,
@@ -32,7 +34,8 @@ export class ConfiguracionMenuComponent implements OnInit{
               private menuService: MenuService,
               private configuracionService: ConfiguracionService,
               private blogService: BlogService,
-              private activatedRoute: ActivatedRoute){
+              private activatedRoute: ActivatedRoute,
+              private versionService: VersionService ){
 
   }
 
@@ -50,10 +53,13 @@ export class ConfiguracionMenuComponent implements OnInit{
     forkJoin([
       this.nichosService.consultaNichoById(this.idNicho),
       this.menuService.getMenu(this.idNicho),
-      this.blogService.consultaListadoCategorias(this.idNicho)
-    ]).subscribe(([nicho, menus, categorias]) => {
+      this.blogService.consultaListadoCategorias(this.idNicho),
+      this.versionService.getVersionNicho(this.idNicho)
+    ]).subscribe(([nicho, menus, categorias, version]) => {
       this.nicho = nicho.nicho;
       this.general = nicho.general;
+      this.version = version;
+
       if(menus){
          this.menu = menus;
          this.menus = menus.menu;
@@ -84,6 +90,13 @@ export class ConfiguracionMenuComponent implements OnInit{
         });
   }
 
+  getVersion(){
+    this.versionService.getVersionNicho(this.idNicho)
+        .subscribe(response=>{
+          this.version = response;
+        });
+  }
+
   /**
     * Regresar a la configuracion de nicho
     */
@@ -107,6 +120,7 @@ export class ConfiguracionMenuComponent implements OnInit{
           this.menu = {};
           this.generarRouting();
           this.getMenus();
+          this.getVersion();
         });
   }
 
@@ -115,7 +129,7 @@ export class ConfiguracionMenuComponent implements OnInit{
    */
   subirModificacionesDev(){
     let comandos = [];
-      comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/menu.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
+      comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/menu_${this.version.menu.local}.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
       let campos = {
          $set : {
            dev: true

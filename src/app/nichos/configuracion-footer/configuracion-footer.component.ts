@@ -6,12 +6,13 @@ import { FooterService } from '../services/footer.service';
 import { cleanText } from 'src/app/lib/helpers';
 import { Message, MessageService } from 'primeng/api';
 import { ConfiguracionService } from '../services/configuracion.service';
+import { VersionService } from '../services/version.service';
 
 @Component({
   selector: 'app-configuracion-footer',
   templateUrl: './configuracion-footer.component.html',
   styleUrl: './configuracion-footer.component.scss',
-  providers: [NichosService, MessageService, ConfiguracionService]
+  providers: [NichosService, MessageService, ConfiguracionService, VersionService]
 })
 export class ConfiguracionFooterComponent implements OnInit{
 
@@ -24,13 +25,15 @@ export class ConfiguracionFooterComponent implements OnInit{
   public loadings: any = {local: false, dev: false, prod: false}
   public msgsFooter: Message[] = [];
   public general: any = {};
+  public version: any = {};
 
   constructor(private nichosService: NichosService,
               private activatedRoute: ActivatedRoute,
               private footerService: FooterService,
               private service: MessageService,
               private configuracionService: ConfiguracionService,
-              private router: Router){}
+              private router: Router,
+              private versionService: VersionService){}
 
   ngOnInit(): void {
    this.idNicho = this.activatedRoute.snapshot.params['nicho'];
@@ -55,10 +58,13 @@ export class ConfiguracionFooterComponent implements OnInit{
       this.loading = true;
       forkJoin([
         this.nichosService.consultaNichoById(this.idNicho),
-        this.footerService.getFooter(this.idNicho)
-      ]).subscribe(([nicho, footer]) => {
+        this.footerService.getFooter(this.idNicho),
+        this.versionService.getVersionNicho(this.idNicho)
+      ]).subscribe(([nicho, footer, version]) => {
         this.nicho = nicho.nicho;
         this.general = nicho.general;
+        this.version = version;
+
         this.llenarOpcionesFooter();
         if(footer){
            this.dataFooter = footer;
@@ -79,6 +85,14 @@ export class ConfiguracionFooterComponent implements OnInit{
           });
     }
 
+    getVersion(){
+      this.versionService.getVersionNicho(this.idNicho)
+          .subscribe(response=>{
+            this.version = response;
+          });
+    }
+  
+
       /**
    * Se guarda el menu del nicho
    */
@@ -97,6 +111,7 @@ export class ConfiguracionFooterComponent implements OnInit{
             this.msgsFooter.push({ severity: 'success', summary: 'Correcto', detail: 'Se guardo footer en local correctamente', key: 'message-footer' });
             this.generarRouting();
             this.consultaFooter();
+            this.getVersion();
             this.loadings.local = false;
         });
   }
@@ -128,7 +143,7 @@ export class ConfiguracionFooterComponent implements OnInit{
    */
   subirModificacionesDev(){
     let comandos = [];
-      comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/footer.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
+      comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/footer_${this.version.footer.local}.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
     
       for(let footer of this.dataFooter.footer){
           if(footer.json){
