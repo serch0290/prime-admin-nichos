@@ -65,6 +65,8 @@ export class ConfiguracionFooterComponent implements OnInit{
         this.general = nicho.general;
         this.version = version;
 
+        console.log('version: ', this.version);
+
         this.llenarOpcionesFooter();
         if(footer){
            this.dataFooter = footer;
@@ -134,6 +136,7 @@ export class ConfiguracionFooterComponent implements OnInit{
            this.msgsFooter.push({ severity: 'success', summary: 'Correcto', detail: 'Se guardo footer en local correctamente', key: 'message-footer' });
            this.consultaFooter();
            this.generarRouting();
+           this.getVersion();
            this.loadings.local = false;
        });
   }
@@ -160,7 +163,8 @@ export class ConfiguracionFooterComponent implements OnInit{
 
       let data = {
         comandos: comandos,
-        campo: campos
+        campo: campos,
+        nicho: this.idNicho
       }
       
       this.loadings.dev = true;

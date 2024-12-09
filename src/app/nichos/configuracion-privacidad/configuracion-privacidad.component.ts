@@ -91,7 +91,7 @@ export class ConfiguracionPrivacidadComponent implements OnInit{
         this.privacidad.title = 'Política de Privacidad - ' + this.general.dominio;
         this.privacidad.breadcrumb = this.generaBreadcums('Política de Privacidad');
         this.privacidad.tipo = 1;
-        this.privacidad.json = 'privacidad-privacidad';
+        this.privacidad.json = 'politica-privacidad';
         this.loadingsPriv.local = true;
         this.privacidad.h1 = 'Política de Privacidad';
         return this.privacidad;
@@ -195,9 +195,10 @@ export class ConfiguracionPrivacidadComponent implements OnInit{
         break; 
     }
 
+    console.log('privacidad: ', privacidad);
 
 
-       comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/${privacidad.json} /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
+       comandos.push(`cp server/nichos/${cleanText(this.nicho.nombre)}/assets/json/${privacidad.json}_${privacidad.version.local}.json /Applications/XAMPP/htdocs/${cleanText(this.nicho.nombre)}/assets/json`);
     
     let campos = {
       $set : {

@@ -49,11 +49,11 @@
                     {{menu.name}}
                 </div>
                 <div class="col-12 text-right">
-                    <button pButton pRipple type="button"
-                            class="p-button-outlined p-button-help" 
-                            [ngClass]="menu.dev ? 'p-button-help' : 'p-button-danger'"
-                            label="Dev"
-                            (click)="subirModificacionesDev()"></button>
+                    <p-button label="Dev" class="mx-12"
+                              (click)="subirModificacionesDev()"
+                                [disabled]="!menu.local"
+                                [severity]="menu.dev ? 'success' : 'danger'"
+                                pTooltip="Generar menu en dev" ></p-button>
                 </div>
             </div>
         </div>

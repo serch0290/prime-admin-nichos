@@ -63,6 +63,7 @@ export class ConfiguracionMenuComponent implements OnInit{
       if(menus){
          this.menu = menus;
          this.menus = menus.menu;
+         console.log('listado menus: ', this.menus);
          this.idMenu = menus._id;
       } 
       this.categorias = categorias.filter(item=> !item.home);
@@ -138,12 +139,13 @@ export class ConfiguracionMenuComponent implements OnInit{
 
       let data = {
         comandos: comandos,
-        campo: campos
+        campo: campos,
+        nicho: this.idNicho
       }
  
-      this.menuService.subirModificaciones(this.idMenu, data)
+      this.menuService.subirModificaciones(this.menu._id, data)
           .subscribe(response=>{
-             this.menu = response.menu;
+             this.menu = response.menus;
              this.subirRoutingDev();
           });
   }
